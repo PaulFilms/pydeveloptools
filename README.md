@@ -4,7 +4,7 @@ Toolkit for developing scripts and simple applications with Python
 
 # Tools included
 - Calc .xlsx File
-- .PDF Report
+- Report .PDF
 - Database
 
 # TASK:
