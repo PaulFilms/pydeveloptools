@@ -50,19 +50,30 @@ class FILTER:
 
     @classmethod
     def get_str(cls, FILTERS: str | list, WHERE_STR: bool = False) -> str:
+        '''
+        `FILTERS`: str | list
+            - str -> SQL String complete "FIELD1=12 AND FILED2='23'"
+            - list -> list of FILTER (class)
+        
+        `WHERE_STR`: bool
+            - True -> Add WHERE in result "WHERE FIELD1=12 AND FILED2='23'"
+            - False -> Don't edit the result
+        '''
+        WHERE_STRING = ""
         # STR
         if type(FILTER) == str:
-            filter_str = FILTERS
-            if WHERE_STR: filter_str = f"WHERE {filter_str}"
-            return filter_str
+            WHERE_STRING = FILTERS
         # LIST
-        filter_str = []
+        WHERE_LIST = []
         for filter in FILTERS:
             filter: cls
             FIELD = filter.field
             VALUE = filter.value
             TYPE = filter.field_type
             OPERATOR = filter.operator
+
+            if VALUE == "":
+                VALUE == None
 
             # BOOL
             if TYPE == bool: 
@@ -74,23 +85,22 @@ class FILTER:
             # OPERATOR
             if OPERATOR == OPERATORS.IS_NULL:
                 fieldFilter = f"{FIELD} {OPERATORS.IS_NULL.value}"
-                filter_str.append(fieldFilter)
-            elif OPERATOR == OPERATORS.LIKE:
-                fieldFilter = f"{FIELD} {chr(39)}%{VALUE}%{chr(39)}"
-                filter_str.append(fieldFilter)
-            else:
+                WHERE_LIST.append(fieldFilter)
+            elif VALUE and OPERATOR == OPERATORS.LIKE:
+                fieldFilter = f"{FIELD} {OPERATORS.LIKE.value} {chr(39)}%{VALUE}%{chr(39)}"
+                WHERE_LIST.append(fieldFilter)
+            elif VALUE:
                 if TYPE == str:
                     VALUE = f"{chr(39)}{VALUE}{chr(39)}"
                 fieldFilter = f"{FIELD} = {VALUE}"
-                filter_str.append(fieldFilter)
-            # 
+                WHERE_LIST.append(fieldFilter)
 
-        if len(filter_str) > 0:
-            filter_str = " AND ".join(filter_str)
-            if WHERE_STR: filter_str = f"WHERE {filter_str}"
-        else:
-            filter_str = ""
-        return filter_str
+        # FIN
+        if len(WHERE_LIST) > 0:
+            WHERE_STRING = " AND ".join(WHERE_LIST)
+        if WHERE_STR and WHERE_STRING != "": 
+            WHERE_STRING = f"WHERE {WHERE_STRING}"
+        return WHERE_STRING
 
 def SQL_SELECT(SELECT: list, FROM: str, WHERE: list = [], ORDER: str = []) -> str:
     '''
@@ -280,3 +290,4 @@ def dataframe_getcell(dataframe=pd.core.frame.DataFrame, FIELD=str, ROW=int, typ
             value = 0
         value = float(value)
     return value
+

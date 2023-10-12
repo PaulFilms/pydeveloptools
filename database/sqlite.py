@@ -4,7 +4,7 @@ Functions for Using Databases with SQLite Format
 ** EXTRA INFO:\n
 - If you want query and filter data using JSON BLOB, you can use the next SQL:\n
     - SELECT json_extract(DB, '$.STANDARDS') as STANDARDS
-    - FROM CALIBRATIONS
+    - FROM <TABLE>
     - WHERE Id='2222'
 '''
 __update__ = '2023.10.11'
@@ -16,7 +16,7 @@ import sqlite3
 import json
 
 ''' CUSTOM LIBRARIES '''
-from pydeveloptools.database import sql as SQL_STR
+from pydeveloptools.func_database import SQL_SELECT
 
 ''' MAIN
 ------------------------------------------ '''
@@ -38,6 +38,7 @@ class SQLITE_DB():
         ## SQL STRING EXECUTE
         LIST = None
         try:
+            # print(SQL_STR)
             self.CURSOR.execute(SQL_STR)
             if commit:
                 self.CNN.commit()
@@ -132,7 +133,7 @@ class SQLITE_DB():
         Get a list of all data in a selected FIELD
         ORDER can use ASC / DESC
         '''
-        SQL = SQL_STR.SQL_SELECT(SELECT=FIELD, FROM=TABLE, ORDER=FIELD + " " + ORDER)
+        SQL = SQL_SELECT(SELECT=FIELD, FROM=TABLE, ORDER=FIELD + " " + ORDER)
         SQL_LIST = self.SQL_EXEC(SQL)
         LIST: list = []
         if len(SQL_LIST) > 0:
