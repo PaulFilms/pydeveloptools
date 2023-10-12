@@ -11,9 +11,9 @@ TASK:
 WARNINGS:
     < xlsxwriter > Instalado para usar texto enriquecido (En pruebas)
 '''
-
 __update__ = '2023.09.01'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
+
 
 ''' SYSTEM LIBRARIES '''
 import os
@@ -21,10 +21,10 @@ import pandas as pd
 
 ''' CUSTOM MAIN LIBRARIES '''
 
+
 ''' 
 OPENPYXL REPORT
---------------------------------------------------------
-'''
+-------------------------------------------------------- '''
 
 import openpyxl as xls
 from openpyxl.drawing.image import Image
@@ -274,5 +274,4 @@ def DF_REPORT(DATAFRAME: pd.DataFrame, fileName: str, fontName: str = 'Calibri')
 
 
 ''' 
---------------------------------------------------------
-'''
+-------------------------------------------------------- '''
