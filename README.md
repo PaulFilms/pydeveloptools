@@ -1,8 +1,8 @@
-# `pydeveloptools`
+# pydeveloptools
 Toolkit for developing scripts and simple applications with Python
 
 
-# Tools included
+`Tools included`
 - Calc .xlsx File
 - Report .PDF
 - Databases (SQLite, MS Access, SQL Language)
@@ -10,8 +10,8 @@ Toolkit for developing scripts and simple applications with Python
 - System functions
 - PyQt6 GUI
 
-# TASK:
+`TASK:`
 - Debug some functions
 
-# WARNINGS:
+`WARNINGS:`
 - Not now
