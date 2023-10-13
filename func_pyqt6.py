@@ -548,6 +548,7 @@ def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME=pd.DataFrame, HIDE_COLUMNS=
     `DEBUG:` 
         - Al ordenar los datos, hay que releer la tabla, en el caso de que tenga alguna edición, se pierde
         - Problemas con los NaN
+        - Some times show: QAbstractItemView::closeEditor called with an editor that does not belong to this view
     '''
     ## INIT TBL
     TABLE.setEnabled(False)
@@ -755,7 +756,6 @@ class QLIST_FORM(QDialog):
     
     def DATA_SELECT(self):
         item = self.lst.currentItem().text()
-        self.selection.emit(item)
         self.value = item
         self.close()
 
