@@ -669,7 +669,7 @@ def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: list | tuple = []):
 --------------------------------------------------------
 '''
 
-def INFOBOX(TITLE=str, TEXT=str):
+def INFOBOX(TITLE: str = "", TEXT: str = ""):
     '''
     Information Window
     '''
@@ -678,7 +678,7 @@ def INFOBOX(TITLE=str, TEXT=str):
     infobox.setFont(QFont('Consolas', 10))
     infobox.information(QMainWindow(), str(TITLE), str(TEXT))
 
-def YESNOBOX(TITLE, TEXT) -> bool:
+def YESNOBOX(TITLE: str = "", TEXT: str = "") -> bool:
     '''
     Question Window with YES/NO Options
     '''
@@ -690,7 +690,7 @@ def YESNOBOX(TITLE, TEXT) -> bool:
     if reply == QMessageBox.StandardButton.No:
         return False
 
-def INPUTBOX(TITLE, TEXT, *DEFAULT):
+def INPUTBOX(TITLE: str = "", TEXT: str = "", *DEFAULT):
     '''
     INCOMPLETE
     '''
