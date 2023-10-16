@@ -1,10 +1,10 @@
 '''
 Functions for using databases in SQL language, dataframes with pandas, and some converters
 
-ATTENTION:
+`ATTENTION:`
     - SQL_INSERT is not available because the string needs to be adapted to the DB format (ACCESS, SQLITE, ...)
 '''
-__update__ = '2023.10.12'
+__update__ = '2023.10.16'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -30,6 +30,11 @@ class OPERATORS(Enum):
     GREATER_EQUAL = ">="
     LIKE = "LIKE"
     IS_NULL = "IS NULL"
+
+@dataclass
+class FIELD:
+    name: str
+    type: bool | int | float | str
 
 @dataclass
 class FILTER:

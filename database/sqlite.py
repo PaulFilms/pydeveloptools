@@ -1,4 +1,4 @@
-r'''
+'''
 Functions for Using Databases with SQLite Format
 
 ** EXTRA INFO:\n
@@ -272,3 +272,14 @@ class SQLITE_DB():
         except:
             print("SQL UPDATE ERROR / SQL_UPDATE")
             print(SQL)
+        
+
+    def SQL_UPDATE_JSON(self, TABLE: str, TBL_FIELD: str, ID, JSON_FIELD: str, VALUE: bool | str | int | float) -> None:
+        '''
+        INCOMPLETE
+        '''
+        # UPDATE CALIBRATIONS
+        # SET 
+        # DB = json_set(IIF(DB IS NULL, '{}', DB), '$.FINALIZED', TRUE)
+        # WHERE Id LIKE '%11266%'
+        SQL = f"UPDATE {TABLE} SET {TBL_FIELD} = json_set(IIF(DB IS NULL, '{chr()}{chr()}', DB), '$.{JSON_FIELD}', {VALUE}) WHERE Id = '{ID}'"
