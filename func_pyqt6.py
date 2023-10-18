@@ -537,9 +537,10 @@ def TBL_INIT(TABLE: QTableWidget):
     TABLE.setColumnCount(0)
     TABLE.setEnabled(True)
 
-def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME=pd.DataFrame, HIDE_COLUMNS=[], PROTECTED_COLUMNS=[], HEAD_ORDER=True) -> None:
+def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS: list=[], PROTECTED_COLUMNS: list=[], HEAD_ORDER:bool=True) -> None:
     '''
     Populate QTable with a Pandas DataFrame \n
+
     `VARIABLES:`
     - HIDE_COLUMNS (list): Hide the list of columns by int (column index) or str (calumn name)
     - PROTECTED_COLUMNS (list): Config the list of columns selected by int (column index) or str (calumn name)
