@@ -66,7 +66,10 @@ def DATE_STR_CONVERTER(DATE: str = "2023-01-01") -> QDate:
         return None
 
 def DATE_QDATE_CONVERTER(DATE: QDate) -> str:
-    DATE = f"{DATE.year()}-{DATE.month()}-{DATE.day()}"
+    YEAR = DATE.year()
+    MONTH = '{:02d}'.format(DATE.month())
+    DAY = '{:02d}'.format(DATE.day())
+    DATE = f"{YEAR}-{MONTH}-{DAY}"
     return DATE
     
 def TIME_STR_CONVERTER(TIME: str = "00:00") -> QTime:
@@ -341,6 +344,7 @@ def CELL_RD(TABLE: QTableWidget, ROW: int, COLUMN: int | str):
         - QSpinBox
         - QSpinBox / QDoubleSpinBox
         - QCheckBox
+        - QDateEdit
     
     `DEBUG:` 
         - QPushButton: De un boton se puede obtener el nombre para automatizar procesos
@@ -372,6 +376,10 @@ def CELL_RD(TABLE: QTableWidget, ROW: int, COLUMN: int | str):
     # QPushButton
     elif type(CELL) == QPushButton:
         value = CELL.text()
+    ## QDateEdit
+    elif type(CELL) == QDateEdit:
+        value = CELL.date()
+        value = DATE_QDATE_CONVERTER(value)
     ## QWidget <LAYOUT> QCheckBox
     elif type(CELL) == QWidget:
         # QCheckBox
@@ -480,6 +488,19 @@ def CELL_SPINBOX(TABLE: QTableWidget, ROW: int, COLUMN: int | str, VALUE: int = 
     widget.setValue(VALUE)
     widget.setMinimum(MIN)
     widget.setMaximum(MAX)
+    ##
+    TABLE.setCellWidget(ROW, COLUMN_INDEX, widget)
+
+def CELL_DATEEDIT(TABLE: QTableWidget, ROW: int, COLUMN: int | str) -> None:
+    '''
+    setCellWidget -> QDateEdit
+    '''
+    COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
+    widget = QDateEdit()
+    widget.setSpecialValueText("-")
+    widget.setMinimumDate(QDate(2020,1,1))
+    widget.setMaximumDate(QDate(2100,1,1))
+    widget.setDisplayFormat("yyyy-MM-dd")
     ##
     TABLE.setCellWidget(ROW, COLUMN_INDEX, widget)
 
