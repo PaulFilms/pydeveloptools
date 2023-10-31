@@ -1,10 +1,10 @@
-r'''
+'''
 # Methods and functions for developing mathematical solutions
 
-`TASK:`
-`WARNINGS:`
+\n`TASK:`
+\n`WARNINGS:`
 '''
-__version__ = '2023.10.13'
+__version__ = '2023.10.31'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -61,9 +61,9 @@ def UNC_TYP_A(ACQUISITIONS: list = []) -> float:
 
 def REGRESION_LINE(yValues: list, xValues: list) -> tuple:
     '''
-    Get the regresion line of yValues and xValues
-    - y = b1*x + b0
-    - b1 <slope>, b0 <base>
+    Get the regresion line of selected yValues and selected xValues
+    \n - `RESULT:` tuple = (b1 <slope/gradient>, b0 <intercept/base>)
+    \n - `EQUATION:` y = mx + b | y = b1*x + b0
     '''
     xMedia = MEAN(xValues)
     yMedia = MEAN(yValues)
@@ -135,7 +135,7 @@ class CONVERTER():
         '''
         P (W) = ( V (rms) ^ 2 / Imp. (Ohm) )
         '''
-        watts = (value**2/50)
+        watts = (value**2/impedance_ohm)
         return watts
     
     def vrms_to_dbm(value: float, impedance_ohm: float = 50) -> float:
