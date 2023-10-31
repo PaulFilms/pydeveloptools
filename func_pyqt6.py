@@ -1,18 +1,20 @@
-r'''
-Toolkit with simplified functions and methods for development with PyQt6 \n
+'''
+# Toolkit with simplified functions and methods for development with PyQt6 \n
 
-`TASK:`
-    - TBL_POP_PANDAS_DF: Leer el DEBUG
+\n`TASK:`
+    - TBL_POP_PANDAS_DF: 
+        - Leer el DEBUG
+        - Indicar el tipo de dato para preparar la columna ejem: "field": {"type": bool, "data": []}
     - FORMULARIOS:
         - Hay que estudiar el uso de QtCore.pyqtSignal(str)
         - El valor de la class tiene que ser data (por que hay casos que no obtienes un solo valor)
         - Quitar el .ui de todos los formularios
     - crear la función "dataframe_to_txt" para aislar la libreria de SYS
 
-`WARNINGS:`
+\n`WARNINGS:`
     - 
 '''
-__update__ = '2023.10.13'
+__update__ = '2023.10.31'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -46,7 +48,7 @@ def TIME_SLEEP(SEG: float=1):
         time = int(time)
     except:
         time = 10
-        print("TIME_SLEEP ERROR / TIME (s): {}".format(SEG))
+        print(f"TIME_SLEEP ERROR / TIME (s): {SEG}")
     loop = QEventLoop()
     QTimer.singleShot(time, loop.quit)
     loop.exec()
@@ -56,19 +58,33 @@ def DATE_STR_CONVERTER(DATE: str = "2023-01-01") -> QDate:
     Convert string ISO format date to QDate
     DATE str Format: yyyy-mm-dd 
     '''
+    if DATE == "2020-01-01" or DATE == "2020-1-1":
+        return None
     try:
-        year: int = int(DATE[:4])
-        month: int = int(DATE[5:-3])
-        day: int = int(DATE[-2:])
+        # year: int = int(DATE[:4])
+        # month: int = int(DATE[5:-3])
+        # day: int = int(DATE[-2:])
+        date_list = DATE.split("-")
+        if len(date_list) != 3:
+            date_list = DATE.split("/")
+        if len(date_list) != 3:
+            date_list = DATE.split(".")
+        year = int(date_list[0])
+        month = int(date_list[1])
+        day = int(date_list[2])
         date = QDate(year, month, day)
         return date
     except:
         return None
 
 def DATE_QDATE_CONVERTER(DATE: QDate) -> str:
+    '''
+    Convert QDate to string ISO format date
+    DATE str Format: yyyy-mm-dd 
+    '''
     YEAR = DATE.year()
-    MONTH = '{:02d}'.format(DATE.month())
-    DAY = '{:02d}'.format(DATE.day())
+    MONTH = f"{DATE.month():02d}"
+    DAY = f'{DATE.day():02d}'
     DATE = f"{YEAR}-{MONTH}-{DAY}"
     return DATE
     
@@ -924,7 +940,7 @@ class QTABLE_FORM(QtWidgets.QDialog):
         for field in self.HEADERS:
             row = self.HEADERS.index(field)
             value = CELL_RD(TABLE, row, 0)
-            summary += "{}: ".format(field)
+            summary += f"{field}: "
             if value == "" or value == None:
                 if CELL_RD(TABLE, row, 1) == "*": 
                     self.data = None
@@ -933,7 +949,7 @@ class QTABLE_FORM(QtWidgets.QDialog):
                 self.data[field] = None
             else:
                 self.data[field] = value
-                summary += "{}".format(value)
+                summary += f"{value}"
             summary += "\n"
         if YESNOBOX("DO YOU WANT SAVE THIS DATA?", summary) == True:
             self.close()
