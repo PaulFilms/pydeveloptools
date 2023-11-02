@@ -1,30 +1,22 @@
-r'''
-NOTES:
-    Conjunto de librerias para uso de excel
-TASK:
-    Ver actualizaciones de openpyxl para RichText
-    Usar el en los metodos self.ROW
-    Añadir la funcion de trabajar con letras y enteros:
-        ejm: [ COL = xls.utils.get_column_letter(COLUMN) ]
-    Añadir libreria xlsxwriter para uso de hojas EXCEL ya creadas
-    ** No me termina de gustar es usar save en los metodos
-WARNINGS:
-    < xlsxwriter > Instalado para usar texto enriquecido (En pruebas)
 '''
-__update__ = '2023.09.01'
-__author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
+# Toolkit with simplified functions and methods for create .xlsx Reports \n
 
+\n`TASK:`
+    - Ver actualizaciones de openpyxl para RichText
+    - Añadir la funcion de trabajar con letras y enteros:
+        - ejm: [ COL = xls.utils.get_column_letter(COLUMN) ]
+    - Añadir libreria xlsxwriter para uso de hojas EXCEL ya creadas
+    ** No me termina de gustar es usar save en los metodos
+
+\n`WARNINGS:`
+'''
+__update__ = '2023.11.02'
+__author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
 import os
+from enum import Enum
 import pandas as pd
-
-''' CUSTOM MAIN LIBRARIES '''
-
-
-''' 
-OPENPYXL REPORT
--------------------------------------------------------- '''
 
 import openpyxl as xls
 from openpyxl.drawing.image import Image
@@ -34,10 +26,67 @@ from openpyxl.styles.borders import Border
 from openpyxl.worksheet import pagebreak
 from openpyxl.utils import get_column_letter
 
+''' CUSTOM MAIN LIBRARIES '''
+
+''' 
+OPENPYXL VARIABLES AND FUNCTIONS
+-------------------------------------------------------- '''
+
+def CELL_STR(ROW: int, COLUMN: int) -> str:
+    '''
+    Get the Reference String of selected Cell by numbers
+    '''
+    col_str = xls.utils.get_column_letter(COLUMN)
+    cellstr = "{}{}".format(col_str, ROW)
+    return cellstr
+
+def COLUMN_STR(COLUMN: int) -> str:
+    '''
+    Get the Reference Letter of the selected Column by number
+    '''
+    letter = xls.utils.get_column_letter(COLUMN)
+    return letter
+
+class ALIGN_H(Enum):
+    '''
+    horizontal aligments types
+    '''
+    GENERAL = "general"
+    LEFT = "left"
+    CENTER = "center"
+    RIGHT = "right"
+    FILL = "fill"
+    JUSTIFY = "justify"
+    CENTER_CONTINUOUS = "centerContinuous"
+    DISTRIBUTED = "distributed"
+
+class ALIGN_V(Enum):
+    '''
+    vertical aligments types
+    '''
+    TOP = "top"
+    CENTER = "center"
+    BOTTOM = "bottom"
+    JUSTIFY = "justify"
+    DISTRIBUTED = "distributed"
+
+class FONTS(Enum):
+    '''
+    Normalized Fonts
+    '''
+    TITTLE = Font(name='Calibri', size=12, bold=True)
+    HEADER = Font(name='Calibri', size=10, bold=True)
+    MAIN = Font(name='Calibri', size=10, bold=False)
+
+''' 
+OPENPYXL REPORT
+-------------------------------------------------------- '''
+
 class XLSREPORT:
     '''
-    Excel book and functions \n
-    DEBUG:\n
+    ### Excel book and functions
+    
+    `DEBUG:`
         - En el caso de WorkSheet en __init__ hay que preguntar y no usar try/except
         - Hay que depurar el tratamiento de archivos (repetidos, protegidos, etc)
     '''
@@ -47,6 +96,7 @@ class XLSREPORT:
         self.fileName = os.path.basename(self.FILE_STR)
         self.ROW = 1
         self.FONT = FONT
+        self.ALIGN = Alignment(horizontal=ALIGN_H.LEFT.value, vertical=ALIGN_V.CENTER.value)
         self.WS_NAME = WS_NAME
         ## WORKBOOK
         try:
@@ -64,104 +114,107 @@ class XLSREPORT:
         except:
             self.WB.create_sheet(self.WS_NAME)
             self.WS = self.WB[self.WS_NAME]
-        # self.WS.dimensions.ColumnDimension(self.WS, bestFit=True)
+        # self.WS.dimensions.ColumnDimension(self.WS, bestFit=True)        
 
-    def SAVE(self):
+    def SAVE(self) -> None:
         self.WB.save(self.FILE_STR)
 
-    def CLOSE(self):
+    def CLOSE(self) -> None:
         self.WB.close
 
-    def SHEET_NEW(self, sheet_name: str):
+    def SHEET_NEW(self, sheet_name: str) -> None:
         '''
         Create a new excel sheet
         '''
         self.WB.create_sheet(sheet_name)
 
-    def SHEET_SELECT(self, sheet_name):
+    def SHEET_SELECT(self, sheet_name) -> None:
         self.WS = self.WB[sheet_name]
 
-    def WR(self, ROW: int = 1, COLUMN: int = 1, VALUE="", f_size: int = 10, f_bolf=False, save: bool = False):
-        # self.WS["A4"].value = VALUE
-        self.WS.cell(ROW, COLUMN).value = VALUE
-        self.WS.cell(ROW, COLUMN).alignment = Alignment(horizontal='left', vertical='center')
-        self.WS.cell(ROW, COLUMN).font = Font(name=self.FONT, size=f_size, bold=f_bolf,)
-        if save == True: self.SAVE()
-    
-    def WR_TITLE(self, ROW: int = 1, COLUMN: int = 1, VALUE="", save: bool = False):
-        self.WS.cell(ROW, COLUMN).value = VALUE
-        self.WS.cell(ROW, COLUMN).alignment = Alignment(horizontal='left', vertical='center')
-        self.WS.cell(ROW, COLUMN).font = Font(name=self.FONT, size=12, bold=True,)
-        self.ROW_WIDTH(ROW, 40)
-        if save: self.SAVE()
+    ''' FUNCTIONS '''
 
-    def WR_HEADER(self, ROW: int = 1, COLUMN: int = 1, VALUE="", VERTICAL: str = "center", wrap: bool = False, save: bool = False):
-        '''
-        Write in cell with HEADER style font
-        Bold, Size 10
-        VERTICAL: "top", "center", "bottom", "justify", "distributed"
-        '''
-        self.WS.cell(ROW, COLUMN).value = VALUE
-        self.WS.cell(ROW, COLUMN).alignment = Alignment(horizontal='left', vertical=VERTICAL, wrap_text=wrap)
-        self.WS.cell(ROW, COLUMN).font = Font(name=self.FONT, size=10, bold=True)
-        if save: 
-            self.SAVE()
-
-    def WR_HEADERS(self, ROW: int = 1, HEADERS: list = list, VERTICAL: str = "center", wrap: bool = False, save: bool = False):
-        '''
-        Write and edit format of Headers List
-        '''
-        for head in HEADERS:
-            self.WR_HEADER(ROW=ROW, COLUMN=HEADERS.index(head)+1, VALUE=head, VERTICAL=VERTICAL, wrap=wrap)
-        self.ROW_WIDTH(ROW, 35)
-        if save:
-            self.SAVE()
-
-    def ROW_INC(self, NUMBER=1):
+    def ROW_INC(self, NUMBER: int=1) -> None:
         '''
         Add an increment in row count
         '''
         self.ROW = self.ROW + int(NUMBER)
 
-    def ROW_GET(self):
+    def ROW_GET(self) -> int:
         '''
         Get current row
         '''
-        FILA = self.ROW
-        return int(FILA)
+        return self.ROW
 
-    def ROW_WIDTH(self, ROW=1, WIDTH=10, save: bool = False):
+    def ROW_WIDTH(self, ROW: int, WIDTH: float=10) -> None:
         '''
         Set height of a row
         '''
         self.WS.row_dimensions[ROW].height = WIDTH
-        # 
-        if save == True: self.SAVE()
 
-    def COL_WIDTH(self, COL: int = 1, WIDTH: int = 20, save=False):
+    def COL_WIDTH(self, COL: int, WIDTH: float = 20) -> None:
         '''
         '''
         COL_LETT = COLUMN_STR(COL)
         self.WS.column_dimensions[COL_LETT].width = WIDTH
-        if save == True: self.SAVE()
 
-    def COL_AUTOFIT(self, save=False):
+    def COL_AUTOFIT(self) -> None:
         '''
+        Auto-Adjust the Column Width 
         '''
         for column_cells in self.WS.columns:
                 new_column_length = max(len(str(cell.value)) for cell in column_cells)
                 new_column_letter = (xls.utils.get_column_letter(column_cells[0].column))
                 if new_column_length > 0:
                     self.WS.column_dimensions[new_column_letter].width = new_column_length*1.23
-        if save == True: self.SAVE()
-    
-    def COL_FILTERS(self, save: bool =False):
+
+    def COL_FILTERS(self) -> None:
         '''
         Set filters in current WorkSheet from A1 to maximun column and maximun row
         '''
         fullRange = f"A1:{get_column_letter(self.WS.max_column)}{self.WS.max_row}"
         self.WS.auto_filter.ref = fullRange
-        if save == True: self.SAVE()
+
+    ''' WRITE FUNCTIONS '''
+
+    def WR(self, ROW: int, COLUMN: int, VALUE = "", size: int = 10, bold: bool=False, font_name: str=None):
+        '''
+        Type the selected cell in specific formatting
+        - `size:` Font Size (10)
+        - `bold:` Font Bold (False)
+        - `font_name:` Font Name ("Arial")
+        '''
+        self.WS.cell(ROW, COLUMN).value = VALUE
+        self.WS.cell(ROW, COLUMN).alignment = self.ALIGN
+        if font_name:
+            FONT = font_name
+        else:
+            FONT = self.FONT
+        self.WS.cell(ROW, COLUMN).font = Font(name=FONT, size=size, bold=bold)
+    
+    def WR_TITLE(self, ROW: int, COLUMN: int, VALUE = ""):
+        '''
+        Edit selected cell in Title format
+        '''
+        self.WS.cell(ROW, COLUMN).value = VALUE
+        self.WS.cell(ROW, COLUMN).alignment = self.ALIGN
+        self.WS.cell(ROW, COLUMN).font = FONTS.TITTLE.value
+        self.ROW_WIDTH(ROW, 40)
+
+    def WR_HEADER(self, ROW: int, COLUMN: int, VALUE = "", vertical_alignment: str = ALIGN_V.CENTER.value, wrap: bool = False):
+        '''
+        Edit selected cell in Header format
+        '''
+        self.WS.cell(ROW, COLUMN).value = VALUE
+        self.WS.cell(ROW, COLUMN).alignment = Alignment(horizontal='left', vertical=vertical_alignment, wrap_text=wrap)
+        self.WS.cell(ROW, COLUMN).font = FONTS.HEADER.value
+
+    def WR_HEADERS(self, ROW: int, HEADERS: list = list, vertical_alignment: str = "center", wrap_text: bool = False):
+        '''
+        Write and edit format of Headers List
+        '''
+        for head in HEADERS:
+            self.WR_HEADER(ROW=ROW, COLUMN=HEADERS.index(head)+1, VALUE=head, vertical_alignment=vertical_alignment, wrap_text=wrap_text)
+        self.ROW_WIDTH(ROW, 35)
 
     def LOW_BORDER(self, ROW=1, col_ini=1, col_fin=300, save=False):
         '''
@@ -180,6 +233,8 @@ class XLSREPORT:
         for col in range(col_ini, col_fin): self.WS.cell(row=ROW, column=col).border = thin
         if save == True: self.SAVE()
 
+    ''' INCOMPLETES '''
+    
     # def MERGE(self, ROW_INI, COL_INI, ROW_FIN, COL_FIN, save=False):
     #     self.WS.merge_cells(
     #         start_row = ROW_INI, 
@@ -187,7 +242,7 @@ class XLSREPORT:
     #         end_row = ROW_FIN, 
     #         end_column = COL_FIN)
     #     if save == True: self.SAVE()
-
+    
     def PRNT_AREA(self, COL_FIN: int, save: bool = False):
         '''
         Ajusta la zona de impresion
@@ -238,18 +293,6 @@ class XLSREPORT:
         cell_str = xls.utils.get_column_letter(COLUMN) + str(ROW)
         self.WS.add_image(img, cell_str)
 
-def CELL_STR(ROW: int, COLUMN: int) -> str:
-    '''
-    '''
-    col_str = xls.utils.get_column_letter(COLUMN)
-    cellstr = "{}{}".format(col_str, ROW)
-    return cellstr
-
-def COLUMN_STR(COLUMN: int) -> str:
-    '''
-    '''
-    letter = xls.utils.get_column_letter(COLUMN)
-    return letter
 
 def DF_REPORT(DATAFRAME: pd.DataFrame, fileName: str, fontName: str = 'Calibri') -> None:
     '''

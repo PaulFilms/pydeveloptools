@@ -14,7 +14,7 @@
 \n`WARNINGS:`
     - 
 '''
-__update__ = '2023.10.31'
+__update__ = '2023.11.02'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -61,14 +61,17 @@ def DATE_STR_CONVERTER(DATE: str = "2023-01-01") -> QDate:
     if DATE == "2020-01-01" or DATE == "2020-1-1":
         return None
     try:
+        ## OLD METHOD
         # year: int = int(DATE[:4])
         # month: int = int(DATE[5:-3])
         # day: int = int(DATE[-2:])
+        ## NEW METHOD
         date_list = DATE.split("-")
         if len(date_list) != 3:
             date_list = DATE.split("/")
         if len(date_list) != 3:
             date_list = DATE.split(".")
+        ## GET VALUES
         year = int(date_list[0])
         month = int(date_list[1])
         day = int(date_list[2])
@@ -82,6 +85,8 @@ def DATE_QDATE_CONVERTER(DATE: QDate) -> str:
     Convert QDate to string ISO format date
     DATE str Format: yyyy-mm-dd 
     '''
+    if DATE == None:
+        return None
     YEAR = DATE.year()
     MONTH = f"{DATE.month():02d}"
     DAY = f'{DATE.day():02d}'
@@ -154,13 +159,16 @@ def WIDGET_WR(WIDGET, VALUE: None) -> None:
             WIDGET.setChecked(False)
     ## QDateEdit
     elif type(WIDGET) == QDateEdit:
-        if type(VALUE) == QDate:
-            WIDGET.setDate(VALUE)
-        elif VALUE and type(VALUE) == str and len(VALUE) == 10: # 2023-01-01
-            VALUE: str
-            WIDGET.setDate(DATE_STR_CONVERTER(VALUE))
-        else:
+        if VALUE == None:
             WIDGET.setDate(QDate(WIDGET.minimumDate()))
+        elif type(VALUE) == QDate:
+            WIDGET.setDate(VALUE)
+        elif type(VALUE) == str: # 2023-01-01 / 2023-1-1
+            DATE = DATE_STR_CONVERTER(VALUE)
+            if DATE:
+                WIDGET.setDate(DATE)
+            else:
+                WIDGET.setDate(QDate(WIDGET.minimumDate()))
     ## QTimeEdit
     elif type(WIDGET) == QTimeEdit:
         if type(VALUE) == QTime:
@@ -218,7 +226,10 @@ def WIDGET_RD(WIDGET):
     ## QDateEdit
     elif type(WIDGET) == QDateEdit:
         VALUE = WIDGET.date()
-        VALUE = DATE_QDATE_CONVERTER(VALUE)
+        if VALUE != WIDGET.minimumDate():
+            VALUE = DATE_QDATE_CONVERTER(VALUE)
+        else:
+            VALUE = None
     ## QTimeEdit
     elif type(WIDGET) == QTimeEdit:
         VALUE = WIDGET.time()
@@ -743,9 +754,13 @@ def INPUTBOX(TITLE: str = "", TEXT: str = "", *DEFAULT):
 ''' PyQt FORMS
 -------------------------------------------------------- '''
 
+FONT_LABEL = QFont("Roboto Black", pointSize=6, weight=8)
+FONT_WIDGET = QFont("Consolas", pointSize=12)
+FONT_TABLE = QFont("Consolas", pointSize=10)
+
 class QLIST_FORM(QDialog):
     '''
-    List input Form
+    List Selection Form
     '''
     def __init__(self, LIST: list | tuple, Window_Title="List", fontFamily="Arial Rounded MT Bold"):
         QDialog.__init__(self)
@@ -769,7 +784,6 @@ class QLIST_FORM(QDialog):
         self.setObjectName("LIST")
         self.resize(400, 250)
         self.setFont(font)
-        self.setWindowTitle(self.Window_Title)
         self.setToolTip("")
         self.setStatusTip("")
         self.setWhatsThis("")
@@ -787,6 +801,8 @@ class QLIST_FORM(QDialog):
         self.lst.setAccessibleDescription("")
         self.lst.setObjectName("lst")
         self.gridLayout.addWidget(self.lst, 0, 0, 1, 1)
+        ##
+        self.setWindowTitle(self.Window_Title)
     
     def LIST_LOAD(self):
         for e in self.LIST: # self.lst.addItems(self.LIST)
@@ -812,7 +828,7 @@ class QTABLE_FORM(QtWidgets.QDialog):
         mandatory: bool = False
         info: str = ""
 
-    def __init__(self, CONFIG=list | tuple, Window_Title="Table Form", fontFamily="Arial Rounded MT Bold", comboBoxEditables=False):
+    def __init__(self, CONFIG: list | tuple, Window_Title: str="Table Form", fontFamily: str="Arial Rounded MT Bold", comboBoxEditables: bool=False) -> None:
         QtWidgets.QDialog.__init__(self)
         # 
         self.data: dict = None

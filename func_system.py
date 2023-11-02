@@ -1,14 +1,13 @@
-r'''
+'''
 Toolkit with simplified functions and methods for development with Python
 - Operating System
 - Internet
 - Datetime
 
-TASK:
-WARNINGS:
+\n`TASK:`
+\n`WARNINGS:`
 '''
-
-__update__ = '2023.10.11'
+__update__ = '2023.11.02'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -31,7 +30,7 @@ def GET_FIRM() -> str:
     '''
     Returns string with OS Login Id and Date in format ' yyyy-mm-dd / hh:mm '
     '''
-    FIRM = "{} [{}]".format(os.getlogin(), datetime.datetime.now().strftime("%Y-%m-%d / %H:%M"))
+    FIRM = f"{os.getlogin()} [{datetime.datetime.now().strftime("%Y-%m-%d / %H:%M")}]"
     return FIRM
 
 def OS_GET_SYSTEM() -> str:
@@ -389,7 +388,7 @@ def INT_TWODIGITS(INT: int) -> str:
     Convert Integer to tow digit string
     1 --> 01
     '''
-    ORDR = '{:02d}'.format(INT)
+    ORDR = f'{INT:02d}'
     return ORDR
 
 
