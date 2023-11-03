@@ -1,10 +1,10 @@
-r'''
+'''
 Functions for using collections in json format
 
 DEBUG:
     - Son funciones muy sencillas hay que intentar usar las funciones nativas
 '''
-__update__ = '2023.10.11'
+__update__ = '2023.11.03'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
