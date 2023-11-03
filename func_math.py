@@ -4,7 +4,7 @@
 \n`TASK:`
 \n`WARNINGS:`
 '''
-__version__ = '2023.10.31'
+__version__ = '2023.11.02'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -79,6 +79,14 @@ def REGRESION_LINE(yValues: list, xValues: list) -> tuple:
     b1 = pos / div
     b0 = yMedia - (b1 * xMedia)
     return b1, b0
+
+def ISO_SCI(VALUE: float, PRECISION: int=1) -> str:
+    '''
+    Returns selected VALUE like Scientific notation
+    '''
+    # data = format(VALUE,'.1E')
+    data = f"{VALUE:.{PRECISION}E}"
+    return data
 
 
 ''' CONVERTERS
@@ -161,3 +169,7 @@ class CONVERTER():
         else:
             rho: float = (value-1)/(value+1)
             return rho
+
+''' TEST
+--------------------------------------------------------
+'''
