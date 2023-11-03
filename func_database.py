@@ -110,10 +110,10 @@ class FILTER:
 def SQL_SELECT(SELECT: list, FROM: str, WHERE: list = [], ORDER: str = []) -> str:
     '''
     Return simple SELECT SQL String
-    - SELECT (str, list)
-    - FROM (str) **INCOMPLETE
-    - WHERE (str, list): list (sql_filter(s) list) 
-    - ORDER (str, list) **INCOMPLETE
+    - `SELECT` (str, list)
+    - `FROM` (str) **INCOMPLETE
+    - `WHERE` (str, list): list (FILTER(s) class list) 
+    - `ORDER` (str, list) **INCOMPLETE
     
     INCOMPLETE / DEBUG:
     - Con FROM hay que añadir la posiblidad de hacer JOIN

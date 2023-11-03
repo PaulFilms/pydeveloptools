@@ -1,13 +1,16 @@
 '''
 Functions for Using Databases with SQLite Format
 
-** EXTRA INFO:\n
+\n`EXTRA INFO:`
 - If you want query and filter data using JSON BLOB, you can use the next SQL:\n
     - SELECT json_extract(DB, '$.STANDARDS') as STANDARDS
     - FROM <TABLE>
     - WHERE Id='2222'
+
+\n`TASK:`
+\n`WARNINGS:`
 '''
-__update__ = '2023.10.11'
+__update__ = '2023.11.03'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
@@ -16,7 +19,7 @@ import sqlite3
 import json
 
 ''' CUSTOM LIBRARIES '''
-from pydeveloptools.func_database import SQL_SELECT
+from pydeveloptools.func_database import SQL_SELECT, FILTER
 
 ''' MAIN
 ------------------------------------------ '''
@@ -272,14 +275,60 @@ class SQLITE_DB():
         except:
             print("SQL UPDATE ERROR / SQL_UPDATE")
             print(SQL)
-        
 
-    def SQL_UPDATE_JSON(self, TABLE: str, TBL_FIELD: str, ID, JSON_FIELD: str, VALUE: bool | str | int | float) -> None:
-        '''
-        INCOMPLETE
-        '''
-        # UPDATE CALIBRATIONS
-        # SET 
-        # DB = json_set(IIF(DB IS NULL, '{}', DB), '$.FINALIZED', TRUE)
-        # WHERE Id LIKE '%11266%'
-        SQL = f"UPDATE {TABLE} SET {TBL_FIELD} = json_set(IIF(DB IS NULL, '{chr()}{chr()}', DB), '$.{JSON_FIELD}', {VALUE}) WHERE Id = '{ID}'"
+
+   
+''' JSON FUNCTIONS
+------------------------------------------ '''
+
+def JSON_SELECT(TABLE: str, DB_FIELD: str, JSON_FIELD: str, WHERE: list) -> str:
+    '''
+    '''
+    WHERE_STR = FILTER.get_str(WHERE)
+    sql = f"SELECT JSON_EXTRACT({DB_FIELD}, '$.{JSON_FIELD}') AS {JSON_FIELD} FROM {TABLE}"
+    if len(WHERE_STR) > 0:
+        sql += f" WHERE {WHERE_STR}"
+    sql += ";"
+    return sql
+
+def SQL_UPDATE_JSON(self, TABLE: str, TBL_FIELD: str, ID, JSON_FIELD: str, VALUE: bool | str | int | float) -> None:
+    '''
+    INCOMPLETE
+    '''
+    # UPDATE CALIBRATIONS
+    # SET 
+    # DB = json_set(IIF(DB IS NULL, '{}', DB), '$.FINALIZED', TRUE)
+    # WHERE Id LIKE '%11266%'
+    SQL = f"UPDATE {TABLE} SET {TBL_FIELD} = json_set(IIF(DB IS NULL, '{chr()}{chr()}', DB), '$.{JSON_FIELD}', {VALUE}) WHERE Id = '{ID}'"
+
+def JSON_UPDATE(TABLE: str, DB_FIELD: str, JSON_FIELD: str, WHERE: list, VALUE) -> str:
+    '''
+    '''
+    WHERE_STR = FILTER.get_str(WHERE)
+    sql = f"UPDATE {TABLE} SET {DB_FIELD} = JSON_SET(IFF({DB_FIELD} IS NULL, '{chr(123)}{chr(125)}', {DB_FIELD}), '$.{JSON_FIELD}', {VALUE})"
+    if len(WHERE_STR) > 0:
+        sql += f" WHERE {WHERE_STR}"
+    sql += ";"
+    return sql
+
+sql = JSON_SELECT("CALIBRATIONS", "DB", "TECHNICIAN", [FILTER("Id", "1111")])
+print(sql)
+
+sql = JSON_UPDATE("CALIBRATIONS", "DB", "TECHNICIAN", [FILTER("Id", "1111")], "GOMEZ_D")
+print(sql)
+
+
+''' EJEMPLOS:
+
+-- JSON_EXTRACT
+SELECT * FROM CALIBRATIONS
+WHERE JSON_EXTRACT(DB, '$.DATE_START') LIKE '%2023-10%';
+
+
+-- UPDATE / JSON_SET / IIF Function
+UPDATE CALIBRATIONS
+SET 
+DB = JSON_SET(IIF(DB IS NULL, '{}', DB), '$.FINALIZED', TRUE)
+WHERE Id = '1111'; -- WHERE Id LIKE '%11266%';
+
+'''
