@@ -1,7 +1,7 @@
 '''
-# Toolkit with simplified functions and methods for development with PyQt6 \n
+# Toolkit with simplified functions and methods for development with PyQt6
 
-\n`TASK:`
+`TASK:`
     - TBL_POP_PANDAS_DF: 
         - Leer el DEBUG
         - Indicar el tipo de dato para preparar la columna ejem: "field": {"type": bool, "data": []}
@@ -10,9 +10,9 @@
         - El valor de la class tiene que ser data (por que hay casos que no obtienes un solo valor)
         - Quitar el .ui de todos los formularios
     - crear la función "dataframe_to_txt" para aislar la libreria de SYS
-
-\n`WARNINGS:`
-    - 
+\n
+`WARNINGS:`
+\n
 '''
 __update__ = '2023.11.02'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'

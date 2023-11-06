@@ -1,16 +1,10 @@
 '''
-Functions for Using Databases with SQLite Format
+Functions for Using Databases with SQLite Format \n
 
-\n`EXTRA INFO:`
-- If you want query and filter data using JSON BLOB, you can use the next SQL:\n
-    - SELECT json_extract(DB, '$.STANDARDS') as STANDARDS
-    - FROM <TABLE>
-    - WHERE Id='2222'
-
-\n`TASK:`
-\n`WARNINGS:`
+`TASK:` \n
+`WARNINGS:` \n
 '''
-__update__ = '2023.11.03'
+__update__ = '2023.11.06'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
@@ -19,13 +13,15 @@ import sqlite3
 import json
 
 ''' CUSTOM LIBRARIES '''
-from pydeveloptools.func_database import SQL_SELECT, FILTER
+from pydeveloptools.func_database import SQL_SELECT, FILTER, OPERATORS
 
 ''' MAIN
 ------------------------------------------ '''
 
 class SQLITE_DB():
-
+    '''
+    SQLite DB
+    '''
     def __init__(self, dbPath: str) -> None:
         self.dbPath = dbPath
         self.library = sqlite3
@@ -33,6 +29,8 @@ class SQLITE_DB():
     def SQL_EXEC(self, SQL_STR: str, commit: bool = False) -> tuple:
         '''
         Execute a SQL String
+        - `SQL_STR:` (str)
+        - `commit:` (bool)
         '''
         ## OPEN CONNECTION
         self.CNN = self.library.connect(self.dbPath)
@@ -73,7 +71,8 @@ class SQLITE_DB():
         List with info data about selected Table
 
         INCOMPLETE / DEBUG:
-            Hay que crear una lista con elementos de python
+            Hay que crear una lista con elementos de python:
+            FIELD_ID, TYPE
         '''
         SQL = f"PRAGMA table_info({TABLE});"
         LIST = self.SQL_EXEC(SQL, commit=False)
@@ -82,7 +81,6 @@ class SQLITE_DB():
             ORDER = row[0]
             DICT[row[1]] = {
                 "ORDER": ORDER,
-                
                 }
         return LIST
 
@@ -99,7 +97,7 @@ class SQLITE_DB():
 
     def SQL_SELECT_JSON(self, TABLE: str, FIELD: str, ID: int) -> dict:
         '''
-        Get a Dictionary type of an JSON BLOB Field
+        Get a Dictionary Type of an JSON BLOB Field
         '''
         VALUE: dict = {}
         TYPE_ID = type(ID)
@@ -129,6 +127,7 @@ class SQLITE_DB():
         if VALUE != None and VALUE != "":
             VALUE = json.loads(VALUE)
         
+        ## RETURN
         return VALUE
 
     def SQL_FIELD_LIST(self, TABLE=str, FIELD=str, ORDER="ASC") -> list:
@@ -277,58 +276,75 @@ class SQLITE_DB():
             print(SQL)
 
 
-   
 ''' JSON FUNCTIONS
 ------------------------------------------ '''
 
-def JSON_SELECT(TABLE: str, DB_FIELD: str, JSON_FIELD: str, WHERE: list) -> str:
-    '''
-    '''
-    WHERE_STR = FILTER.get_str(WHERE)
-    sql = f"SELECT JSON_EXTRACT({DB_FIELD}, '$.{JSON_FIELD}') AS {JSON_FIELD} FROM {TABLE}"
-    if len(WHERE_STR) > 0:
-        sql += f" WHERE {WHERE_STR}"
-    sql += ";"
-    return sql
-
-def SQL_UPDATE_JSON(self, TABLE: str, TBL_FIELD: str, ID, JSON_FIELD: str, VALUE: bool | str | int | float) -> None:
-    '''
-    INCOMPLETE
-    '''
-    # UPDATE CALIBRATIONS
-    # SET 
-    # DB = json_set(IIF(DB IS NULL, '{}', DB), '$.FINALIZED', TRUE)
-    # WHERE Id LIKE '%11266%'
-    SQL = f"UPDATE {TABLE} SET {TBL_FIELD} = json_set(IIF(DB IS NULL, '{chr()}{chr()}', DB), '$.{JSON_FIELD}', {VALUE}) WHERE Id = '{ID}'"
-
 def JSON_UPDATE(TABLE: str, DB_FIELD: str, JSON_FIELD: str, WHERE: list, VALUE) -> str:
     '''
+    UPDATE THE VALUE OF SPECIFIC FIELD.
+    **IF THE FIELD IS NULL, AN EMPTY JSON IS ADDED**
+    
+    - `TABLE:` (str) NAME OF TABLE
+    - `DB_FIELD:` (str) NAME OF FIELD IN DB TABLE
+    - `JSON_FIELD:` (str) NAME OF FIELD IN JSON
+    - `WHERE:` (str | list) LIST OF FILTERS
+    - `VALUE:` VALUE TO BE UPDATE
+    
+    `EXAMPLE:`
+    ###### UPDATE <`TABLE`>
+    ###### SET
+    ###### <`DB_FIELD`> = JSON_SET(IIF(<`DB_FIELD`> IS NULL, '{}', <`DB_FIELD`>), '$.<`JSON_FIELD`>', <`VALUE`>)
+    ###### WHERE <`WHERE`>;
     '''
+    ## VARIANT
+    VARIANT = "NULL"
+    if type(VALUE) == None:
+        VARIANT = "NULL"
+    elif type(VALUE) == str:
+        VARIANT = f"'{VALUE}'"
+    elif type(VALUE) == bool:
+        if VALUE == True or VALUE == "TRUE" or VALUE == "true" or VALUE == 1 or VALUE == "1":
+            VARIANT = "TRUE"
+        else:
+            VARIANT = "FALSE"
+    elif type(VALUE) == int or type(VALUE) == float:
+        VARIANT = VALUE
+    ## WHERE STR
     WHERE_STR = FILTER.get_str(WHERE)
-    sql = f"UPDATE {TABLE} SET {DB_FIELD} = JSON_SET(IFF({DB_FIELD} IS NULL, '{chr(123)}{chr(125)}', {DB_FIELD}), '$.{JSON_FIELD}', {VALUE})"
+    ## SQL STR
+    sql = f"UPDATE {TABLE} SET {DB_FIELD} = JSON_SET(IIF({DB_FIELD} IS NULL, '{chr(123)}{chr(125)}', {DB_FIELD}), '$.{JSON_FIELD}', {VARIANT})"
     if len(WHERE_STR) > 0:
         sql += f" WHERE {WHERE_STR}"
     sql += ";"
     return sql
 
-sql = JSON_SELECT("CALIBRATIONS", "DB", "TECHNICIAN", [FILTER("Id", "1111")])
-print(sql)
+def JSON_SELECT(TABLE: str, DB_FIELD: str, JSON_FIELD: str, WHERE: list) -> str:
+    '''
+    INCOMPLETE
+    
+    `EXAMPLE:`
+    ###### SELECT json_extract(<`DB_FIELD`>, '$.<`JSON_FIELD`>') AS <`JSON_FIELD`>
+    ###### FROM <`TABLE`>
+    ###### WHERE <`WHERE`>;
+    '''
+    pass
 
-sql = JSON_UPDATE("CALIBRATIONS", "DB", "TECHNICIAN", [FILTER("Id", "1111")], "GOMEZ_D")
-print(sql)
+def JSON_WHERE(TABLE: str, DB_FIELD: str, ID, JSON_FIELD: str, VALUE: bool | str | int | float) -> None:
+    '''
+    INCOMPLETE
+    
+    `EXAMPLE:`
+    ###### SELECT * FROM <`TABLE`>
+    ###### WHERE JSON_EXTRACT(<`DB_FIELD`>, '$.`<JSON_FIELD>`') LIKE <'%2023-10%'>;
+    '''
+    pass
 
 
-''' EJEMPLOS:
+''' TEST
+------------------------------------------ '''
 
--- JSON_EXTRACT
-SELECT * FROM CALIBRATIONS
-WHERE JSON_EXTRACT(DB, '$.DATE_START') LIKE '%2023-10%';
+# sql = JSON_SELECT("CALIBRATIONS", "DB", "TECHNICIAN", [FILTER("Id", "1111")])
+# print(sql)
 
-
--- UPDATE / JSON_SET / IIF Function
-UPDATE CALIBRATIONS
-SET 
-DB = JSON_SET(IIF(DB IS NULL, '{}', DB), '$.FINALIZED', TRUE)
-WHERE Id = '1111'; -- WHERE Id LIKE '%11266%';
-
-'''
+# sql = JSON_UPDATE("CALIBRATIONS", "DB", "FINALIZED", [FILTER("Id", "1111")], True)
+# print(sql)
