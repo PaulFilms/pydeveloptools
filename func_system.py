@@ -7,7 +7,7 @@ Toolkit with simplified functions and methods for development with Python
 \n`TASK:`
 \n`WARNINGS:`
 '''
-__update__ = '2023.11.02'
+__update__ = '2023.11.03'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -30,7 +30,7 @@ def GET_FIRM() -> str:
     '''
     Returns string with OS Login Id and Date in format ' yyyy-mm-dd / hh:mm '
     '''
-    FIRM = f"{os.getlogin()} [{datetime.datetime.now().strftime("%Y-%m-%d / %H:%M")}]"
+    FIRM = f"{os.getlogin()} [{datetime.datetime.now().strftime('%Y-%m-%d / %H:%M')}]"
     return FIRM
 
 def OS_GET_SYSTEM() -> str:
@@ -96,13 +96,12 @@ def PATH_FOLDER_NEW(PATH=str, FOLDER_NAME=str) -> None:
 def PATH_GET_DESKTOP() -> str:
     '''
     Returns Desktop Path in str format
-    
-    INCOMPLETE: 
-    - Hay que añadir mas sistemas operativos
     '''
-    SO = OS_GET_SYSTEM()
-    if SO == 'Windows': 
-        PATH = "C:/Users/" + os.getlogin() + "/Desktop/"
+    # SO = OS_GET_SYSTEM()
+    # if SO == 'Windows': 
+    #     PATH = "C:/Users/" + os.getlogin() + "/Desktop/"
+    #     PATH = os.path.join("C:/Users/", os.getlogin(), os.path)
+    PATH = os.path.expanduser(chr(126) + chr(47) + "Desktop")
     return PATH
 
 def PATH_EXIST_CHECK(PATH=str) -> bool:
