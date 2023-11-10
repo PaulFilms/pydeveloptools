@@ -1,6 +1,7 @@
 '''
 # Toolkit with simplified functions and methods for development with PyQt6
 
+\n
 `TASK:`
     - TBL_POP_PANDAS_DF: 
         - Leer el DEBUG
@@ -10,11 +11,11 @@
         - El valor de la class tiene que ser data (por que hay casos que no obtienes un solo valor)
         - Quitar el .ui de todos los formularios
     - crear la función "dataframe_to_txt" para aislar la libreria de SYS
+
 \n
 `WARNINGS:`
-\n
 '''
-__update__ = '2023.11.02'
+__update__ = '2023.11.10'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -22,10 +23,10 @@ import pandas as pd
 from dataclasses import dataclass
 from PyQt6 import QtWidgets, QtGui, QtCore
 from PyQt6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt
+from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox, QInputDialog
 from PyQt6.QtWidgets import (
-    QLineEdit, QTextEdit, QComboBox, QSpinBox, QDoubleSpinBox, QCheckBox, QDateEdit, QTimeEdit, QPushButton,
-    QWidget, QHBoxLayout, QHeaderView,
-    QMainWindow, QDialog, QTableWidget, QTableWidgetItem, QMessageBox, QInputDialog)
+    QWidget, QLineEdit, QTextEdit, QComboBox, QSpinBox, QDoubleSpinBox, QCheckBox, QDateEdit, QTimeEdit, QPushButton,
+    QHBoxLayout, QHeaderView, QTableWidget, QTableWidgetItem)
 from PyQt6.QtGui import QColor, QFont
 
 ''' CUSTOM MAIN LIBRARIES '''
@@ -758,6 +759,46 @@ FONT_LABEL = QFont("Roboto Black", pointSize=6, weight=8)
 FONT_WIDGET = QFont("Consolas", pointSize=12)
 FONT_TABLE = QFont("Consolas", pointSize=10)
 
+from pydeveloptools.forms import PYQT_QLIST_FORM_ui
+
+class QLIST(QDialog, PYQT_QLIST_FORM_ui.Ui_Dialog):
+    '''
+    '''
+    def __init__(self, LIST: list | tuple = [], parent=None, ):
+        QDialog.__init__(self, parent)
+        
+        ''' INIT '''
+        self.setupUi(self)
+        for item in LIST:
+            self.lst_items.addItem(item)
+        self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
+        
+        ''' CONNECTIONS '''
+        self.btn_add.clicked.connect(self.ITEM_ADD)
+        self.btn_del.clicked.connect(self.ITEM_DEL)
+        self.btn_up.clicked.connect(self.ITEM_UP)
+        self.btn_down.clicked.connect(self.ITEM_DOWN)
+        
+    def ITEM_ADD(self):
+        ITEM = self.tx_newitem.text()
+        # print("ITEM_ADD", ITEM)
+        if ITEM and ITEM != "":
+            self.lst_items.addItem(ITEM)
+            self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
+            self.tx_newitem.clear()
+    
+    def ITEM_DEL(self):
+        print('currentRow', self.lst_items.currentRow())
+        # , self.lst_items.currentItem().text())
+        self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
+    
+    def ITEM_UP(self):
+        print('ITEM_UP')
+
+    def ITEM_DOWN(self):
+        print('ITEM_DOWN')
+        
+
 class QLIST_FORM(QDialog):
     '''
     List Selection Form
@@ -989,7 +1030,7 @@ class QDICT_FORM(QtWidgets.QDialog):
         - Quitar la función dataframe_to_txt
     '''
     data = None
-    def __init__(self, CONFIG=dict, DATA={}, Window_Title="Table Form", fontFamily="Arial Rounded MT Bold"):
+    def __init__(self, CONFIG: dict, DATA={}, Window_Title="Table Form", fontFamily="Arial Rounded MT Bold"):
         QtWidgets.QDialog.__init__(self)
 
         ''' INIT '''
