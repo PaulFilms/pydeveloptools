@@ -1,13 +1,17 @@
 '''
 # Methods and functions for developing mathematical solutions
 
-\n`TASK:`
-\n`WARNINGS:`
+\n
+`TASK:`
+
+\n
+`WARNINGS:`
 '''
 __version__ = '2023.11.02'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
+import pandas as pd
 from math import log10
 
 ''' CUSTOM LIBRARIES '''
@@ -62,8 +66,8 @@ def UNC_TYP_A(ACQUISITIONS: list = []) -> float:
 def REGRESION_LINE(yValues: list, xValues: list) -> tuple:
     '''
     Get the regresion line of selected yValues and selected xValues
-    \n - `RESULT:` tuple = (b1 <slope/gradient>, b0 <intercept/base>)
-    \n - `EQUATION:` y = mx + b | y = b1*x + b0
+    - `RESULT:` tuple = (b1 <slope/gradient>, b0 <intercept/base>)
+    - `EQUATION:` y = mx + b | y = b1*x + b0
     '''
     xMedia = MEAN(xValues)
     yMedia = MEAN(yValues)
@@ -88,10 +92,16 @@ def ISO_SCI(VALUE: float, PRECISION: int=1) -> str:
     data = f"{VALUE:.{PRECISION}E}"
     return data
 
+def UNC_TYP_B(DATAFRAME: pd.DataFrame, VALUE1: float, VALUE2: float = None) -> float:
+    '''
+    Uncertainty Type B
+    '''
+    TYPB = None
+    return TYPB
+
 
 ''' CONVERTERS
---------------------------------------------------------
-'''
+-------------------------------------------------------- '''
 
 class CONVERTER():
     '''
@@ -170,6 +180,6 @@ class CONVERTER():
             rho: float = (value-1)/(value+1)
             return rho
 
+
 ''' TEST
---------------------------------------------------------
-'''
+-------------------------------------------------------- '''
