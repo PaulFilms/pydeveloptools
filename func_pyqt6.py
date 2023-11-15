@@ -15,7 +15,7 @@
 \n
 `WARNINGS:`
 '''
-__update__ = '2023.11.10'
+__update__ = '2023.11.15'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -764,11 +764,12 @@ from pydeveloptools.forms import PYQT_QLIST_FORM_ui
 class QLIST(QDialog, PYQT_QLIST_FORM_ui.Ui_Dialog):
     '''
     '''
-    def __init__(self, LIST: list | tuple = [], parent=None, ):
+    def __init__(self, LIST: list | tuple = [], parent=None, Window_Title="LIST EDIT 1"):
         QDialog.__init__(self, parent)
         
         ''' INIT '''
         self.setupUi(self)
+        self.setWindowTitle(Window_Title)
         for item in LIST:
             self.lst_items.addItem(item)
         self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]

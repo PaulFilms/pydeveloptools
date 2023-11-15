@@ -7,7 +7,7 @@
 \n
 `WARNINGS:`
 '''
-__version__ = '2023.11.02'
+__version__ = '2023.11.15'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -180,6 +180,25 @@ class CONVERTER():
             rho: float = (value-1)/(value+1)
             return rho
 
+    def swr_to_rloss(value: float) -> float:
+        ''' 
+        rloss (dBm) = 20*log((SWR-1)/(SWR+1))
+        '''
+        rloss: float = 20 * log10((value - 1) / (value + 1))
+        return rloss
 
+    def percent_to_db(value: float) -> float:
+        '''
+        dB = 10 * LOG10( 1 + % / 100 )
+        '''
+        dB = 10 * log10(1 + value / 100)
+        return dB
+    
+    def db_to_percent(value: float) -> float:
+        '''
+        '''
+        percent = 100 * (10 ** (value / 10) - 1)
+        return percent
+        
 ''' TEST
 -------------------------------------------------------- '''
