@@ -599,6 +599,7 @@ def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS
         - Al ordenar los datos, hay que releer la tabla, en el caso de que tenga alguna edición, se pierde
         - Problemas con los NaN
         - Some times show: QAbstractItemView::closeEditor called with an editor that does not belong to this view
+        - He visto que QTableWidget tiene la opción nativa de ordenar "sortingEnabled"
     '''
     ## INIT TBL
     TABLE.setEnabled(False)
@@ -617,7 +618,9 @@ def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS
             ## WRITE CELL
             for col in list(dtframe.columns):
                 col_indx = list(dtframe.columns).index(col)
-                CELL_WR(TABLE, row, col_indx, record[col])
+                cell_value = record[col]
+                if not pd.isnull(cell_value):
+                    CELL_WR(TABLE, row, col_indx, record[col])
             ## PROTECTED COLUMNS
             for prot in PROTECTED_COLUMNS: 
                 CELL_READONLY(TABLE, row, prot)
@@ -696,7 +699,8 @@ def TBL_GET_PANDAS_DF(TABLE: QTableWidget):
     '''
     HEADERS = TBL_GET_HEADERS(TABLE)
     DATAFRAME = {}
-    for field in HEADERS: DATAFRAME[field] = []
+    for field in HEADERS: 
+        DATAFRAME[field] = []
     for row in range(TABLE.rowCount()):
         for head in HEADERS:
             indx = HEADERS.index(head)

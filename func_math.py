@@ -13,6 +13,8 @@ __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 ''' SYSTEM LIBRARIES '''
 import pandas as pd
 from math import log10
+from dataclasses import dataclass
+from enum import Enum
 
 ''' CUSTOM LIBRARIES '''
 pass
@@ -92,16 +94,88 @@ def ISO_SCI(VALUE: float, PRECISION: int=1) -> str:
     data = f"{VALUE:.{PRECISION}E}"
     return data
 
-def UNC_TYP_B(DATAFRAME: pd.DataFrame, VALUE1: float, VALUE2: float = None) -> float:
-    '''
-    Uncertainty Type B
-    '''
-    TYPB = None
-    return TYPB
+class UNC_TYP_B:
+    def __init__(self) -> None:
+        pass
+
+    def FILTER(DATAFRAME: pd.DataFrame, VALUE1: float, VALUE2: float = None) -> pd.DataFrame:
+        ## CHECK
+        if type(DATAFRAME) == None:
+            return None
+        if len(DATAFRAME) < 1:
+            return None
+        if VALUE1 == None:
+            return None
+
+        ## DATAFRAME VALUES
+        R1_MIN = DATAFRAME["RANGE1_MIN"].min()
+        R1_MAX = DATAFRAME["RANGE1_MAX"].max()
+        R2_MIN = DATAFRAME["RANGE2_MIN"].min()
+        R2_MAX = DATAFRAME["RANGE2_MAX"].max()
+
+        ## DEBUG
+        # print("RANGES:\n", "R1_MIN:", R1_MIN, "R1_MAX:", R1_MAX, "R2_MIN:", R2_MIN, "R2_MAX:", R2_MAX)
+        
+        ## FILTERS
+        df_filter = DATAFRAME
+
+        ## 1 RANGE
+        if VALUE1 > R1_MAX:
+            return None
+        if VALUE2 == None \
+            and VALUE1 >= R1_MIN and VALUE1 <= R1_MAX:
+            df_filter = DATAFRAME[
+                (VALUE1 > DATAFRAME["RANGE1_MIN"]) &
+                (VALUE1 <=  DATAFRAME["RANGE1_MAX"])
+                ]
+        
+        ## 2 RANGES
+        if VALUE1 and VALUE2 \
+            and VALUE1 >= R1_MIN and VALUE1 <= R1_MAX \
+            and VALUE2 >= R2_MIN and VALUE2 <= R2_MAX:
+            df_filter = DATAFRAME[
+                    (VALUE1 > DATAFRAME["RANGE1_MIN"]) & 
+                    (VALUE1 <=  DATAFRAME["RANGE1_MAX"]) &
+                    (VALUE2 > DATAFRAME["RANGE2_MIN"]) & 
+                    (VALUE2 <=  DATAFRAME["RANGE2_MAX"])
+                    ]
+        
+        ## DEBUG
+        # print("DF FILTERED:\n", df_filter)
+        
+        if len(df_filter) != 1:
+            return None
+        
+        return df_filter
+    
+    def EVALUATION(EVALUATION: str, FIELDS: dict) -> float:
+        '''
+        '''
+        for field in FIELDS:
+            locals()[field] = FIELDS[field]
+        value: float = eval(EVALUATION)
+        return value
 
 
 ''' CONVERTERS
 -------------------------------------------------------- '''
+
+@dataclass
+class UNIT:
+    unit: str
+    factor: int
+
+class UNITS(Enum):
+    mV = UNIT("V", 1e-3)
+    V = UNIT("V", 1)
+    kV = UNIT("V", 1e3)
+    W = UNIT("W", 1)
+    mW = UNIT("W", 1e-3)
+    kW = UNIT("W", 1e3)
+    @classmethod
+    def to_base(cls, value: float, unit: UNIT) -> float:
+        base = value * cls[unit].value.factor
+        return base
 
 class CONVERTER():
     '''
