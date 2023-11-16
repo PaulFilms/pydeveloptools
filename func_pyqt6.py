@@ -15,7 +15,7 @@
 \n
 `WARNINGS:`
 '''
-__update__ = '2023.11.15'
+__update__ = '2023.11.16'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -780,24 +780,53 @@ class QLIST(QDialog, PYQT_QLIST_FORM_ui.Ui_Dialog):
         self.btn_up.clicked.connect(self.ITEM_UP)
         self.btn_down.clicked.connect(self.ITEM_DOWN)
         
-    def ITEM_ADD(self):
+    def ITEM_ADD(self) -> None:
+        '''
+        '''
         ITEM = self.tx_newitem.text()
-        # print("ITEM_ADD", ITEM)
         if ITEM and ITEM != "":
             self.lst_items.addItem(ITEM)
             self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
             self.tx_newitem.clear()
     
-    def ITEM_DEL(self):
-        print('currentRow', self.lst_items.currentRow())
-        # , self.lst_items.currentItem().text())
+    def ITEM_DEL(self) -> None:
+        '''
+        '''
+        # print('currentRow', self.lst_items.currentRow())
+        currentRow = self.lst_items.currentRow()
+        if currentRow < 0:
+            return
+        # 
+        if YESNOBOX("ATTENTION", "DO YOU WANT TO DELETE THIS FIELD ?") == False:
+            return
+        # 
+        currentIndex = self.lst_items.currentIndex()
+        '''
+        if currentIndex.isValid():
+            # Caso afirmativo
+            pass
+        '''
+        self.lst_items.takeItem(currentIndex.row())
+        # 
         self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
     
     def ITEM_UP(self):
-        print('ITEM_UP')
-
+        '''
+        '''
+        currentRow = self.lst_items.currentRow()
+        currentItem = self.lst_items.takeItem(currentRow)
+        self.lst_items.insertItem(currentRow - 1, currentItem)
+        self.lst_items.setCurrentRow(currentRow-1)
+        self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
+        
     def ITEM_DOWN(self):
-        print('ITEM_DOWN')
+        '''
+        '''
+        currentRow = self.lst_items.currentRow()
+        currentItem = self.lst_items.takeItem(currentRow)
+        self.lst_items.insertItem(currentRow + 1, currentItem)
+        self.lst_items.setCurrentRow(currentRow+1)
+        self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
         
 
 class QLIST_FORM(QDialog):
