@@ -4,10 +4,13 @@ Toolkit with simplified functions and methods for development with Python
 - Internet
 - Datetime
 
-\n`TASK:`
-\n`WARNINGS:`
+\n
+`TASK:`
+
+\n
+`WARNINGS:`
 '''
-__update__ = '2023.11.03'
+__update__ = '2023.11.17'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -80,35 +83,38 @@ def INTERNET_CONNECTION_CHECK(URL=r'https://cloud.seatable.cn/') -> bool:
 
 ## PATH FUNCTIONS
 
-def PATH_OPEN(PATH) -> None:
+def PATH_OPEN(path: str = os.getcwd()) -> None:
     ''' 
-    Run from OS selected PATH
+    Open the selected path
     '''
-    os.startfile(PATH)
+    os.startfile(path)
 
-def PATH_FOLDER_NEW(PATH=str, FOLDER_NAME=str) -> None:
+def PATH_OPEN_TERMINAL(path: str = os.getcwd()) -> None:
+    '''
+    Open the selected path using the terminal
+    '''
+    realpath = os.path.realpath(path)
+    os.system(f'start {realpath}')
+
+def PATH_FOLDER_NEW(path: str, folder_name: str) -> None:
     '''
     Create a new folder in selected path
     '''
-    NEW_FOLDER = os.path.join(PATH,FOLDER_NAME)
+    NEW_FOLDER = os.path.join(path, folder_name)
     os.mkdir(NEW_FOLDER)
 
 def PATH_GET_DESKTOP() -> str:
     '''
     Returns Desktop Path in str format
     '''
-    # SO = OS_GET_SYSTEM()
-    # if SO == 'Windows': 
-    #     PATH = "C:/Users/" + os.getlogin() + "/Desktop/"
-    #     PATH = os.path.join("C:/Users/", os.getlogin(), os.path)
-    PATH = os.path.expanduser(chr(126) + chr(47) + "Desktop")
-    return PATH
+    path = os.path.expanduser(chr(126) + chr(47) + "Desktop")
+    return path
 
-def PATH_EXIST_CHECK(PATH=str) -> bool:
+def PATH_EXIST_CHECK(path: str) -> bool:
     '''
     Check if selected path or file exist 
     '''
-    check = os.path.exists(PATH)
+    check = os.path.exists(path)
     return check
 
 
@@ -410,12 +416,3 @@ def dataClass_to_dict(DATACLASS: dataclass) -> dict:
         else:
             DICT[FIELD] = DEFAULT
     return DICT
-
-def OPEN_DIRECTORY(PATH=str) -> None:
-    '''
-    INCOMPLETE:
-    - Se usa la funcion 'system' para lanzar un comando en consola
-    - Para lo que se pensó esta funcióin es mejor usar PATH_OPEN()
-    '''
-    path = os.path.realpath(PATH)
-    os.system(f'start {path}')

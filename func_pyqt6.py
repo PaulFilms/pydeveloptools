@@ -15,19 +15,20 @@
 \n
 `WARNINGS:`
 '''
-__update__ = '2023.11.16'
+__update__ = '2023.11.17'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
+import os
 import pandas as pd
 from dataclasses import dataclass
 from PyQt6 import QtWidgets, QtGui, QtCore
-from PyQt6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt
-from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox, QInputDialog
-from PyQt6.QtWidgets import (
-    QWidget, QLineEdit, QTextEdit, QComboBox, QSpinBox, QDoubleSpinBox, QCheckBox, QDateEdit, QTimeEdit, QPushButton,
-    QHBoxLayout, QHeaderView, QTableWidget, QTableWidgetItem)
-from PyQt6.QtGui import QColor, QFont
+from PyQt6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt, QUrl
+from PyQt6.QtGui import QColor, QFont, QDesktopServices
+from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox, QInputDialog, QFileDialog
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QHeaderView, QTableWidget, QTableWidgetItem
+from PyQt6.QtWidgets import QPushButton, QComboBox, QLineEdit, QTextEdit, QCheckBox, QDoubleSpinBox, QSpinBox, QDateEdit, QTimeEdit
+
 
 ''' CUSTOM MAIN LIBRARIES '''
 pass
@@ -106,6 +107,13 @@ def TIME_STR_CONVERTER(TIME: str = "00:00") -> QTime:
         return time
     except:
         return None
+
+def PATH_OPEN(path: str = os.getcwd()):
+    '''
+    Open the selected path using the QDesktopServices
+    '''
+    url = QUrl.fromLocalFile(path)
+    QDesktopServices.openUrl(url)
 
 
 ''' WIDGETS
@@ -588,18 +596,15 @@ def TBL_INIT(TABLE: QTableWidget):
 
 def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS: list=[], PROTECTED_COLUMNS: list=[], HEAD_ORDER:bool=True) -> None:
     '''
-    Populate QTable with a Pandas DataFrame \n
-
+    Populate QTable with a Pandas DataFrame
+    \n
     `VARIABLES:`
     - HIDE_COLUMNS (list): Hide the list of columns by int (column index) or str (calumn name)
     - PROTECTED_COLUMNS (list): Config the list of columns selected by int (column index) or str (calumn name)
     - HEAD OPRDER (bool): Turn on the "Sort fields by ascending order" function
     
     `DEBUG:` 
-        - Al ordenar los datos, hay que releer la tabla, en el caso de que tenga alguna edición, se pierde
-        - Problemas con los NaN
         - Some times show: QAbstractItemView::closeEditor called with an editor that does not belong to this view
-        - He visto que QTableWidget tiene la opción nativa de ordenar "sortingEnabled"
     '''
     ## INIT TBL
     TABLE.setEnabled(False)
@@ -625,31 +630,7 @@ def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS
             for prot in PROTECTED_COLUMNS: 
                 CELL_READONLY(TABLE, row, prot)
             row += 1
-        # TABLE.resizeColumnsToContents()
-        TABLE.setEnabled(True)
-    
-    ## ORDER FUNCTIONS & CONNECTIONS
-    # def ext_func(head_index): # Probando para usar funciones externas
-    #     # INDEX = head_index
-    #     # TBL_ORDER(TABLE, INDEX) # Funcion externa
-    #     pass
-    def order_tbl(head_index): # logicalIndex es la herencia que pasa la señal
-        ## GET DATA
-        column = DATAFRAME.columns[head_index]
-        dfsorted = DATAFRAME.sort_values(by=column, ascending=True)
-        ## POP ROWS
-        TABLE.setEnabled(False)
-        pop_tbl(dfsorted)
-    ## 
-    if HEAD_ORDER == True:
-        try: TABLE.horizontalHeader().sectionClicked.disconnect()
-        except: pass
-        TABLE.horizontalHeader().sectionClicked.connect(order_tbl)
-        # TABLE.horizontalHeader().sectionClicked.connect(ext_func)
-    else:
-        try: TABLE.horizontalHeader().sectionClicked.disconnect()
-        except: pass
-    
+
     ## HIDE COLUMS
     for col in HIDE_COLUMNS:
         if type(col) == int:
@@ -661,6 +642,7 @@ def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS
     ## POP ROWS
     pop_tbl(DATAFRAME)
     TABLE.resizeColumnsToContents()
+    TABLE.setEnabled(True)
 
 def TBL_GET_HEADERS(TABLE: QTableWidget) -> list:
     '''
