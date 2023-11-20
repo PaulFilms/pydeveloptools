@@ -15,7 +15,7 @@
 \n
 `WARNINGS:`
 '''
-__update__ = '2023.11.17'
+__update__ = '2023.11.20'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -24,7 +24,7 @@ import pandas as pd
 from dataclasses import dataclass
 from PyQt6 import QtWidgets, QtGui, QtCore
 from PyQt6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt, QUrl
-from PyQt6.QtGui import QColor, QFont, QDesktopServices
+from PyQt6.QtGui import QColor, QFont, QDesktopServices, QIcon
 from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox, QInputDialog, QFileDialog
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QHeaderView, QTableWidget, QTableWidgetItem
 from PyQt6.QtWidgets import QPushButton, QComboBox, QLineEdit, QTextEdit, QCheckBox, QDoubleSpinBox, QSpinBox, QDateEdit, QTimeEdit
@@ -705,25 +705,41 @@ def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: list | tuple = []):
 --------------------------------------------------------
 '''
 
-def INFOBOX(TITLE: str = "", TEXT: str = ""):
+def INFOBOX(TITLE: str = "INFO", TEXT: str = "", icon: QIcon = None):
     '''
     Information Window
     '''
     infobox = QMessageBox()
-    # infobox.setWindowIcon()
+    # infobox.information(QMainWindow(), str(TITLE), str(TEXT))
+    infobox.setIcon(QMessageBox.Icon.Information)
     infobox.setFont(QFont('Consolas', 10))
-    infobox.information(QMainWindow(), str(TITLE), str(TEXT))
+    infobox.setWindowTitle(TITLE)
+    infobox.setText(TEXT)
+    if icon:
+        infobox.setWindowIcon(icon)
+    infobox.exec()
 
-def YESNOBOX(TITLE: str = "", TEXT: str = "") -> bool:
+def YESNOBOX(TITLE: str = "", TEXT: str = "", icon: QIcon = None) -> bool:
     '''
     Question Window with YES/NO Options
     '''
     yesnobox = QMessageBox()
     yesnobox.setFont(QFont('Consolas', 10))
-    reply = yesnobox.question(QMainWindow(), str(TITLE), str(TEXT))
-    if reply == QMessageBox.StandardButton.Yes:
+    # reply = yesnobox.question(QMainWindow(), str(TITLE), str(TEXT))
+    # if reply == QMessageBox.StandardButton.Yes:
+    #     return True
+    # if reply == QMessageBox.StandardButton.No:
+    #     return False
+    yesnobox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+    yesnobox.setIcon(QMessageBox.Icon.Question)
+    yesnobox.setWindowTitle(TITLE)
+    yesnobox.setText(TEXT)
+    if icon:
+        yesnobox.setWindowIcon(icon)
+    reply = yesnobox.exec()
+    if reply == yesnobox.StandardButton.Yes:
         return True
-    if reply == QMessageBox.StandardButton.No:
+    if reply == yesnobox.StandardButton.No:
         return False
 
 def INPUTBOX(TITLE: str = "", TEXT: str = "", *DEFAULT):
