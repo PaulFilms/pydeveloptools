@@ -126,3 +126,7 @@ class LICENSE():
             if len(df) == 1:
                 self.license_opens = df.loc[0]['OPENS']
                 self.license_date = df.loc[0]['DATE_LIMIT']
+
+''' TEST
+------------------------------------------ '''
+
