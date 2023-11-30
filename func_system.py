@@ -10,17 +10,19 @@ Toolkit with simplified functions and methods for development with Python
 \n
 `WARNINGS:`
 '''
-__update__ = '2023.11.17'
+__update__ = '2023.11.30'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
 import os, datetime, platform, time
 import hashlib
 import urllib.request # INTERNET CONNECTION
-import pyperclip as clipboard # Portapapeles
 from inspect import getmembers, isfunction, isclass # OBJECTS CHECK
 from dataclasses import dataclass, fields, MISSING
 # from importlib import import_module
+
+''' PIP LIBRARIES '''
+import pyperclip as clipboard # Portapapeles
 
 
 ''' FUNCTIONS
