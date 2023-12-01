@@ -238,7 +238,7 @@ def LICENSE_TXT_DATA(file) -> dict:
             break
     return data
 
-def LICENSE_TXT_CHECK(file, appName: str) -> bool:
+def LICENSE_TXT_CHECK(file, appName: str, debug: bool = False) -> bool:
     '''
     appName, loginId, limitOpens, limitDate, modTime
 
@@ -259,19 +259,19 @@ def LICENSE_TXT_CHECK(file, appName: str) -> bool:
         app = f"@{appName}"
         app = hashlib.sha256(app.encode('utf-8')).hexdigest()
         if app == txt[0].replace(chr(10), ""):
-            # print("appName: PASS")
+            if debug: print("appName: PASS")
             pass
         else:
-            # print("ERROR / appName")
+            if debug: print("ERROR / appName")
             return False
         # 
         login = f"@{os.getlogin()}"
         login = hashlib.sha256(login.encode('utf-8')).hexdigest()
         if login == txt[1].replace(chr(10), ""): 
-            # print("loginId: PASS")
+            if debug: print("loginId: PASS")
             pass
         else:
-            # print("ERROR / loginId")
+            if debug: print("ERROR / loginId")
             return False
         # 
         opens = None
@@ -280,10 +280,10 @@ def LICENSE_TXT_CHECK(file, appName: str) -> bool:
             hash = hashlib.sha256(hash.encode('utf-8')).hexdigest()
             if hash == txt[2].replace(chr(10), ""):
                 opens = i
-                # print("limitOpens: PASS", opens)
+                if debug: print("limitOpens: PASS", opens)
                 break
             if i == 1999:
-                # print("ERROR / limitOpens")
+                if debug: print("ERROR / limitOpens")
                 return False
         # 
         for i in range(20230101, 20250101):
@@ -291,10 +291,10 @@ def LICENSE_TXT_CHECK(file, appName: str) -> bool:
             hash = hashlib.sha256(hash.encode('utf-8')).hexdigest()
             if hash == txt[3].replace(chr(10), ""):
                 date = i
-                # print("limitDate: PASS", date)
+                if debug: print("limitDate: PASS", date)
                 break
             if i == 20250100:
-                # print("ERROR / limitDate")
+                if debug: print("ERROR / limitDate")
                 return False
         # 
         createTime = os.path.getctime(file)
@@ -302,10 +302,10 @@ def LICENSE_TXT_CHECK(file, appName: str) -> bool:
         createTime = f"@{createTime}"
         createTime = hashlib.sha256(createTime.encode('utf-8')).hexdigest()
         if createTime == txt[4].replace(chr(10), ""): 
-            # print("createTime: PASS")
+            if debug: print("createTime: PASS")
             pass
         else:
-            # print("ERROR / createTime")
+            if debug: print("ERROR / createTime")
             return False
         # 
         modTime = os.path.getmtime(file)
@@ -313,10 +313,10 @@ def LICENSE_TXT_CHECK(file, appName: str) -> bool:
         modTime = f"@{modTime}"
         modTime = hashlib.sha256(modTime.encode('utf-8')).hexdigest()
         if modTime == txt[5].replace(chr(10), ""): 
-            # print("modTime: PASS")
+            if debug: print("modTime: PASS")
             pass
         else:
-            # print("ERROR / modTime")
+            if debug: print("ERROR / modTime")
             return False
         
         ## EDIT FILE
