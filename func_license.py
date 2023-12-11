@@ -1,0 +1,186 @@
+'''
+# pyLICENSER
+
+\n
+`TASK:`
+
+\n
+`WARNINGS:`
+
+\n
+mypyc:
+    mypyc func_license.py
+'''
+
+__update__ = '2023.12.12'
+__author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
+
+
+''' SYSTEM LIBRARIES '''
+import os, json
+from datetime import datetime, timedelta
+from typing import List, Tuple, Union
+import hashlib
+from enum import Enum
+# from dataclasses import dataclass, asdict
+from pydantic import BaseModel
+
+''' CUSTOM MAIN LIBRARIES '''
+# import pydeveloptools.func_system as SYS
+import func_system as SYS # mypyc
+
+
+''' FUNCTIONS
+-------------------------------------------------------- '''
+
+class LICENSE(BaseModel):
+    USER_NAME: str # 0
+    APP_NAME: str # 1
+    MACHINE: str # 2
+    TIME_MOD: str # 3
+    TIME_LIMIT: str # 4
+
+def ENCODE_STR(STR: str) -> str:
+    '''
+    Encode selected STR
+    '''
+    return hashlib.sha256(str(STR).encode('utf-8')).hexdigest()
+
+def CREATE(path: str, token: str, user_name: str, app_name: str, time_limit: datetime) -> None:
+    '''
+    Create an encrypted .lic file
+
+    Args:
+        path (str): _
+        token (str): _
+        user_name (str): _
+        app_name (str): _
+        time_limit (datetime): _
+
+    Returns:
+        None
+    '''
+    ## USER NAME
+    USER_NAME = f"@{user_name}@"
+    USER_NAME = ENCODE_STR(USER_NAME)
+
+    ## APP NAME
+    APP_NAME = f"@{app_name}@"
+    APP_NAME = ENCODE_STR(APP_NAME)
+
+    ## MACHINE NAME
+    MACHINE = f"@{SYS.OS_GET_LOGIN()}@{SYS.OS_GET_MACHINE()}"
+    MACHINE = ENCODE_STR(MACHINE)
+
+    ## TIME MOD
+    TIME_MOD = datetime.now().strftime(SYS.DATE_STR_FORMATS.DATE_NOW.value)
+    TIME_MOD = ENCODE_STR(TIME_MOD)
+
+    ## TIME LIMIT
+    TIME_LIMIT = time_limit.strftime(SYS.DATE_STR_FORMATS.YYYY_MM_DD.value)
+    TIME_LIMIT = ENCODE_STR(TIME_LIMIT)
+
+    ## LICENSE
+    license = LICENSE(
+        USER_NAME=USER_NAME, 
+        APP_NAME=APP_NAME, 
+        MACHINE=MACHINE, 
+        TIME_MOD=TIME_MOD, 
+        TIME_LIMIT=TIME_LIMIT
+    )
+    DICT = license.model_dump()
+    
+    DICT_LST: List[str] = list(DICT.values())
+    TEXTO: str = ENCODE_STR(token).join(DICT_LST)
+    TOKEN_NUMBER = int(sum([ord(l) for l in token]))
+    TEXTO = TEXTO * TOKEN_NUMBER
+
+    file_name: str = f"{user_name}.lic"
+    path_file: str = os.path.join(path, file_name)
+    with open(path_file, 'w') as f:
+        f.write(TEXTO)
+
+def CHECK(path_file: str, token: str, app_name: str) -> bool:
+    '''
+    '''
+    ## READ TEXT
+    with open(path_file, 'r') as f:
+        TEXTO = f.read()
+    
+    ## SPLIT TEXT
+    TOKEN_NUMBER = int(sum([ord(l) for l in token]))
+    TEXTO = "".join([TEXTO[i] for i in range(int(len(TEXTO) / TOKEN_NUMBER))])
+    license: List[str] = TEXTO.split(ENCODE_STR(token))
+
+    ## USER NAME
+    USER_NAME = os.path.basename(path_file)
+    USER_NAME = USER_NAME.split(".")[0]
+    USER_NAME = f"@{USER_NAME}@"
+    USER_NAME = ENCODE_STR(USER_NAME)
+    if license[0] != USER_NAME:
+        return False
+
+    ## APP NAME
+    APP_NAME = f"@{app_name}@"
+    APP_NAME = ENCODE_STR(APP_NAME)
+    if license[1] != APP_NAME:
+        return False
+
+    ## MACHINE NAME
+    MACHINE = f"@{SYS.OS_GET_LOGIN()}@{SYS.OS_GET_MACHINE()}"
+    MACHINE = ENCODE_STR(MACHINE)
+    if license[2] != MACHINE:
+        return False
+    
+    check: bool = False
+
+    ## TIME MOD
+    TIME_MOD_FLT = os.path.getmtime(path_file)
+    TIME_MOD = datetime.fromtimestamp(TIME_MOD_FLT)
+    TIME_INIT = TIME_MOD - timedelta(minutes=5)
+    for min in range(10):
+        TIME_MOD = TIME_INIT + timedelta(minutes=min)
+        TIME_STR = TIME_MOD.strftime(SYS.DATE_STR_FORMATS.DATE_NOW.value)
+        if license[3] == ENCODE_STR(TIME_STR):
+            check = True
+    
+    if check == False: 
+        return False
+       
+    ## TIME MACHINE
+    TIME_MOD_FLT = os.path.getmtime(path_file)
+    TIME_MOD = datetime.fromtimestamp(TIME_MOD_FLT)
+    if datetime.now() < TIME_MOD:
+        return False
+    
+    check = False
+
+    ## TIME LIMIT
+    TIME_NOW = datetime.now()
+    for day in range(365*10):
+        TIME_MOD = TIME_NOW + timedelta(days=day)
+        TIME_STR = TIME_MOD.strftime(SYS.DATE_STR_FORMATS.YYYY_MM_DD.value)
+        if license[4] == ENCODE_STR(TIME_STR):
+            check = True
+
+    if check == False: 
+        return False
+    else:
+        return True
+
+
+''' TEST
+-------------------------------------------------------- '''
+
+# path_desktop = SYS.PATH_GET_DESKTOP()
+# USER_NAME = "GONZA_PA"
+# fileName = f"{USER_NAME}.lic"
+# path_file = os.path.join(path_desktop, fileName)
+# APP_NAME = "FLEXICAL"
+# TOKEN = "G%&(UJ)"
+# T_LIMIT = datetime(year=2023, month=1, day=22)
+
+# CREATE(path_desktop, user_name=USER_NAME, app_name=APP_NAME, token=TOKEN, time_limit=T_LIMIT)
+
+# check = CHECK(path_file, token=TOKEN, app_name=APP_NAME)
+# print(check)

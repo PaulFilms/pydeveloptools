@@ -13,14 +13,14 @@ WARNINGS:
     - The License functions have many errors to compile using mypyc
     - The <pyperclip.copy> function is very simple, it is better to remove it from this module, or add --ignore-missing-imports option with mypyc compyle
 '''
-__update__ = '2023.12.12'
+__update__ = '2023.12.12b'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
 import os
 import platform, time, locale
 from datetime import datetime
-import hashlib
+# import hashlib
 # import urllib.request # INTERNET CONNECTION
 from socket import gethostbyname # INTERNET CONNECTION
 from inspect import getmembers, isfunction, isclass # OBJECTS CHECK
@@ -29,7 +29,7 @@ from enum import Enum
 # from importlib import import_module
 
 ''' PIP/IMPORTED LIBRARIES '''
-import pyperclip # Portapapeles
+# import pyperclip # Portapapeles
 
 
 ''' FUNCTIONS
@@ -62,11 +62,11 @@ def OS_GET_DECIMAL() -> str:
     '''
     return str(locale.localeconv()['decimal_point'])
 
-def COPY2CLIPBOARD(TEXT: str) -> None:
-    '''
-    Add selected data to clipboard
-    '''
-    pyperclip.copy(TEXT)
+# def COPY2CLIPBOARD(TEXT: str) -> None:
+#     '''
+#     Add selected data to clipboard
+#     '''
+#     pyperclip.copy(TEXT)
 
 def INTERNET_CONNECTION_CHECK(URL: str = r'www.seatable.io') -> bool:
     '''
@@ -76,7 +76,7 @@ def INTERNET_CONNECTION_CHECK(URL: str = r'www.seatable.io') -> bool:
         URL (str): The URL to check for connectivity.
 
     Returns:
-        bool: True if the URL connection is available, False otherwise.
+        bool: True if connection is available, False if connection is not available.
 
     Info:
         Some generic URLs may not work as expected.
@@ -199,6 +199,12 @@ def INT_TWODIGITS(INT: int) -> str:
     ORDR = f'{INT:02d}'
     return ORDR
 
+# def ENCODE_STR(STR: str) -> str:
+#     '''
+#     Encode selected STR
+#     '''
+#     return hashlib.sha256(str(STR).encode('utf-8')).hexdigest()
+
 
 ''' TEST
 --------------------------------------------------------
@@ -228,9 +234,6 @@ def INT_TWODIGITS(INT: int) -> str:
 #     return LIST
 
 # ## LICENSE FUNCTIONS
-
-# def ENCODE_STR(STR: str) -> str:
-#     return hashlib.sha256(str(STR).encode('utf-8')).hexdigest()
 
 # def LICENSE_TXT(file, appName: str, loginId: str, limitOpens: int, limitDate: int) -> None:
 #     '''

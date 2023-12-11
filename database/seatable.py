@@ -1,11 +1,12 @@
-r'''
+'''
 Functions for Using Databases with SeaTable DB
 
 More info: 
 - https://seatable.io/es/
 - https://seatable.github.io/seatable-scripts/python/
 '''
-__update__ = '2023.10.11'
+
+__update__ = '2023.12.12'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
@@ -21,13 +22,13 @@ from pydeveloptools.func_system import GET_FIRM, DATE_GET_TODAY, INTERNET_CONNEC
 ------------------------------------------ '''
 
 class SEATABLE_DB():
-    def __init__(self, token: str):
+    def __init__(self, token: str) -> None:
         server_url = context.server_url or 'https://cloud.seatable.io'
         api_token = context.api_token or token
         self.base = Base(api_token, server_url)
         self.base.auth()
     
-    def SQL_DF(self, SQL_STR=str):
+    def SQL_DF(self, SQL_STR: str):
         '''
         return a pandas DataFrame of a SQL string
         '''
@@ -43,7 +44,7 @@ class SEATABLE_DB():
         d = pd.DataFrame(d)
         return d
     
-    def SQL_UPDATE(self, TABLE=str, DATA=dict, WHERE=list):
+    def SQL_UPDATE(self, TABLE=str, DATA=dict, WHERE=list) -> None:
         '''
         VALUES (dict) = {"Field1": Value1, "Field2 ...} \n
         WHERE (list) = List of <class '.sql_filter'> objects \n
