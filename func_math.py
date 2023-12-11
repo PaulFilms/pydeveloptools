@@ -14,6 +14,7 @@ __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 import pandas as pd
 from math import log10
 from dataclasses import dataclass
+from typing import List, Tuple, Union
 from enum import Enum
 
 ''' CUSTOM LIBRARIES '''
@@ -23,49 +24,45 @@ pass
 ''' FUNCTIONS
 -------------------------------------------------------- '''
 
-def MEAN(ACQUISITIONS: list = []) -> float:
+def MEAN(ACQUISITIONS: List[float] = []) -> Union[float, int]:
     '''
     Get the mean value of an acquisition list
     '''
-    mean = 0
-    if type(ACQUISITIONS) == list:
-        if len(ACQUISITIONS) > 1:
-            summation = 0
-            for value in ACQUISITIONS:
-                summation += value
-            mean = summation / len(ACQUISITIONS)
-        if len(ACQUISITIONS) == 1:
-            mean = ACQUISITIONS[0]
+    if len(ACQUISITIONS) == 0:
+        return 0
+
+    mean = sum(ACQUISITIONS) / len(ACQUISITIONS)
     return mean
 
-def STDEV(ACQUISITIONS: list = []) -> float:
+def STDEV(ACQUISITIONS: List[float] = []) -> Union[float, int]:
     '''
     Deviation Standard
     
-    EXCEL:
+    `EXCEL FORMULAS:`
     - DESVEST.M (Spanish)
     - STDEV.S (English)
     '''
-    stdev = 0
-    if len(ACQUISITIONS) == 0 or len(ACQUISITIONS) == 1:
-        stdev = 0
-    else:
-        mean = MEAN(ACQUISITIONS)
-        for value in ACQUISITIONS:
-            stdev += (value-mean)**2
-        stdev = (stdev/(len(ACQUISITIONS)-1))**0.5
-    return stdev
+    if len(ACQUISITIONS) <= 1:
+        return 0
 
-def UNC_TYP_A(ACQUISITIONS: list = []) -> float:
+    stdev: Union[float, int] = 0
+    mean = MEAN(ACQUISITIONS)
+    for value in ACQUISITIONS:
+        stdev += (value - mean) ** 2
+
+    return (stdev / (len(ACQUISITIONS) - 1)) ** 0.5
+
+def UNC_TYP_A(ACQUISITIONS: List[float] = []) -> float:
     '''
     Uncertainty Type A
     '''
-    unc_typa = 0
-    if type(ACQUISITIONS) == list:
-        unc_typa = STDEV(ACQUISITIONS) / (len(ACQUISITIONS)**0.5)
-    return unc_typa
+    # No puede calcular la incertidumbre si no hay uno o mas valores
+    if len(ACQUISITIONS) <= 1:
+        return 0
 
-def REGRESION_LINE(yValues: list, xValues: list) -> tuple:
+    return STDEV(ACQUISITIONS) / (len(ACQUISITIONS) ** 0.5)
+
+def REGRESION_LINE(yValues: List[float], xValues: List[float]) -> Tuple[Union[float, int], Union[float, int]]:
     '''
     Get the regresion line of selected yValues and selected xValues
     - `RESULT:` tuple = (b1 <slope/gradient>, b0 <intercept/base>)
@@ -73,20 +70,22 @@ def REGRESION_LINE(yValues: list, xValues: list) -> tuple:
     '''
     xMedia = MEAN(xValues)
     yMedia = MEAN(yValues)
+
     ## CHECK
     if len(xValues) != len(yValues):
-        print("REGRESION_LINE ERROR / yValues and The xValues are not the same")
-        return 0, 0
+        print("REGRESSION_LINE ERROR / yValues and xValues are not the same length")
+        return 0.0, 0.0
+
     pos = 0
     div = 0
     for i in range(len(xValues)):
-        pos += (xValues[i]-xMedia) * (yValues[i]-yMedia)
-        div += (xValues[i]-xMedia) ** 2
-    b1 = pos / div
+        pos += (xValues[i] - xMedia) * (yValues[i] - yMedia)
+        div += (xValues[i] - xMedia) ** 2
+    b1 = pos / div if div != 0 else 0
     b0 = yMedia - (b1 * xMedia)
     return b1, b0
 
-def ISO_SCI(VALUE: float, PRECISION: int=1) -> str:
+def ISO_SCI(VALUE: float = 0, PRECISION: int = 1) -> str:
     '''
     Returns selected VALUE like Scientific notation
     '''
@@ -158,7 +157,11 @@ class UNC_TYP_B:
 
 
 ''' CONVERTERS
--------------------------------------------------------- '''
+-------------------------------------------------------- 
+Hay que plantearse usar las librerias de python
+[Pint (pypi.org)](https://pypi.org/project/Pint/)
+[quantities](https://python-quantities.readthedocs.io/en/latest/user/tutorial.html)
+'''
 
 @dataclass
 class UNIT:
