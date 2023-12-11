@@ -133,7 +133,7 @@ def PATH_GET_DESKTOP() -> str:
     '''
     Returns Desktop Path in str format
     '''
-    return os.path.expanduser(chr(126) + chr(47) + "Desktop")
+    return os.path.join(os.path.expanduser('~'), 'Desktop')
 
 def PATH_EXIST_CHECK(path: str) -> bool:
     '''
