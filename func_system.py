@@ -13,7 +13,7 @@ WARNINGS:
     - The License functions have many errors to compile using mypyc
     - The <pyperclip.copy> function is very simple, it is better to remove it from this module, or add --ignore-missing-imports option with mypyc compyle
 '''
-__update__ = '2023.12.12b'
+__version__ = '2023.12.12' # + '_Compiled'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -29,7 +29,7 @@ from enum import Enum
 # from importlib import import_module
 
 ''' PIP/IMPORTED LIBRARIES '''
-# import pyperclip # Portapapeles
+import pyperclip # type: ignore[import-untyped]
 
 
 ''' FUNCTIONS
@@ -62,11 +62,11 @@ def OS_GET_DECIMAL() -> str:
     '''
     return str(locale.localeconv()['decimal_point'])
 
-# def COPY2CLIPBOARD(TEXT: str) -> None:
-#     '''
-#     Add selected data to clipboard
-#     '''
-#     pyperclip.copy(TEXT)
+def COPY2CLIPBOARD(TEXT: str) -> None:
+    '''
+    Add selected data to clipboard
+    '''
+    pyperclip.copy(TEXT)
 
 def INTERNET_CONNECTION_CHECK(URL: str = r'www.seatable.io') -> bool:
     '''

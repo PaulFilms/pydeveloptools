@@ -6,6 +6,7 @@
 
 \n
 `WARNINGS:`
+    pydantic.BaseModel genera problemas con mypyc
 
 \n
 mypyc:
@@ -17,34 +18,46 @@ __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 
 ''' SYSTEM LIBRARIES '''
-import os, json
+import os
 from datetime import datetime, timedelta
-from typing import List, Tuple, Union
-import hashlib
-from enum import Enum
-# from dataclasses import dataclass, asdict
-from pydantic import BaseModel
+from typing import List # Tuple, Union
+import hashlib 
+# import bcrypt
+# from enum import Enum
+from dataclasses import dataclass, asdict
+
+''' EXTERNAL LIBRARIES '''
+# from pydantic import BaseModel # type: ignore
 
 ''' CUSTOM MAIN LIBRARIES '''
-# import pydeveloptools.func_system as SYS
-import func_system as SYS # mypyc
+import pydeveloptools.func_system as SYS # type: ignore
 
 
 ''' FUNCTIONS
 -------------------------------------------------------- '''
 
-class LICENSE(BaseModel):
-    USER_NAME: str # 0
-    APP_NAME: str # 1
-    MACHINE: str # 2
-    TIME_MOD: str # 3
-    TIME_LIMIT: str # 4
+# class LICENSE(BaseModel):
+#     USER_NAME: str = ""
+#     APP_NAME: str = ""
+#     MACHINE: str = ""
+#     TIME_MOD: str = ""
+#     TIME_LIMIT: str = ""
+
+@dataclass
+class LICENSE:
+    USER_NAME: str = ""
+    APP_NAME: str = ""
+    MACHINE: str = ""
+    TIME_MOD: str = ""
+    TIME_LIMIT: str = ""
 
 def ENCODE_STR(STR: str) -> str:
     '''
     Encode selected STR
     '''
     return hashlib.sha256(str(STR).encode('utf-8')).hexdigest()
+    # hashed = bcrypt.hashpw(str(STR).encode('utf-8'), bcrypt.gensalt())
+    # return hashed.decode('utf-8')
 
 def CREATE(path: str, token: str, user_name: str, app_name: str, time_limit: datetime) -> None:
     '''
@@ -88,7 +101,8 @@ def CREATE(path: str, token: str, user_name: str, app_name: str, time_limit: dat
         TIME_MOD=TIME_MOD, 
         TIME_LIMIT=TIME_LIMIT
     )
-    DICT = license.model_dump()
+    # DICT = license.model_dump()
+    DICT = asdict(license)
     
     DICT_LST: List[str] = list(DICT.values())
     TEXTO: str = ENCODE_STR(token).join(DICT_LST)
@@ -111,6 +125,8 @@ def CHECK(path_file: str, token: str, app_name: str) -> bool:
     TOKEN_NUMBER = int(sum([ord(l) for l in token]))
     TEXTO = "".join([TEXTO[i] for i in range(int(len(TEXTO) / TOKEN_NUMBER))])
     license: List[str] = TEXTO.split(ENCODE_STR(token))
+    print(len(license))
+    print(license)
 
     ## USER NAME
     USER_NAME = os.path.basename(path_file)
@@ -178,7 +194,8 @@ def CHECK(path_file: str, token: str, app_name: str) -> bool:
 # path_file = os.path.join(path_desktop, fileName)
 # APP_NAME = "FLEXICAL"
 # TOKEN = "G%&(UJ)"
-# T_LIMIT = datetime(year=2023, month=1, day=22)
+# print(ENCODE_STR(TOKEN))
+# T_LIMIT = datetime(year=2023, month=12, day=21)
 
 # CREATE(path_desktop, user_name=USER_NAME, app_name=APP_NAME, token=TOKEN, time_limit=T_LIMIT)
 
