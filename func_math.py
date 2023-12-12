@@ -7,7 +7,7 @@
 \n
 `WARNINGS:`
 '''
-__version__ = '2023.11.15'
+__version__ = '2023.12.13'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -23,6 +23,12 @@ pass
 
 ''' FUNCTIONS
 -------------------------------------------------------- '''
+
+def SCI_NOT(VALUE: float) -> str:
+    '''
+    Get value in Scientific notation
+    '''
+    return f"{VALUE:.2E}"
 
 def MEAN(ACQUISITIONS: List[float] = []) -> Union[float, int]:
     '''
