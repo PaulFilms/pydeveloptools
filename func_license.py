@@ -184,17 +184,3 @@ def CHECK(path_file: str, token: str, app_name: str) -> bool:
 
 ''' TEST
 -------------------------------------------------------- '''
-
-path_desktop = SYS.PATH_GET_DESKTOP()
-USER_NAME = "GONZA_PA"
-fileName = f"{USER_NAME}.lic"
-path_file = os.path.join(path_desktop, fileName)
-APP_NAME = "NMBv3"
-TOKEN = f"{SYS.OS_GET_LOGIN()}{SYS.OS_GET_MACHINE()}"
-# print(ENCODE_STR(TOKEN))
-# T_LIMIT = datetime(year=2023, month=12, day=21)
-
-# CREATE(path_desktop, user_name=USER_NAME, app_name=APP_NAME, token=TOKEN, time_limit=T_LIMIT)
-
-check = CHECK(path_file, token=TOKEN, app_name=APP_NAME)
-print(check)

@@ -1,16 +1,19 @@
 '''
-# Toolkit with simplified functions and methods for create .xlsx Reports \n
+# Toolkit with simplified functions and methods for create .xlsx Reports
 
-\n`TASK:`
+
+TASK:
     - Ver actualizaciones de openpyxl para RichText
     - Añadir la funcion de trabajar con letras y enteros:
-        - ejm: [ COL = xls.utils.get_column_letter(COLUMN) ]
+        ejm: [ COL = xls.utils.get_column_letter(COLUMN) ]
     - Añadir libreria xlsxwriter para uso de hojas EXCEL ya creadas
     ** No me termina de gustar es usar save en los metodos
 
-\n`WARNINGS:`
+
+WARNINGS:
+    - ...
 '''
-__update__ = '2023.11.02'
+__update__ = '2023.12.19'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -27,6 +30,7 @@ from openpyxl.worksheet import pagebreak
 from openpyxl.utils import get_column_letter
 
 ''' CUSTOM MAIN LIBRARIES '''
+import pydeveloptools.func_system as SYS
 
 ''' 
 OPENPYXL VARIABLES AND FUNCTIONS
@@ -90,24 +94,33 @@ class XLSREPORT:
         - En el caso de WorkSheet en __init__ hay que preguntar y no usar try/except
         - Hay que depurar el tratamiento de archivos (repetidos, protegidos, etc)
     '''
-    def __init__(self, filePath: str, FONT="Arial", WS_NAME="Data"):
-        self.FILE = filePath
-        self.FILE_STR = self.FILE + ".xlsx"
-        self.fileName = os.path.basename(self.FILE_STR)
+    def __init__(self, path: str, FONT: str = "Arial", WS_NAME: str = "Data") -> None:
+        ## PATH
+        self.filePath = path
+        self.fileName = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.BASENAME)
+        extension = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.EXTENSION)
+        if extension != "xlsx":
+            self.filePath = os.path.join(self.filePath, ".xlsx")
+
+        ## INIT
         self.ROW = 1
         self.FONT = FONT
         self.ALIGN = Alignment(horizontal=ALIGN_H.LEFT.value, vertical=ALIGN_V.CENTER.value)
         self.WS_NAME = WS_NAME
+        
         ## WORKBOOK
         try:
-            self.WB = xls.load_workbook(self.FILE_STR)
-            # print("LOAD")
+            ## LOAD WORKBOOK
+            self.WB = xls.load_workbook(self.filePath)
         except:
-            self.WB = xls.Workbook(self.FILE_STR)
+            ## NEW WORKBOOK
+            self.WB = xls.Workbook(self.filePath)
             self.WB.create_sheet(self.WS_NAME)
-            self.WB.save(self.FILE_STR)
+            self.WB.save(self.filePath)
             self.WB.close
-            self.WB = xls.load_workbook(self.FILE_STR)
+            self.WB = xls.load_workbook(self.filePath)
+        # print(self.WB.properties)
+        
         ## WORKSHEET
         try:
             self.WS = self.WB[self.WS_NAME]
@@ -117,7 +130,7 @@ class XLSREPORT:
         # self.WS.dimensions.ColumnDimension(self.WS, bestFit=True)        
 
     def SAVE(self) -> None:
-        self.WB.save(self.FILE_STR)
+        self.WB.save(self.filePath)
 
     def CLOSE(self) -> None:
         self.WB.close
