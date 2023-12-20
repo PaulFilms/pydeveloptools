@@ -100,7 +100,7 @@ class XLSREPORT:
         self.fileName = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.BASENAME)
         extension = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.EXTENSION)
         if extension != "xlsx":
-            self.filePath = os.path.join(self.filePath, ".xlsx")
+            self.filePath += ".xlsx"
 
         ## INIT
         self.ROW = 1

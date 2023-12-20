@@ -12,7 +12,7 @@ mypyc:
     Al distribuir a otras maquinas no funciona el archivo .pyd
 '''
 
-__update__ = '2023.12.12'
+__update__ = '2023.12.20'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 
@@ -117,8 +117,11 @@ def CHECK(path_file: str, token: str, app_name: str) -> bool:
     '''
     '''
     ## READ TEXT
-    with open(path_file, 'r') as f:
-        TEXTO = f.read()
+    try:
+        with open(path_file, 'r') as f:
+            TEXTO = f.read()
+    except:
+        return False
     
     ## SPLIT TEXT
     TOKEN_NUMBER = int(sum([ord(l) for l in token]))
