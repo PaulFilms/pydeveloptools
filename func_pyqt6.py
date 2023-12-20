@@ -9,7 +9,7 @@
     - FORMULARIOS:
         - Hay que estudiar el uso de QtCore.pyqtSignal(str)
         - El valor de la class tiene que ser data (por que hay casos que no obtienes un solo valor)
-        - Quitar el .ui de todos los formularios
+        - Quitar el .ui de todos los formularios, compilar los .ui como .py en la carpeta de forms, e importarlos
     - crear la función "dataframe_to_txt" para aislar la libreria de SYS
 
 \n
