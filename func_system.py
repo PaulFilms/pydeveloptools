@@ -22,8 +22,7 @@ from datetime import datetime
 # import hashlib
 # import urllib.request # INTERNET CONNECTION
 from socket import gethostbyname # INTERNET CONNECTION
-from inspect import getmembers, isfunction, isclass # OBJECTS CHECK
-from dataclasses import dataclass, fields, MISSING
+# from dataclasses import dataclass, fields, MISSING
 import enum
 from enum import Enum
 from typing import List
@@ -222,16 +221,12 @@ def INT_TWODIGITS(INT: int) -> str:
     ORDR = f'{INT:02d}'
     return ORDR
 
-# def ENCODE_STR(STR: str) -> str:
-#     '''
-#     Encode selected STR
-#     '''
-#     return hashlib.sha256(str(STR).encode('utf-8')).hexdigest()
-
 
 ''' TEST
 --------------------------------------------------------
 '''
+
+# from inspect import getmembers, isfunction, isclass # OBJECTS CHECK
 
 # def OBJECT_CHECK(OBJECT, objectType: str = 'function', onlyNames: bool = False) -> list:
 #     '''

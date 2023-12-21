@@ -2,17 +2,18 @@
 # pyLICENSER
 
 TASK:
-    - Eliminar el formato f"@{}@"
+    - Eliminar el formato f"@{}@" y sumar TOKEN
+    - Hacer GET_LIMITS
 
 WARNINGS:
-    pydantic.BaseModel genera problemas con mypyc
+    pydantic.BaseModel genera problemas con mypyc, se utiliza dataclass
 
 mypyc:
     mypyc func_license.py
     Al distribuir a otras maquinas no funciona el archivo .pyd
 '''
 
-__update__ = '2023.12.20'
+__version__ = '2023.12.20'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 
@@ -183,6 +184,13 @@ def CHECK(path_file: str, token: str, app_name: str) -> bool:
         return False
     else:
         return True
+
+def GET_LIMITS() -> dict:
+    '''
+    Get the limits of selected license
+    INCOMPLETE
+    '''
+    return dict
 
 
 ''' TEST
