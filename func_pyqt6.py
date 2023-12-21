@@ -1,8 +1,8 @@
 '''
 # Toolkit with simplified functions and methods for development with PyQt6
 
-\n
-`TASK:`
+
+TASK:
     - TBL_POP_PANDAS_DF: 
         - Leer el DEBUG
         - Indicar el tipo de dato para preparar la columna ejem: "field": {"type": bool, "data": []}
@@ -12,8 +12,9 @@
         - Quitar el .ui de todos los formularios, compilar los .ui como .py en la carpeta de forms, e importarlos
     - crear la función "dataframe_to_txt" para aislar la libreria de SYS
 
-\n
-`WARNINGS:`
+
+WARNINGS:
+    - ...
 '''
 __update__ = '2023.11.20'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
@@ -22,6 +23,10 @@ __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 import os
 import pandas as pd
 from dataclasses import dataclass
+from enum import Enum
+from typing import List
+
+''' PYQT6 LIBRARIES '''
 from PyQt6 import QtWidgets, QtGui, QtCore
 from PyQt6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt, QUrl
 from PyQt6.QtGui import QColor, QFont, QDesktopServices, QIcon
@@ -31,9 +36,6 @@ from PyQt6.QtWidgets import QPushButton, QComboBox, QLineEdit, QTextEdit, QCheck
 
 
 ''' CUSTOM MAIN LIBRARIES '''
-pass
-
-''' GLOBAL VARIABLES '''
 pass
 
 
@@ -585,7 +587,7 @@ def CELL_COLOR(TABLE: QTableWidget, ROW: int, COLUMN: int | str, COLOR: str="GRE
             return
         ITEM.setBackground(color)
         
-def TBL_INIT(TABLE: QTableWidget):
+def TBL_INIT(TABLE: QTableWidget) -> None:
     '''
     Reset the Table, set 0 rowCount
     '''
@@ -646,13 +648,15 @@ def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS
 
 def TBL_GET_HEADERS(TABLE: QTableWidget) -> list:
     '''
-    Get a list of headers in the selected Qtable
+    Get a list of horizontal headers in the selected Qtable
+
+    ** If header name is empty, function return the int of column
     '''
-    HEADERS = []
+    HEADERS: list = []
     for head in range(TABLE.columnCount()):
         header_text = TABLE.horizontalHeaderItem(head).text()
         if header_text == "" or header_text == None: 
-            header_text = str(head)
+            header_text = head
         HEADERS.append(header_text)
     return HEADERS
 
@@ -662,39 +666,36 @@ def TBL_GET_HEADER_INDEX(TABLE: QTableWidget, COLUMN: int | str) -> int:
 
     ** If the header name is not correct return None value, check after function the result in case of error
     '''
-    colIndex = COLUMN
-    if type(colIndex) == str:
+    if type(COLUMN) == int:
+        return COLUMN
+    elif type(COLUMN) == str:
         HEADERS = TBL_GET_HEADERS(TABLE)
         if COLUMN in HEADERS: 
-            colIndex = HEADERS.index(COLUMN)
+            return HEADERS.index(COLUMN)
         else:
             print(f"CELL_RD ERROR / WRONG HEADER NAME [{COLUMN}]")
             return None
-    return colIndex
 
-def TBL_GET_PANDAS_DF(TABLE: QTableWidget):
+def TBL_GET_PANDAS_DF(TABLE: QTableWidget) -> pd.DataFrame:
     '''
-    Create Pandas DataFrame from QTable data \n
-    
-    `DEBUG:`
-        - The name of columns should not be "" or None
+    Create Pandas DataFrame from QTable data
     '''
-    HEADERS = TBL_GET_HEADERS(TABLE)
-    DATAFRAME = {}
+    HEADERS: list = TBL_GET_HEADERS(TABLE)
+    ## 
+    DATAFRAME: dict = {}
     for field in HEADERS: 
-        DATAFRAME[field] = []
-    for row in range(TABLE.rowCount()):
-        for head in HEADERS:
-            indx = HEADERS.index(head)
-            VALUE = CELL_RD(TABLE, row, indx)
-            DATAFRAME[head].append(VALUE)
+        LIST: list = []
+        for row in range(TABLE.rowCount()):
+            VALUE = CELL_RD(TABLE, row, field)
+            LIST.append(VALUE)
+        DATAFRAME[field] = LIST
+    ## 
     DATAFRAME = pd.DataFrame(DATAFRAME)
     return DATAFRAME
 
 def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: list | tuple = []):
     '''
-    Set the selected list as fixed column width \n
-    `COLUMNS:` You can specify the column as an int (index) or str (header)
+    Set the selected list as fixed column width
     '''
     for col in COLUMNS:
         COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, col)
@@ -757,16 +758,17 @@ def INPUTBOX(TITLE: str = "", TEXT: str = "", *DEFAULT):
 ''' PyQt FORMS
 -------------------------------------------------------- '''
 
-FONT_LABEL = QFont("Roboto Black", pointSize=6, weight=8)
-FONT_WIDGET = QFont("Consolas", pointSize=12)
-FONT_TABLE = QFont("Consolas", pointSize=10)
+class MYFONTS(Enum):
+    FONT_LABEL = QFont("Roboto Black", pointSize=6, weight=8)
+    FONT_WIDGET = QFont("Consolas", pointSize=12)
+    FONT_TABLE = QFont("Consolas", pointSize=10)
 
 from pydeveloptools.forms import PYQT_QLIST_FORM_ui
 
 class QLIST(QDialog, PYQT_QLIST_FORM_ui.Ui_Dialog):
     '''
     '''
-    def __init__(self, LIST: list | tuple = [], parent=None, Window_Title="LIST EDIT 1"):
+    def __init__(self, LIST: list | tuple = [], parent=None, Window_Title: str = "LIST EDIT 1"):
         QDialog.__init__(self, parent)
         
         ''' INIT '''
