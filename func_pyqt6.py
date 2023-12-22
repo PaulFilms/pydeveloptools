@@ -558,34 +558,26 @@ def CELL_FONT(TABLE: QTableWidget, ROW: int, COLUMN: int | str, SIZE: int=10, BO
         TABLE.setItem(ROW, COLUMN_INDEX, QTableWidgetItem(""))
     ITEM.setFont(font)
 
-def CELL_COLOR(TABLE: QTableWidget, ROW: int, COLUMN: int | str, COLOR: str="GREEN"):
+class MYCOLORS(Enum):
+    GREEN = QColor(0, 80, 0)
+    YELLOW = QColor(255, 255, 0)
+    RED = color = QColor(100, 0, 0)
+    # BLACK = QColor
+    # GREY = QColor
+
+def CELL_COLOR(TABLE: QTableWidget, ROW: int, COLUMN: int | str, COLOR: QColor):
     '''
     Set the backgroung Color of a cel with selected str color:
-    - GREEN
-    - YELLOW
-    - RED
-
-    `DEBUG:`
-        - Usar el metodo adecuado para definir los colores con QColor
     '''
     COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
     ##
     ITEM = TABLE.item(ROW, COLUMN_INDEX)
     CELL = TABLE.cellWidget(ROW, COLUMN_INDEX)
-    if CELL == None:
-        if ITEM == None:
+    if not CELL:
+        if not ITEM:
             CELL_WR(TABLE, ROW, COLUMN_INDEX, "")
         ITEM = TABLE.item(ROW, COLUMN_INDEX)
-        if COLOR == "GREEN":
-            color = QColor(0, 255, 0)
-        elif COLOR == "YELLOW":
-            color = QColor(255, 255, 0)
-        elif COLOR == "RED":
-            color = QColor(255, 0, 0)
-        else:
-            print(f"CELL_COLOR ERROR / WRONG VALUE COLOR [{COLUMN_INDEX}]")
-            return
-        ITEM.setBackground(color)
+        ITEM.setBackground(COLOR)
         
 def TBL_INIT(TABLE: QTableWidget) -> None:
     '''
