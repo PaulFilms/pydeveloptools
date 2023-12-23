@@ -1,11 +1,13 @@
 '''
 Build Script for Cython Files
-\n
-`ATTENTION:`
-This code is incomplete, all functions have to be rewritten in.pyx files
-\n
-`cmd:` 
-python setip.py build_ext --inplace
+
+
+ATTENTION:
+    This code is incomplete, all functions have to be rewritten in.pyx files
+
+
+cmd: 
+    python setip.py build_ext --inplace
 '''
 
 __update__ = '2023.12.02'

@@ -12,7 +12,7 @@ WARNINGS:
     - The License functions have many errors to compile using mypyc
     - The <pyperclip.copy> function is very simple, it is better to remove it from this module, or add --ignore-missing-imports option with mypyc compyle
 '''
-__version__ = '2023.12.12' # + '_Compiled'
+__version__ = '2023.12.23' # + '_Compiled'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -140,6 +140,19 @@ def PATH_EXIST_CHECK(path: str) -> bool:
     Check if selected path or file exist 
     '''
     return os.path.exists(path)
+
+def PATH_VALIDATE(path: str) -> str:
+    '''
+    Check and remove invalid characters
+    
+    `\/:*?'"<>|`
+    '''
+    invalids: str = """ \/:*?'"<>|"""
+    valid_path: str = path
+    for c in invalids:
+        if c in valid_path:
+            valid_path = valid_path.replace(c, "")
+    return valid_path
 
 class PATH_BASENAME(Enum):
     PATH = 0

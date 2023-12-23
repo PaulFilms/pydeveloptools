@@ -19,4 +19,4 @@ Toolkit for developing scripts and simple applications with Python
 `WARNINGS:`
 - ...
 
-LAST UPDATE (2023.12.17)
+LAST UPDATE (2023.12.23)

@@ -1,13 +1,15 @@
 '''
-# Methods and functions for developing mathematical solutions
+Methods and functions for developing mathematical solutions
 
-\n
-`TASK:`
 
-\n
-`WARNINGS:`
+TASK:
+    - ...
+
+
+WARNINGS:
+    - ...
 '''
-__version__ = '2023.12.13'
+__version__ = '2023.12.23'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -23,6 +25,16 @@ pass
 
 ''' FUNCTIONS
 -------------------------------------------------------- '''
+
+def GET_DECIMALS(VALUE: float) -> int:
+    '''
+    Get decimals number
+    '''
+    value_str = str(VALUE)
+    if '.' in value_str:
+        return len(value_str) - value_str.index('.') - 1
+    else:
+        return 0
 
 def SCI_NOT(VALUE: float) -> str:
     '''
@@ -94,6 +106,7 @@ def REGRESION_LINE(yValues: List[float], xValues: List[float]) -> Tuple[Union[fl
 def ISO_SCI(VALUE: float = 0, PRECISION: int = 1) -> str:
     '''
     Returns selected VALUE like Scientific notation
+    BUG
     '''
     # data = format(VALUE,'.1E')
     data = f"{VALUE:.{PRECISION}E}"
@@ -175,12 +188,20 @@ class UNIT:
     factor: int
 
 class UNITS(Enum):
+    ## VOLTS
+    nV = UNIT("V", 1e-9)
+    𝝻V = UNIT("V", 1e-6)
+    uV = UNIT("V", 1e-6)
     mV = UNIT("V", 1e-3)
     V = UNIT("V", 1)
     kV = UNIT("V", 1e3)
-    W = UNIT("W", 1)
+    MV = UNIT("V", 1e3)
+    ## WATTS
     mW = UNIT("W", 1e-3)
+    W = UNIT("W", 1)
     kW = UNIT("W", 1e3)
+    MW = UNIT("W", 1e6)
+    ## 
     @classmethod
     def to_base(cls, value: float, unit: UNIT) -> float:
         base = value * cls[unit].value.factor
@@ -188,99 +209,99 @@ class UNITS(Enum):
 
 class CONVERTER():
     '''
-    Converter tookit class
+    Converter tookit class with a set of functions
     '''
-    def dbm_to_watts(value: float) -> float:
+    def dbm_to_watts(dBm: float) -> float:
         '''
         P(W) = 1W * 10(P(dBm) / 10) / 1000
         '''
-        watts = 10**((value-30)/10)
+        watts = 10**((dBm-30)/10)
         return watts
     
-    def watts_to_dbm(value: float) -> float:
+    def watts_to_dbm(Watts: float) -> float:
         '''
         P(dBm) = 10 * log10( 1000 ⋅ P(W) / 1W)
         '''
-        dbm = 10*log10(value*1000/1)
+        dbm = 10*log10(Watts*1000/1)
         return dbm
 
-    def hertz_to_sec(value: float) -> float:
+    def hertz_to_sec(Hertz: float) -> float:
         '''
         s = 1 / Hz
         '''
-        sec = 1/value
+        sec = 1/Hertz
         return sec
 
-    def sec_to_hertz(value: float) -> float:
+    def sec_to_hertz(seconds: float) -> float:
         '''
         Hz = 1 / s
         '''
-        hz = 1/value
+        hz = 1/seconds
         return hz
     
-    def vpp_to_vrms(value: float) -> float:
+    def vpp_to_vrms(Vpp: float) -> float:
         '''
         Vrms = Vpp * 1 / 2 * RAIZ(2)
         '''
-        vrms = value * 1/(2*2**0.5)
+        vrms = Vpp * 1/(2*2**0.5)
         return vrms
 
-    def vrms_to_vpp(value: float) -> float:
+    def vrms_to_vpp(Vrms: float) -> float:
         ''' 
         Vpp = (2√2) * Vrms
         '''
-        vpp = value * (2*2**0.5)
+        vpp = Vrms * (2*2**0.5)
         return vpp
 
-    def vrms_to_watts(value: float, impedance_ohm: float = 50) -> float:
+    def vrms_to_watts(Vrms: float, Ohm_impedance: float = 50) -> float:
         '''
         P (W) = ( V (rms) ^ 2 / Imp. (Ohm) )
         '''
-        watts = (value**2/impedance_ohm)
+        watts = (Vrms**2/Ohm_impedance)
         return watts
     
-    def vrms_to_dbm(value: float, impedance_ohm: float = 50) -> float:
+    def vrms_to_dbm(Vrms: float, Ohm_impedance: float = 50) -> float:
         '''
         P (dBm) = 10 * LOG( (P (Vrms) ^ 2 / R (Ohm)) * 1000 / 1mW)
         '''
-        dbm = 10 * log10((value**2/impedance_ohm)*1000)
+        dbm = 10 * log10((Vrms**2/Ohm_impedance)*1000)
         return dbm
 
-    def rloss_to_rho(value: float) -> float:
+    def rloss_to_rho(dBm: float) -> float:
         '''
         rho (Γ) = 10 ** (R.Loss (dBm) / 20)
         '''
-        rho: float = 10**(value/20)
+        rho: float = 10**(dBm/20)
         return rho
 
-    def swr_to_rho(value: float) -> float:
+    def swr_to_rho(SWR: float) -> float:
         '''
         rho (Γ) = (SWR-1)/(SWR+1)
         '''
-        if value < 1:
+        if SWR < 1:
             return None
         else:
-            rho: float = (value-1)/(value+1)
+            rho: float = (SWR-1)/(SWR+1)
             return rho
 
-    def swr_to_rloss(value: float) -> float:
+    def swr_to_rloss(SWR: float) -> float:
         ''' 
         rloss (dBm) = 20*log((SWR-1)/(SWR+1))
         '''
-        rloss: float = 20 * log10((value - 1) / (value + 1))
+        rloss: float = 20 * log10((SWR - 1) / (SWR + 1))
         return rloss
 
-    def percent_to_db(value: float) -> float:
+    def percent_to_db(percent: float) -> float:
         '''
         dB = 10 * LOG10( 1 + % / 100 )
         '''
-        dB = 10 * log10(1 + value / 100)
+        dB = 10 * log10(1 + percent / 100)
         return dB
     
-    def db_to_percent(value: float) -> float:
+    def db_to_percent(dB: float) -> float:
         '''
         '''
-        percent = 100 * (10 ** (value / 10) - 1)
+        percent = 100 * (10 ** (dB / 10) - 1)
         return percent
         
 ''' TEST

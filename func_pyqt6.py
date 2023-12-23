@@ -3,8 +3,9 @@
 
 
 TASK:
+    - BUG(s)
     - TBL_POP_PANDAS_DF: 
-        - Leer el DEBUG
+        - BUG
         - Indicar el tipo de dato para preparar la columna ejem: "field": {"type": bool, "data": []}
     - FORMULARIOS:
         - Hay que estudiar el uso de QtCore.pyqtSignal(str)
@@ -15,8 +16,10 @@ TASK:
 
 WARNINGS:
     - ...
+
 '''
-__update__ = '2023.11.20'
+
+__update__ = '2023.12.23'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -125,7 +128,8 @@ def PATH_OPEN(path: str = os.getcwd()):
 def WIDGET_WR(WIDGET, VALUE: None) -> None:
     '''
     Edit value in selected QtWidgets \n
-    `Supported QtWidgets:`
+    
+    Supported QtWidgets:
         - QTextEdit / QLineEdit
         - QComboBox
         - QSpinBox / QDoubleSpinBox
@@ -133,11 +137,6 @@ def WIDGET_WR(WIDGET, VALUE: None) -> None:
         - QDateEdit <str: "yyyy-mm-dd"> / QTimeEdit <str: "hh:mm">
         - QPushButton
         - QWidget (Layout) <QCheckBox>
-    
-    `DEBUG:` 
-        - QSpinBox:
-            - tener en cuenta el caso en se use un valor con coma o negativo
-            - tener en cuenta minimo y maximo
     '''
     ## QLineEdit
     if type(WIDGET) == QLineEdit or type(WIDGET) == QTextEdit:
@@ -265,7 +264,7 @@ def WIDGET_CLEAR(WIDGET, widgetEnabled: bool = False):
     ** widgetEnabled: Set the widget like "not enabled" before to clear \n
     ** with QTableWidget only set to 0 the row count \n
     
-    `DEBUG:`
+    BUG:
         - QComboBox:
             - Hay que ver si merece la pena hacer clear
     '''
@@ -559,6 +558,9 @@ def CELL_FONT(TABLE: QTableWidget, ROW: int, COLUMN: int | str, SIZE: int=10, BO
     ITEM.setFont(font)
 
 class MYCOLORS(Enum):
+    '''
+    Standard colors
+    '''
     GREEN = QColor(0, 80, 0)
     YELLOW = QColor(255, 255, 0)
     RED = color = QColor(100, 0, 0)
@@ -578,7 +580,18 @@ def CELL_COLOR(TABLE: QTableWidget, ROW: int, COLUMN: int | str, COLOR: QColor):
             CELL_WR(TABLE, ROW, COLUMN_INDEX, "")
         ITEM = TABLE.item(ROW, COLUMN_INDEX)
         ITEM.setBackground(COLOR)
-        
+
+@dataclass
+class FIELD_FORMAT:
+    '''
+    '''
+    FIELD_NAME: str
+    TYPE_DATA: bool | str | int | float
+    DATA: list
+    WIDTH: int = None
+    PROTECT: bool = False
+    HIDE: bool = False
+
 def TBL_INIT(TABLE: QTableWidget) -> None:
     '''
     Reset the Table, set 0 rowCount
@@ -588,17 +601,18 @@ def TBL_INIT(TABLE: QTableWidget) -> None:
     TABLE.setColumnCount(0)
     TABLE.setEnabled(True)
 
-def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS: list=[], PROTECTED_COLUMNS: list=[], HEAD_ORDER:bool=True) -> None:
+def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS: list=[], PROTECTED_COLUMNS: list=[]) -> None:
     '''
     Populate QTable with a Pandas DataFrame
-    \n
-    `VARIABLES:`
-    - HIDE_COLUMNS (list): Hide the list of columns by int (column index) or str (calumn name)
-    - PROTECTED_COLUMNS (list): Config the list of columns selected by int (column index) or str (calumn name)
-    - HEAD OPRDER (bool): Turn on the "Sort fields by ascending order" function
     
-    `DEBUG:` 
+    VARIABLES:
+        - HIDE_COLUMNS: list **Hide the list of columns by int (column index) or str (calumn name)
+        - PROTECTED_COLUMNS: list **Config the list of columns selected by int (column index) or str (calumn name)
+        - HEAD OPRDER: bool **Turn on the "Sort fields by ascending order" function
+    
+    BUG: 
         - Some times show: QAbstractItemView::closeEditor called with an editor that does not belong to this view
+        - Add the FIELD_FORMAT class
     '''
     ## INIT TBL
     TABLE.setEnabled(False)
@@ -735,16 +749,21 @@ def YESNOBOX(TITLE: str = "", TEXT: str = "", icon: QIcon = None) -> bool:
     if reply == yesnobox.StandardButton.No:
         return False
 
-def INPUTBOX(TITLE: str = "", TEXT: str = "", *DEFAULT):
+def INPUTBOX(TITLE: str = "", TEXT: str = None, icon: QIcon = None) -> str:
     '''
-    INCOMPLETE
+    Input Window for Entering a Value
     '''
-    default = ""
-    if DEFAULT:
-        default = DEFAULT[0]
     inputbox = QInputDialog()
-    text, okPressed = inputbox.getText(QMainWindow(), str(TITLE), str(TEXT), QLineEdit.Normal, default)
-    return text, okPressed
+    inputbox.setWindowTitle(TITLE)
+    if TEXT:
+        inputbox.setLabelText(TEXT)
+    if icon:
+        inputbox.setWindowIcon(icon)
+    reply = inputbox.exec()
+    if reply:
+        return inputbox.textValue()
+    else:
+        return None
 
 
 ''' PyQt FORMS
