@@ -36,13 +36,6 @@ import pydeveloptools.func_system as SYS # type: ignore
 ''' FUNCTIONS
 -------------------------------------------------------- '''
 
-# class LICENSE(BaseModel):
-#     USER_NAME: str = ""
-#     APP_NAME: str = ""
-#     MACHINE: str = ""
-#     TIME_MOD: str = ""
-#     TIME_LIMIT: str = ""
-
 @dataclass
 class LICENSE:
     USER_NAME: str = ""
@@ -114,6 +107,14 @@ def CREATE(path: str, token: str, user_name: str, app_name: str, time_limit: dat
     with open(path_file, 'w') as f:
         f.write(TEXTO)
 
+def GET_LIC(path: str) -> str:
+    '''
+    Get .lic license file from selected path
+    '''
+    for file in os.listdir(path):
+        if SYS.PATH_BASENAME.GET(file, SYS.PATH_BASENAME.EXTENSION) == "lic":
+            return os.path.join(path, file)
+
 def CHECK(path_file: str, token: str, app_name: str) -> bool:
     '''
     '''
@@ -151,11 +152,12 @@ def CHECK(path_file: str, token: str, app_name: str) -> bool:
     
     check: bool = False
 
-    ## TIME MOD
-    TIME_MOD_FLT = os.path.getmtime(path_file)
+    ## CREATE FILE DATE
+    # TIME_MOD_FLT = os.path.getmtime(path_file)
+    TIME_MOD_FLT = os.path.getctime(path_file)
     TIME_MOD = datetime.fromtimestamp(TIME_MOD_FLT)
-    TIME_INIT = TIME_MOD - timedelta(minutes=5)
-    for min in range(10):
+    TIME_INIT = TIME_MOD - timedelta(minutes=2)
+    for min in range(4):
         TIME_MOD = TIME_INIT + timedelta(minutes=min)
         TIME_STR = TIME_MOD.strftime(SYS.DATE_STR_FORMATS.DATE_NOW.value)
         if license[3] == ENCODE_STR(TIME_STR):
@@ -165,7 +167,7 @@ def CHECK(path_file: str, token: str, app_name: str) -> bool:
         return False
        
     ## TIME MACHINE
-    TIME_MOD_FLT = os.path.getmtime(path_file)
+    TIME_MOD_FLT = os.path.getctime(path_file)
     TIME_MOD = datetime.fromtimestamp(TIME_MOD_FLT)
     if datetime.now() < TIME_MOD:
         return False
@@ -195,3 +197,10 @@ def GET_LIMITS() -> dict:
 
 ''' TEST
 -------------------------------------------------------- '''
+
+# class LICENSE(BaseModel):
+#     USER_NAME: str = ""
+#     APP_NAME: str = ""
+#     MACHINE: str = ""
+#     TIME_MOD: str = ""
+#     TIME_LIMIT: str = ""

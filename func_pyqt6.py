@@ -567,25 +567,23 @@ class MYCOLORS(Enum):
     # BLACK = QColor
     # GREY = QColor
 
-def CELL_COLOR(TABLE: QTableWidget, ROW: int, COLUMN: int | str, COLOR: QColor):
+def CELL_COLOR(TABLE: QTableWidget, ROW: int, COLUMN: int | str, COLOR: QColor) -> None:
     '''
     Set the backgroung Color of a cel with selected str color:
     '''
     COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
-    ##
-    ITEM = TABLE.item(ROW, COLUMN_INDEX)
-    CELL = TABLE.cellWidget(ROW, COLUMN_INDEX)
-    if not CELL:
-        if not ITEM:
-            CELL_WR(TABLE, ROW, COLUMN_INDEX, "")
-        ITEM = TABLE.item(ROW, COLUMN_INDEX)
-        ITEM.setBackground(COLOR)
+    if TABLE.item(ROW, COLUMN_INDEX) is None:
+        TABLE.setItem(ROW, COLUMN_INDEX, QTableWidgetItem())
+    item = TABLE.item(ROW, COLUMN_INDEX)
+    item.setBackground(COLOR)
 
 @dataclass
-class FIELD_FORMAT:
+class TBL_FIELD_FORMAT:
     '''
     '''
     FIELD_NAME: str
+    COLUMN: int
+    ALIAS: str
     TYPE_DATA: bool | str | int | float
     DATA: list
     WIDTH: int = None
@@ -612,7 +610,7 @@ def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS
     
     BUG: 
         - Some times show: QAbstractItemView::closeEditor called with an editor that does not belong to this view
-        - Add the FIELD_FORMAT class
+        - Add the TBL_FIELD_FORMAT class
     '''
     ## INIT TBL
     TABLE.setEnabled(False)
@@ -843,66 +841,52 @@ class QLIST(QDialog, PYQT_QLIST_FORM_ui.Ui_Dialog):
         self.lst_items.setCurrentRow(currentRow+1)
         self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
         
+from pydeveloptools.forms import PYQT_QLIST_FORM
 
 class QLIST_FORM(QDialog):
     '''
     List Selection Form
+
+    UIC:
+    pyuic6 -o forms/PYQT_QLIST_FORM.py forms/PYQT_QLIST_FORM.ui
     '''
-    def __init__(self, LIST: list | tuple, Window_Title="List", fontFamily="Arial Rounded MT Bold"):
+    def __init__(self, LIST: list | tuple, Window_Title: str="List", fontFamily: str="Arial Rounded MT Bold", icon: QIcon = None):
         QDialog.__init__(self)
 
         ''' INIT '''
+        self.ui = PYQT_QLIST_FORM.Ui_Dialog()
+        self.ui.setupUi(self)
+
+        self.setWindowTitle(Window_Title)
         self.LIST = LIST
-        self.Window_Title = Window_Title
         self.fontFamily = fontFamily
+        if icon:
+            self.setWindowIcon(icon)
         self.value: str = None
-        self.SETUP_UI()
         self.LIST_LOAD()
 
         ''' CONNECTIONS '''
-        self.lst.doubleClicked.connect(self.DATA_SELECT)
-    
-    def SETUP_UI(self):
-        font = QtGui.QFont()
-        font.setFamily(self.fontFamily)
-        font.setPointSize(10)
-        # 
-        self.setObjectName("LIST")
-        self.resize(400, 250)
-        self.setFont(font)
-        self.setToolTip("")
-        self.setStatusTip("")
-        self.setWhatsThis("")
-        self.setAccessibleName("")
-        self.setAccessibleDescription("")
-        self.setWindowFilePath("")
-        self.gridLayout = QtWidgets.QGridLayout(self)
-        self.gridLayout.setObjectName("gridLayout")
-        self.lst = QtWidgets.QListWidget(self)
-        self.lst.setFont(font)
-        self.lst.setToolTip("")
-        self.lst.setStatusTip("")
-        self.lst.setWhatsThis("")
-        self.lst.setAccessibleName("")
-        self.lst.setAccessibleDescription("")
-        self.lst.setObjectName("lst")
-        self.gridLayout.addWidget(self.lst, 0, 0, 1, 1)
-        ##
-        self.setWindowTitle(self.Window_Title)
+        self.ui.lst.doubleClicked.connect(self.DATA_SELECT)
     
     def LIST_LOAD(self):
         for e in self.LIST: # self.lst.addItems(self.LIST)
-            self.lst.addItem(str(e))
+            self.ui.lst.addItem(str(e))
     
     def DATA_SELECT(self):
-        item = self.lst.currentItem().text()
+        item = self.ui.lst.currentItem().text()
         self.value = item
         self.close()
+
+from pydeveloptools.forms import PYQT_QTABLE_FORM
 
 class QTABLE_FORM(QtWidgets.QDialog):
     '''
     Table Form (1 Field: 1 Value)
+
     CONFIG: list [class configValue]
+
+    UIC:
+    pyuic6 -o forms/PYQT_QTABLE_FORM.py forms/PYQT_QTABLE_FORM.ui
     '''
     @dataclass
     class configValue():
@@ -914,105 +898,42 @@ class QTABLE_FORM(QtWidgets.QDialog):
         mandatory: bool = False
         info: str = ""
 
-    def __init__(self, CONFIG: list | tuple, Window_Title: str="Table Form", fontFamily: str="Arial Rounded MT Bold", comboBoxEditables: bool=False) -> None:
+    def __init__(self, CONFIG: list | tuple, Window_Title: str="Table Form", fontFamily: str="Arial Rounded MT Bold", comboBoxEditables: bool=False, icon: QIcon = None) -> None:
         QtWidgets.QDialog.__init__(self)
-        # 
+
+        ## GUI
+        ## 
+        self.ui = PYQT_QTABLE_FORM.Ui_Dialog()
+        self.ui.setupUi(self)
+
+        ## WIDGETS
+        self.setWindowTitle = Window_Title
+        if icon: self.setWindowIcon(icon)
+        self.ui.tbl_form.verticalHeader().setVisible(True)
+        self.ui.tbl_form.setColumnCount(3)
+        H_HEADERS: tuple = ("DATA", "", "INFO")
+        self.ui.tbl_form.setHorizontalHeaderLabels(H_HEADERS)
+
+        ## VARIABLES
         self.data: dict = None
-        self.CONFIG = CONFIG
-        # if self.CONFIG.get('FIRM'): self.CONFIG.pop('FIRM')
-        self.Window_Title = Window_Title
+        self.__CONFIG = CONFIG
         self.fontFamily = fontFamily
         self.comboBoxEditable = comboBoxEditables
         
-        ''' INIT '''
-        self.setupUi(self)
-        self.setWindowTitle(self.Window_Title)
-        H_HEADERS = ["DATA", "", "INFO"]
-        self.tbl_form.verticalHeader().setVisible(True)
-        self.tbl_form.setColumnCount(3)
-        self.tbl_form.setHorizontalHeaderLabels(H_HEADERS)
         self.CONNECTIONS()
         self.SETUP_DATA()
 
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(600, 300)
-        Dialog.setMinimumSize(QtCore.QSize(450, 300))
-        font = QtGui.QFont()
-        font.setFamily(self.fontFamily)
-        Dialog.setFont(font)
-        Dialog.setToolTip("")
-        Dialog.setStatusTip("")
-        Dialog.setWhatsThis("")
-        Dialog.setAccessibleName("")
-        Dialog.setAccessibleDescription("")
-        Dialog.setWindowFilePath("")
-        self.gridLayout = QtWidgets.QGridLayout(Dialog)
-        self.gridLayout.setObjectName("gridLayout")
-        self.tbl_form = QtWidgets.QTableWidget(Dialog)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(10)
-        self.tbl_form.setFont(font)
-        self.tbl_form.setToolTip("")
-        self.tbl_form.setStatusTip("")
-        self.tbl_form.setWhatsThis("")
-        self.tbl_form.setAccessibleName("")
-        self.tbl_form.setAccessibleDescription("")
-        self.tbl_form.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
-        self.tbl_form.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
-        self.tbl_form.setObjectName("tbl_form")
-        self.tbl_form.setColumnCount(0)
-        self.tbl_form.setRowCount(0)
-        self.tbl_form.verticalHeader().setVisible(False)
-        self.gridLayout.addWidget(self.tbl_form, 0, 0, 1, 1)
-        self.btn_intro = QtWidgets.QPushButton(Dialog)
-        self.btn_intro.setMinimumSize(QtCore.QSize(0, 50))
-        self.btn_intro.setMaximumSize(QtCore.QSize(16777215, 50))
-        font = QtGui.QFont()
-        font.setFamily(self.fontFamily)
-        font.setPointSize(15)
-        self.btn_intro.setFont(font)
-        self.btn_intro.setToolTip("")
-        self.btn_intro.setStatusTip("")
-        self.btn_intro.setWhatsThis("")
-        self.btn_intro.setAccessibleName("")
-        self.btn_intro.setAccessibleDescription("")
-        self.btn_intro.setText("INTRO")
-        self.btn_intro.setShortcut("")
-        self.btn_intro.setObjectName("btn_intro")
-        self.gridLayout.addWidget(self.btn_intro, 1, 0, 1, 1)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
-
     def CONNECTIONS(self):
-        self.btn_intro.clicked.connect(self.DATA_INTRO)
-
-    # class configValue():
-    #     r'''
-    #     Value object for use in data configuration
-    #         >> fieldName: str
-    #         >> value: bool / str / list / tuple / int / float
-    #         >> mandatory: bool
-    #         >> info: str
-    #     '''
-    #     def __init__(self, 
-    #             fieldName: str = "", 
-    #             value = "", 
-    #             mandatory: bool = False, 
-    #             info: str = "") -> None:
-    #         self.fieldName = fieldName
-    #         self.value = value
-    #         self.mandatory = mandatory
-    #         self.info = info
+        self.ui.btn_intro.clicked.connect(self.DATA_INTRO)
 
     def SETUP_DATA(self):
-        TABLE = self.tbl_form
+        TABLE = self.ui.tbl_form
         ## SET CONFIG
-        TABLE.setRowCount(len(self.CONFIG))
+        TABLE.setRowCount(len(self.__CONFIG))
         row = 0
         self.HEADERS = []
-        for field in self.CONFIG:
-            row = self.CONFIG.index(field)
+        for field in self.__CONFIG:
+            row = self.__CONFIG.index(field)
             ## NAME
             self.HEADERS.append(field.fieldName)
             ## VALUE
@@ -1036,7 +957,7 @@ class QTABLE_FORM(QtWidgets.QDialog):
         TABLE.setColumnWidth(0, 230)
 
     def DATA_INTRO(self):
-        TABLE = self.tbl_form
+        TABLE = self.ui.tbl_form
         self.data = {}
         summary = ""
         for field in self.HEADERS:
@@ -1383,12 +1304,14 @@ class LICENSE(QtWidgets.QMainWindow):
         Editar logo
     '''
 
-    def __init__(self, TEXT: str="", windowTitle: str="INFO") -> None:
+    def __init__(self, TEXT: str="", windowTitle: str="INFO", icon: QIcon = None) -> None:
         super(LICENSE, self).__init__()
         self.setupUi(self)
         self.btn_run.clicked.connect(self.close)
         # 
         self.setWindowTitle(windowTitle)
+        if icon:
+            self.setWindowIcon(icon)
         LICENSE_TEXT = (
             "ESTE SOFTWARE ES UNA VERSION EN FASE DE PRUEBA.",
             "ES NECESARIO ACTUALIZARLO EVITANDO LA DISTRIBUCIÓN DE VERSIONES INCOMPLETAS.",

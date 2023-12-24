@@ -24,7 +24,7 @@ from datetime import datetime
 from socket import gethostbyname # INTERNET CONNECTION
 # from dataclasses import dataclass, fields, MISSING
 import enum
-from enum import Enum
+from enum import Enum, auto
 from typing import List
 # from importlib import import_module
 
@@ -155,10 +155,10 @@ def PATH_VALIDATE(path: str) -> str:
     return valid_path
 
 class PATH_BASENAME(Enum):
-    PATH = 0
-    BASENAME = 1
-    EXTENSION = 2
-    EXTENSION_ONLY = 3
+    PATH = auto()
+    BASENAME = auto()
+    EXTENSION = auto()
+    EXTENSION_ONLY = auto()
     @classmethod
     def GET(cls, path: str, option: enum):
         BASENAME: str = os.path.basename(path)
@@ -226,13 +226,13 @@ def IMG_CM2PIXEL(CM: float) -> float:
 
 BOOLEANS: tuple = ("TRUE", True, 1, "1", "On", "ON")
 
-def INT_TWODIGITS(INT: int) -> str:
-    '''
-    Convert Integer to two digit string
-    1 --> 01
-    '''
-    ORDR = f'{INT:02d}'
-    return ORDR
+# def INT_TWODIGITS(INT: int) -> str:
+#     '''
+#     Convert Integer to two digit string
+#     1 --> 01
+#     '''
+#     ORDR = f'{INT:02d}'
+#     return ORDR
 
 
 ''' TEST

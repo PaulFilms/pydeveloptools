@@ -36,6 +36,14 @@ def GET_DECIMALS(VALUE: float) -> int:
     else:
         return 0
 
+def INT_TWODIGITS(INT: int) -> str:
+    '''
+    Convert Integer to two digit string
+    1 --> 01
+    '''
+    ORDR = f'{INT:02d}'
+    return ORDR
+
 def SCI_NOT(VALUE: float) -> str:
     '''
     Get value in Scientific notation
