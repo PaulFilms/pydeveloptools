@@ -144,14 +144,15 @@ def PATH_EXIST_CHECK(path: str) -> bool:
 def PATH_VALIDATE(path: str) -> str:
     '''
     Check and remove invalid characters
-    
-    `\/:*?'"<>|`
     '''
-    invalids: str = """ \/:*?'"<>|"""
+    ## ASCII
+    invalids_int: List[int] = [32, 34, 39, 42, 47, 58, 59, 60, 62, 63, 92, 94, 96, 124]
+    invalids: List[str] = [chr(c) for c in invalids_int]
+    # 
     valid_path: str = path
     for c in invalids:
         if c in valid_path:
-            valid_path = valid_path.replace(c, "")
+            valid_path = valid_path.replace(c, str())
     return valid_path
 
 class PATH_BASENAME(Enum):
