@@ -1,12 +1,12 @@
 '''
-# Toolkit with simplified functions and methods for development with PyQt6
+Toolkit with simplified functions and methods for development with PyQt6
 
 
 TASK:
     - BUG(s)
     - TBL_POP_PANDAS_DF: 
         - BUG
-        - Indicar el tipo de dato para preparar la columna ejem: "field": {"type": bool, "data": []}
+        - Indicar el tipo de dato para preparar la columna, ejemplo: "field": {"type": bool, "data": []}
     - FORMULARIOS:
         - Hay que estudiar el uso de QtCore.pyqtSignal(str)
         - El valor de la class tiene que ser data (por que hay casos que no obtienes un solo valor)
@@ -19,7 +19,7 @@ WARNINGS:
 
 '''
 
-__update__ = '2023.12.23'
+__update__ = '2024.01.03'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -432,21 +432,23 @@ def CELL_RD(TABLE: QTableWidget, ROW: int, COLUMN: int | str):
 def CELL_READONLY(TABLE: QTableWidget, ROW: int, COLUMN: int | str):
     '''
     Set the cell as non-editable \n
-    `Info:`
-        - If you edit a protected cell, the cell loses protection
-    
-    `DEBUG:`
-        - Si la celda no tiene widget y no tiene ningun valor escrito, obtiene un None como item, la solución es escribir ""
+
+    ** If edit a protected cell, the cell loses protection
     '''
     COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
-    ## Make non-editable
-    ITEM = TABLE.item(ROW, COLUMN_INDEX)
-    CELL = TABLE.cellWidget(ROW, COLUMN_INDEX)
-    # print(ITEM, CELL)
-    if CELL != None:
+
+    ## CELL WIDGET
+    CELL: QWidget = TABLE.cellWidget(ROW, COLUMN_INDEX)
+    if CELL:
         CELL.setEnabled(False)
-    if ITEM != None: 
-        ITEM.setFlags(ITEM.flags() ^ Qt.ItemFlag.ItemIsEditable)
+        return
+    
+    ## TABLE ITEM
+    ITEM: QTableWidgetItem = TABLE.item(ROW, COLUMN_INDEX)
+    if not ITEM:
+        TABLE.setItem(ROW, COLUMN_INDEX, QTableWidgetItem())
+        ITEM = TABLE.item(ROW, COLUMN_INDEX)
+    ITEM.setFlags(ITEM.flags() ^ Qt.ItemFlag.ItemIsEditable)
 
 def CELL_TX(TABLE: QTableWidget, ROW: int, COLUMN: int | str, TEXT: bool | str | int | float) -> None:
     '''
@@ -772,121 +774,113 @@ class MYFONTS(Enum):
     FONT_WIDGET = QFont("Consolas", pointSize=12)
     FONT_TABLE = QFont("Consolas", pointSize=10)
 
-from pydeveloptools.forms import PYQT_QLIST_FORM_ui
+from pydeveloptools.forms import PYQT_QLIST_ui # UIC: pyuic6 -o forms/PYQT_QLIST_ui.py forms/PYQT_QLIST.ui
 
-class QLIST(QDialog, PYQT_QLIST_FORM_ui.Ui_Dialog):
+class QLIST(QDialog):
     '''
+    QList Widget Dialog
     '''
-    def __init__(self, LIST: list | tuple = [], parent=None, Window_Title: str = "LIST EDIT 1"):
+    def __init__(self, LIST: list | tuple, Window_Title: str="List", icon: QIcon = None):
+        QDialog.__init__(self)
+
+        ''' INIT '''
+        self.ui = PYQT_QLIST_ui.Ui_Dialog()
+        self.ui.setupUi(self)
+
+        ''' WIDGETS '''
+        if icon: self.setWindowIcon(icon)
+        self.setWindowTitle(Window_Title)
+        for item in LIST:
+            self.ui.lst.addItem(item)
+        self.value: str = None
+
+        ''' CONNECTIONS '''
+        self.ui.lst.doubleClicked.connect(self.DATA_SELECT)
+    
+    def DATA_SELECT(self) -> None:
+        self.value = self.ui.lst.currentItem().text()
+        self.close()
+
+from pydeveloptools.forms import PYQT_QLIST_FORM_ui # UIC: pyuic6 -o forms/PYQT_QLIST_FORM_ui.py forms/PYQT_QLIST_FORM.ui
+
+class QLIST_FORM(QDialog):
+    '''
+    List Selection Form
+    '''
+    def __init__(self, LIST: list | tuple = [], parent=None, Window_Title: str = "LIST EDIT 1", icon: QIcon = None):
         QDialog.__init__(self, parent)
         
         ''' INIT '''
-        self.setupUi(self)
+        self.ui = PYQT_QLIST_FORM_ui.Ui_Dialog()
+        self.ui.setupUi(self)
+
+        ''' WIDGETS '''
+        if icon: self.setWindowIcon(icon)
         self.setWindowTitle(Window_Title)
         for item in LIST:
-            self.lst_items.addItem(item)
-        self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
+            self.ui.lst_items.addItem(item)
+        self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
         
         ''' CONNECTIONS '''
-        self.btn_add.clicked.connect(self.ITEM_ADD)
-        self.btn_del.clicked.connect(self.ITEM_DEL)
-        self.btn_up.clicked.connect(self.ITEM_UP)
-        self.btn_down.clicked.connect(self.ITEM_DOWN)
+        self.ui.btn_add.clicked.connect(self.ITEM_ADD)
+        self.ui.btn_del.clicked.connect(self.ITEM_DEL)
+        self.ui.btn_up.clicked.connect(self.ITEM_UP)
+        self.ui.btn_down.clicked.connect(self.ITEM_DOWN)
         
     def ITEM_ADD(self) -> None:
         '''
         '''
-        ITEM = self.tx_newitem.text()
+        ITEM = self.ui.tx_newitem.text()
         if ITEM and ITEM != "":
-            self.lst_items.addItem(ITEM)
-            self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
-            self.tx_newitem.clear()
+            self.ui.lst_items.addItem(ITEM)
+            self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
+            self.ui.tx_newitem.clear()
     
     def ITEM_DEL(self) -> None:
         '''
         '''
-        # print('currentRow', self.lst_items.currentRow())
-        currentRow = self.lst_items.currentRow()
+        currentRow = self.ui.lst_items.currentRow()
         if currentRow < 0:
             return
         # 
-        if YESNOBOX("ATTENTION", "DO YOU WANT TO DELETE THIS FIELD ?") == False:
+        if not YESNOBOX("ATTENTION", "DO YOU WANT TO DELETE THIS FIELD ?"):
             return
         # 
-        currentIndex = self.lst_items.currentIndex()
+        currentIndex = self.ui.lst_items.currentIndex()
         '''
         if currentIndex.isValid():
             # Caso afirmativo
             pass
         '''
-        self.lst_items.takeItem(currentIndex.row())
+        self.ui.lst_items.takeItem(currentIndex.row())
         # 
-        self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
+        self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
     
     def ITEM_UP(self):
         '''
         '''
-        currentRow = self.lst_items.currentRow()
-        currentItem = self.lst_items.takeItem(currentRow)
-        self.lst_items.insertItem(currentRow - 1, currentItem)
-        self.lst_items.setCurrentRow(currentRow-1)
-        self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
+        currentRow = self.ui.lst_items.currentRow()
+        currentItem = self.ui.lst_items.takeItem(currentRow)
+        self.ui.lst_items.insertItem(currentRow - 1, currentItem)
+        self.ui.lst_items.setCurrentRow(currentRow-1)
+        self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
         
     def ITEM_DOWN(self):
         '''
         '''
-        currentRow = self.lst_items.currentRow()
-        currentItem = self.lst_items.takeItem(currentRow)
-        self.lst_items.insertItem(currentRow + 1, currentItem)
-        self.lst_items.setCurrentRow(currentRow+1)
-        self.value = [self.lst_items.item(x).text() for x in range(self.lst_items.count())]
-        
-from pydeveloptools.forms import PYQT_QLIST_FORM
+        currentRow = self.ui.lst_items.currentRow()
+        currentItem = self.ui.lst_items.takeItem(currentRow)
+        self.ui.lst_items.insertItem(currentRow + 1, currentItem)
+        self.ui.lst_items.setCurrentRow(currentRow+1)
+        self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
 
-class QLIST_FORM(QDialog):
-    '''
-    List Selection Form
-
-    UIC:
-    pyuic6 -o forms/PYQT_QLIST_FORM.py forms/PYQT_QLIST_FORM.ui
-    '''
-    def __init__(self, LIST: list | tuple, Window_Title: str="List", fontFamily: str="Arial Rounded MT Bold", icon: QIcon = None):
-        QDialog.__init__(self)
-
-        ''' INIT '''
-        self.ui = PYQT_QLIST_FORM.Ui_Dialog()
-        self.ui.setupUi(self)
-
-        self.setWindowTitle(Window_Title)
-        self.LIST = LIST
-        self.fontFamily = fontFamily
-        if icon:
-            self.setWindowIcon(icon)
-        self.value: str = None
-        self.LIST_LOAD()
-
-        ''' CONNECTIONS '''
-        self.ui.lst.doubleClicked.connect(self.DATA_SELECT)
-    
-    def LIST_LOAD(self):
-        for e in self.LIST: # self.lst.addItems(self.LIST)
-            self.ui.lst.addItem(str(e))
-    
-    def DATA_SELECT(self):
-        item = self.ui.lst.currentItem().text()
-        self.value = item
-        self.close()
-
-from pydeveloptools.forms import PYQT_QTABLE_FORM
+from pydeveloptools.forms import PYQT_QTABLE_FORM # UIC: pyuic6 -o forms/PYQT_QTABLE_FORM.py forms/PYQT_QTABLE_FORM.ui
 
 class QTABLE_FORM(QtWidgets.QDialog):
     '''
     Table Form (1 Field: 1 Value)
 
     CONFIG: list [class configValue]
-
-    UIC:
-    pyuic6 -o forms/PYQT_QTABLE_FORM.py forms/PYQT_QTABLE_FORM.ui
     '''
     @dataclass
     class configValue():
@@ -1397,5 +1391,3 @@ class LICENSE(QtWidgets.QMainWindow):
 ''' TEST
 --------------------------------------------------------
 '''
-
-# QT.INFOBOX("ATTENTIONS", "OPTION NOT IMPLEMENTED YET")
