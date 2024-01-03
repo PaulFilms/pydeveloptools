@@ -12,7 +12,7 @@ WARNINGS:
     - The License functions have many errors to compile using mypyc
     - The <pyperclip.copy> function is very simple, it is better to remove it from this module, or add --ignore-missing-imports option with mypyc compyle
 '''
-__version__ = '2023.12.23' # + '_Compiled'
+__version__ = '2024.01.03' # + '_Compiled'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -182,6 +182,7 @@ class DATE_STR_FORMATS(Enum):
     YYYY_MM_DD = r'%Y-%m-%d'
     ISO_8601 = r'%Y-%m-%d'
     DATE_NOW = r"%Y-%m-%d / %H:%M"
+    NOW = r"%H:%M"
 
 def DATE_GET_TODAY() -> str:
     '''

@@ -358,17 +358,15 @@ def CELL_WR(TABLE: QTableWidget, ROW: int, COLUMN: int | str, VALUE):
     '''
     Write value in select cell
     '''
-    COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
+    COLUMN_INDEX: int = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
     ##
     WIDGET = TABLE.cellWidget(ROW, COLUMN_INDEX)
     if WIDGET:
         WIDGET_WR(WIDGET, VALUE)
     else:
-        if VALUE == None:
-            valueStr = ""
-        else:
-            valueStr = str(VALUE)
-        ITEM = QTableWidgetItem(valueStr)
+        ITEM = QTableWidgetItem()
+        if VALUE != None:
+            ITEM = QTableWidgetItem(str(VALUE))
         TABLE.setItem(ROW, COLUMN_INDEX, ITEM)
 
 def CELL_RD(TABLE: QTableWidget, ROW: int, COLUMN: int | str):
@@ -436,35 +434,32 @@ def CELL_READONLY(TABLE: QTableWidget, ROW: int, COLUMN: int | str):
     ** If edit a protected cell, the cell loses protection
     '''
     COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
-
     ## CELL WIDGET
     CELL: QWidget = TABLE.cellWidget(ROW, COLUMN_INDEX)
     if CELL:
         CELL.setEnabled(False)
         return
-    
     ## TABLE ITEM
     ITEM: QTableWidgetItem = TABLE.item(ROW, COLUMN_INDEX)
-    if not ITEM:
-        TABLE.setItem(ROW, COLUMN_INDEX, QTableWidgetItem())
-        ITEM = TABLE.item(ROW, COLUMN_INDEX)
+    if ITEM:
+        ITEM.setFlags(ITEM.flags() ^ Qt.ItemFlag.ItemIsEditable)
+        return
+    ## NULL ITEM
+    ITEM = QTableWidgetItem()
     ITEM.setFlags(ITEM.flags() ^ Qt.ItemFlag.ItemIsEditable)
+    ITEM: QTableWidgetItem = TABLE.item(ROW, COLUMN_INDEX)
 
 def CELL_TX(TABLE: QTableWidget, ROW: int, COLUMN: int | str, TEXT: bool | str | int | float) -> None:
     '''
-    Set Text Item in selected cell \n
-    `DEBUG:`
-        - La pongo para usar WR para editar cells con widgets y esta para forzar solo texto
-        - Forzar la escritura de texto, y en caso de recibir texto usar ""
-        - Añadir la funcion ReadOnly
+    Set Text Item in selected cell
     '''
     COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
     ##
-    text = TEXT
-    if TEXT == None:
-        text = ""
-    TABLE.setCellWidget(ROW,COLUMN_INDEX,None)
-    TABLE.setItem(ROW, COLUMN_INDEX, QTableWidgetItem(str(text)))
+    TABLE.setCellWidget(ROW, COLUMN_INDEX, None)
+    ITEM = QTableWidgetItem()
+    if TEXT != None:
+        ITEM = QTableWidgetItem(str(TEXT))
+    TABLE.setItem(ROW, COLUMN_INDEX, ITEM)
 
 def CELL_COMBOBOX(TABLE: QTableWidget, ROW: int, COLUMN: int | str, LIST: list, EDITABLE: bool = False) -> None:
     '''
@@ -573,6 +568,7 @@ def CELL_COLOR(TABLE: QTableWidget, ROW: int, COLUMN: int | str, COLOR: QColor) 
     '''
     Set the backgroung Color of a cel with selected str color:
     '''
+    TABLE.setAlternatingRowColors(False)
     COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
     if TABLE.item(ROW, COLUMN_INDEX) is None:
         TABLE.setItem(ROW, COLUMN_INDEX, QTableWidgetItem())
