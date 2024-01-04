@@ -88,9 +88,10 @@ OPENPYXL REPORT
 
 class XLSREPORT:
     '''
-    ### Excel book and functions
+    Excel book and functions
     
-    `DEBUG:`
+    
+    BUG:
         - En el caso de WorkSheet en __init__ hay que preguntar y no usar try/except
         - Hay que depurar el tratamiento de archivos (repetidos, protegidos, etc)
     '''

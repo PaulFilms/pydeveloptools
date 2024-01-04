@@ -203,7 +203,7 @@ def WIDGET_WR(WIDGET, VALUE: None) -> None:
     else:
         print("WIDGET_WR", type(WIDGET), "/ NOT IMPLEMENTED")
 
-def WIDGET_RD(WIDGET):
+def WIDGET_RD(WIDGET) -> str | int | float:
     '''
     Read value of selected QtWidgets
 
@@ -214,40 +214,37 @@ def WIDGET_RD(WIDGET):
         - QCheckBox
         - QDateEdit <str: "yyyy-mm-dd"> / QTimeEdit <str: "hh:mm">
     '''
-    VALUE = None
     ## QLineEdit
     if type(WIDGET) == QLineEdit:
-        VALUE = WIDGET.text()
+        return WIDGET.text()
     ## QTextEdit
     elif type(WIDGET) == QTextEdit:
-        VALUE = WIDGET.toPlainText()
+        return WIDGET.toPlainText()
     ## QComboBox
     elif type(WIDGET) == QComboBox:
-        VALUE = WIDGET.currentText()
+        return WIDGET.currentText()
     ## QCheckBox
     elif type(WIDGET) == QCheckBox:
-        VALUE = WIDGET.isChecked()
+        return WIDGET.isChecked()
     ## QSpinBox
     elif type(WIDGET) == QSpinBox:
-        VALUE = WIDGET.value()
+        return WIDGET.value()
     ## QDoubleSpinBox
     elif type(WIDGET) == QDoubleSpinBox:
-        VALUE = WIDGET.value()
+        return WIDGET.value()
     ## QDateEdit
     elif type(WIDGET) == QDateEdit:
-        VALUE = WIDGET.date()
-        if VALUE != WIDGET.minimumDate():
-            VALUE = DATE_QDATE_CONVERTER(VALUE)
+        if WIDGET.date() >= WIDGET.minimumDate():
+            return DATE_QDATE_CONVERTER(WIDGET.date())
         else:
-            VALUE = None
+            return None
     ## QTimeEdit
     elif type(WIDGET) == QTimeEdit:
-        VALUE = WIDGET.time()
-        VALUE = f"{VALUE.hour()}:{VALUE.minute()}"
-    ## NOT IMPLEMENTED
+        return f"{WIDGET.time().hour()}:{WIDGET.time().minute()}"
+    ## NOT IMPLEMENTED WIDGET
     else:
         print("WIDGET_RD", type(WIDGET), "/ NOT IMPLEMENTED")
-    return VALUE
+        return None
 
 def WIDGET_CLEAR(WIDGET, widgetEnabled: bool = False):
     '''
@@ -554,7 +551,7 @@ def CELL_FONT(TABLE: QTableWidget, ROW: int, COLUMN: int | str, SIZE: int=10, BO
         TABLE.setItem(ROW, COLUMN_INDEX, QTableWidgetItem(""))
     ITEM.setFont(font)
 
-class MYCOLORS(Enum):
+class COLORS(Enum):
     '''
     Standard colors
     '''
@@ -713,7 +710,6 @@ def INFOBOX(TITLE: str = "INFO", TEXT: str = "", icon: QIcon = None):
     Information Window
     '''
     infobox = QMessageBox()
-    # infobox.information(QMainWindow(), str(TITLE), str(TEXT))
     infobox.setIcon(QMessageBox.Icon.Information)
     infobox.setFont(QFont('Consolas', 10))
     infobox.setWindowTitle(TITLE)
