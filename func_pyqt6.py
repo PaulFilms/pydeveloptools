@@ -19,7 +19,7 @@ WARNINGS:
 
 '''
 
-__update__ = '2024.01.03'
+__update__ = '2024.01.04'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -27,7 +27,7 @@ import os
 import pandas as pd
 from dataclasses import dataclass
 from enum import Enum
-from typing import List
+from typing import List, Tuple
 
 ''' PYQT6 LIBRARIES '''
 from PyQt6 import QtWidgets, QtGui, QtCore
@@ -444,7 +444,7 @@ def CELL_READONLY(TABLE: QTableWidget, ROW: int, COLUMN: int | str):
     ## NULL ITEM
     ITEM = QTableWidgetItem()
     ITEM.setFlags(ITEM.flags() ^ Qt.ItemFlag.ItemIsEditable)
-    ITEM: QTableWidgetItem = TABLE.item(ROW, COLUMN_INDEX)
+    TABLE.setItem(ROW, COLUMN_INDEX, ITEM)
 
 def CELL_TX(TABLE: QTableWidget, ROW: int, COLUMN: int | str, TEXT: bool | str | int | float) -> None:
     '''
@@ -692,9 +692,9 @@ def TBL_GET_PANDAS_DF(TABLE: QTableWidget) -> pd.DataFrame:
     DATAFRAME = pd.DataFrame(DATAFRAME)
     return DATAFRAME
 
-def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: list | tuple = []):
+def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: List[int] | List[str] | Tuple[int] | Tuple[str] = []):
     '''
-    Set the selected list as fixed column width
+    Set the field selected in COLUMNS list as fixed column width
     '''
     for col in COLUMNS:
         COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, col)
