@@ -1,40 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>main_window</class>
- <widget class="QDialog" name="main_window">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>500</height>
+    <width>388</width>
+    <height>477</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>500</width>
-    <height>500</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>740</width>
-    <height>800</height>
-   </size>
   </property>
   <property name="font">
    <font>
-    <family>Arial Rounded MT Bold</family>
+    <family>Tahoma</family>
    </font>
   </property>
   <property name="windowTitle">
-   <string notr="true">ACQUISITIONS</string>
-  </property>
-  <property name="toolTip">
-   <string notr="true"/>
-  </property>
-  <property name="statusTip">
-   <string notr="true"/>
+   <string>ACQUISITIONS</string>
   </property>
   <property name="whatsThis">
    <string notr="true"/>
@@ -45,27 +27,26 @@
   <property name="accessibleDescription">
    <string notr="true"/>
   </property>
-  <property name="windowFilePath">
-   <string notr="true"/>
-  </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="grp_list">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLineEdit" name="tx_cal_devinfo">
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>250</height>
+       <height>27</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>16777215</height>
+       <height>27</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <family>Arial Rounded MT Bold</family>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+       <bold>false</bold>
       </font>
      </property>
      <property name="toolTip">
@@ -83,286 +64,30 @@
      <property name="accessibleDescription">
       <string notr="true"/>
      </property>
-     <property name="title">
-      <string notr="true">ACQUISITIONS</string>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 0, 0);</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <property name="leftMargin">
-       <number>20</number>
-      </property>
-      <property name="rightMargin">
-       <number>20</number>
-      </property>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="btn_delete">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial Rounded MT Bold</family>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string notr="true"/>
-        </property>
-        <property name="statusTip">
-         <string notr="true"/>
-        </property>
-        <property name="whatsThis">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleName">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleDescription">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string notr="true">DEL. VALUE</string>
-        </property>
-        <property name="shortcut">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="btn_exit">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial Rounded MT Bold</family>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string notr="true"/>
-        </property>
-        <property name="statusTip">
-         <string notr="true"/>
-        </property>
-        <property name="whatsThis">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleName">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleDescription">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string notr="true">SAVE &amp; EXIT</string>
-        </property>
-        <property name="shortcut">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="btn_exit_3">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial Rounded MT Bold</family>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string notr="true"/>
-        </property>
-        <property name="statusTip">
-         <string notr="true"/>
-        </property>
-        <property name="whatsThis">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleName">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleDescription">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string notr="true">&lt;</string>
-        </property>
-        <property name="shortcut">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QPushButton" name="btn_exit_2">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial Rounded MT Bold</family>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string notr="true"/>
-        </property>
-        <property name="statusTip">
-         <string notr="true"/>
-        </property>
-        <property name="whatsThis">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleName">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleDescription">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string notr="true">&gt;</string>
-        </property>
-        <property name="shortcut">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="4">
-       <widget class="QTableWidget" name="tbl_devices">
-        <property name="font">
-         <font>
-          <family>Arial Rounded MT Bold</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string notr="true"/>
-        </property>
-        <property name="statusTip">
-         <string notr="true"/>
-        </property>
-        <property name="whatsThis">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleName">
-         <string notr="true"/>
-        </property>
-        <property name="accessibleDescription">
-         <string notr="true"/>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(228, 228, 228);</string>
-        </property>
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>100</number>
-        </attribute>
-        <attribute name="horizontalHeaderMinimumSectionSize">
-         <number>25</number>
-        </attribute>
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-        <attribute name="verticalHeaderDefaultSectionSize">
-         <number>35</number>
-        </attribute>
-        <attribute name="verticalHeaderHighlightSections">
-         <bool>true</bool>
-        </attribute>
-        <attribute name="verticalHeaderMinimumSectionSize">
-         <number>35</number>
-        </attribute>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <column>
-         <property name="text">
-          <string>TYPE</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>VALUE</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>UNIT</string>
-         </property>
-        </column>
-       </widget>
-      </item>
-     </layout>
+     <property name="inputMask">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string notr="true"/>
+     </property>
+     <property name="frame">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="placeholderText">
+      <string notr="true"/>
+     </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="grp_value">
      <property name="minimumSize">
       <size>
@@ -378,7 +103,8 @@
      </property>
      <property name="font">
       <font>
-       <family>Arial Rounded MT Bold</family>
+       <family>Tahoma</family>
+       <pointsize>7</pointsize>
       </font>
      </property>
      <property name="toolTip">
@@ -416,7 +142,7 @@
         </property>
         <property name="font">
          <font>
-          <family>Arial Rounded MT Bold</family>
+          <family>Consolas</family>
           <pointsize>16</pointsize>
          </font>
         </property>
@@ -468,9 +194,8 @@
         </property>
         <property name="font">
          <font>
-          <family>Arial Rounded MT Bold</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
+          <family>Consolas</family>
+          <pointsize>12</pointsize>
           <italic>false</italic>
           <bold>false</bold>
          </font>
@@ -497,18 +222,8 @@
          <locale language="English" country="UnitedKingdom"/>
         </property>
         <property name="currentText">
-         <string notr="true">measure</string>
+         <string notr="true"/>
         </property>
-        <item>
-         <property name="text">
-          <string>measure</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>indication</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="2" column="0" colspan="2">
@@ -527,9 +242,8 @@
         </property>
         <property name="font">
          <font>
-          <family>Arial Rounded MT Bold</family>
-          <pointsize>11</pointsize>
-          <weight>75</weight>
+          <family>Tahoma</family>
+          <pointsize>12</pointsize>
           <bold>true</bold>
          </font>
         </property>
@@ -572,9 +286,8 @@
         </property>
         <property name="font">
          <font>
-          <family>Arial Rounded MT Bold</family>
+          <family>Consolas</family>
           <pointsize>16</pointsize>
-          <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
@@ -614,26 +327,24 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QLineEdit" name="tx_cal_devinfo">
+   <item>
+    <widget class="QGroupBox" name="grp_list">
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>27</height>
+       <height>250</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>27</height>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <family>Arial Rounded MT Bold</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
+       <family>Tahoma</family>
+       <pointsize>7</pointsize>
       </font>
      </property>
      <property name="toolTip">
@@ -651,40 +362,278 @@
      <property name="accessibleDescription">
       <string notr="true"/>
      </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(228, 228, 228);
-</string>
+     <property name="title">
+      <string notr="true">ACQUISITIONS</string>
      </property>
-     <property name="inputMask">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string notr="true"/>
-     </property>
-     <property name="frame">
-      <bool>true</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="placeholderText">
-      <string notr="true"/>
-     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <property name="leftMargin">
+       <number>20</number>
+      </property>
+      <property name="rightMargin">
+       <number>20</number>
+      </property>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="btn_delete">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Tahoma</family>
+          <pointsize>10</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string notr="true"/>
+        </property>
+        <property name="statusTip">
+         <string notr="true"/>
+        </property>
+        <property name="whatsThis">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleName">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleDescription">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string notr="true">DEL. VALUE</string>
+        </property>
+        <property name="shortcut">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="btn_exit">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Tahoma</family>
+          <pointsize>10</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string notr="true"/>
+        </property>
+        <property name="statusTip">
+         <string notr="true"/>
+        </property>
+        <property name="whatsThis">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleName">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleDescription">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string notr="true">SAVE &amp; EXIT</string>
+        </property>
+        <property name="shortcut">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="btn_left">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial Rounded MT Bold</family>
+          <pointsize>11</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string notr="true"/>
+        </property>
+        <property name="statusTip">
+         <string notr="true"/>
+        </property>
+        <property name="whatsThis">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleName">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleDescription">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string notr="true">&lt;</string>
+        </property>
+        <property name="shortcut">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QPushButton" name="btn_right">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial Rounded MT Bold</family>
+          <pointsize>11</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string notr="true"/>
+        </property>
+        <property name="statusTip">
+         <string notr="true"/>
+        </property>
+        <property name="whatsThis">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleName">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleDescription">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string notr="true">&gt;</string>
+        </property>
+        <property name="shortcut">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QTableWidget" name="tbl_values">
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+          <pointsize>12</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string notr="true"/>
+        </property>
+        <property name="statusTip">
+         <string notr="true"/>
+        </property>
+        <property name="whatsThis">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleName">
+         <string notr="true"/>
+        </property>
+        <property name="accessibleDescription">
+         <string notr="true"/>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>25</number>
+        </attribute>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>100</number>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderMinimumSectionSize">
+         <number>35</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>35</number>
+        </attribute>
+        <attribute name="verticalHeaderHighlightSections">
+         <bool>true</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string notr="true">TYPE</string>
+         </property>
+         <property name="toolTip">
+          <string notr="true"/>
+         </property>
+         <property name="whatsThis">
+          <string notr="true"/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">VALUE</string>
+         </property>
+         <property name="toolTip">
+          <string notr="true"/>
+         </property>
+         <property name="whatsThis">
+          <string notr="true"/>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>btn_addvalue</tabstop>
-  <tabstop>tx_value</tabstop>
-  <tabstop>cb_units</tabstop>
-  <tabstop>cb_type</tabstop>
-  <tabstop>tx_cal_devinfo</tabstop>
-  <tabstop>btn_exit_3</tabstop>
-  <tabstop>btn_delete</tabstop>
-  <tabstop>btn_exit</tabstop>
-  <tabstop>btn_exit_2</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

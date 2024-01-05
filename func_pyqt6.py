@@ -19,7 +19,7 @@ WARNINGS:
 
 '''
 
-__update__ = '2024.01.04'
+__update__ = '2024.01.05'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -1282,6 +1282,93 @@ class QTEXT_FORM(QtWidgets.QDialog):
         else:
             self.data = None
             return
+
+from pydeveloptools.forms import PYQT_QACQUISITIONS_ui # UIC: pyuic6 -o forms/PYQT_QACQUISITIONS_ui.py forms/PYQT_QACQUISITIONS.ui
+
+class QACQUISITIONS(QtWidgets.QDialog):
+    '''
+    QAcquisitions Form
+
+    BUG: Incomplete
+    - Add LEFT/RIGHT functions
+    '''
+    def __init__(self, MEAS_INFO: str, Window_Title: str="List", icon: QIcon = None):
+        QDialog.__init__(self)
+
+        ''' INIT '''
+        self.ui = PYQT_QACQUISITIONS_ui.Ui_Dialog()
+        self.ui.setupUi(self)
+
+        ''' WIDGETS '''
+        if icon: self.setWindowIcon(icon)
+        self.setWindowTitle(Window_Title)
+        self.ui.tx_cal_devinfo.setText(MEAS_INFO)
+        self.TYPES: tuple = ("MEASURE", "INDICATION")
+        self.ui.cb_type.addItems(self.TYPES)
+        self.ui.cb_type.setCurrentIndex(0)
+        for item in ["G","M","k","","m","µ","n"]:
+            self.ui.cb_units.addItem(item)
+        self.ui.cb_units.setCurrentIndex(3)
+        self.data: dict = None
+
+        ''' CONNECTIONS '''
+        self.ui.btn_addvalue.clicked.connect(self.VALUE_ADD)
+        self.ui.btn_delete.clicked.connect(self.VALUE_DEL)
+        self.ui.btn_exit.clicked.connect(self.EXIT)
+    
+    def VALUE_ADD(self) -> None:
+        '''
+        '''
+        value: float = float()
+        try:
+            value = float(self.ui.tx_value.text())
+        except:
+            value = 0
+        unit: str = self.ui.cb_units.currentText()
+        match unit:
+            case "G":
+                value = value * 1e9
+            case "M":
+                value = value * 1e6
+            case "k":
+                value = value * 1e3
+            case "":
+                value = value * 1
+            case "m":
+                value = value * 1e-3
+            case "µ":
+                value = value * 1e-6
+            case "n":
+                value = value * 1e-9
+        row = self.ui.tbl_values.rowCount()
+        self.ui.tbl_values.insertRow(row)
+        CELL_WR(self.ui.tbl_values, row, 0, self.ui.cb_type.currentText())
+        CELL_WR(self.ui.tbl_values, row, 1, value)
+        self.GET_VALUES()
+
+    def VALUE_DEL(self) -> None:
+        '''
+        '''
+        row = self.ui.tbl_values.currentRow()
+        if row < 0:
+            return
+        self.ui.tbl_values.removeRow(row)
+        self.GET_VALUES()
+    
+    def EXIT(self) -> None:
+        '''
+        '''
+        self.GET_VALUES()
+        self.close()
+    
+    def GET_VALUES(self) -> None:
+        '''
+        '''
+        DF = pd.DataFrame(columns=self.TYPES)
+        for row in range(self.ui.tbl_values.rowCount()):
+            DF.loc[len(DF)] = [CELL_RD(self.ui.tbl_values, row, 0), float(CELL_RD(self.ui.tbl_values, row, 1))]
+        self.data = DF.to_dict('list')
+
 
 class LICENSE(QtWidgets.QMainWindow):
     '''
