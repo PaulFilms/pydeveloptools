@@ -868,7 +868,7 @@ class QLIST_FORM(QDialog):
 
 from pydeveloptools.forms import PYQT_QTABLE_FORM # UIC: pyuic6 -o forms/PYQT_QTABLE_FORM.py forms/PYQT_QTABLE_FORM.ui
 
-class QTABLE_FORM(QtWidgets.QDialog):
+class QTABLE_FORM(QDialog):
     '''
     Table Form (1 Field: 1 Value)
 
@@ -966,7 +966,7 @@ class QTABLE_FORM(QtWidgets.QDialog):
             self.data = None
             return
 
-class QDICT_FORM(QtWidgets.QDialog):
+class QDICT_FORM(QDialog):
     '''
     Table Form (1 Field: Value1, Value2...)
 
@@ -1201,7 +1201,7 @@ class QDICT_FORM(QtWidgets.QDialog):
             self.data = None
             return
 
-class QTEXT_FORM(QtWidgets.QDialog):
+class QTEXT_FORM(QDialog):
     '''
     Plain Text Form
 
@@ -1285,7 +1285,7 @@ class QTEXT_FORM(QtWidgets.QDialog):
 
 from pydeveloptools.forms import PYQT_QACQUISITIONS_ui # UIC: pyuic6 -o forms/PYQT_QACQUISITIONS_ui.py forms/PYQT_QACQUISITIONS.ui
 
-class QACQUISITIONS(QtWidgets.QDialog):
+class QACQUISITIONS(QDialog):
     '''
     QAcquisitions Form
 
@@ -1369,8 +1369,26 @@ class QACQUISITIONS(QtWidgets.QDialog):
             DF.loc[len(DF)] = [CELL_RD(self.ui.tbl_values, row, 0), float(CELL_RD(self.ui.tbl_values, row, 1))]
         self.data = DF.to_dict('list')
 
+from pydeveloptools.forms import PYQT_QMARKDOWN_ui # UIC: pyuic6 -o forms/PYQT_QMARKDOWN_ui.py forms/PYQT_QMARKDOWN.ui
+import markdown2
 
-class LICENSE(QtWidgets.QMainWindow):
+class QMARKDOWN(QDialog):
+    def __init__(self, MD_TEXT: str = str(), Window_Title: str="MarkDown Text", icon: QIcon = None) -> None:
+        QDialog.__init__(self)
+        
+        ''' INIT '''
+        self.ui = PYQT_QMARKDOWN_ui.Ui_Dialog()
+        self.ui.setupUi(self)
+
+        ''' WIDGETS '''
+        if icon: self.setWindowIcon(icon)
+        self.setWindowTitle(Window_Title)
+        self.ui.tx_preview.setReadOnly(True)
+        html_text = markdown2.markdown(MD_TEXT)
+        self.ui.tx_preview.setHtml(html_text)
+
+
+class LICENSE(QMainWindow):
     '''
     INCOMPLETE:
         Añadir info y datos
