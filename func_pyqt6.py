@@ -19,15 +19,16 @@ WARNINGS:
 
 '''
 
-__update__ = '2024.01.05'
+__update__ = '2024.01.08'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
 import os
-import pandas as pd
 from dataclasses import dataclass
 from enum import Enum
 from typing import List, Tuple
+import pandas as pd
+import markdown2
 
 ''' PYQT6 LIBRARIES '''
 from PyQt6 import QtWidgets, QtGui, QtCore
@@ -1370,7 +1371,6 @@ class QACQUISITIONS(QDialog):
         self.data = DF.to_dict('list')
 
 from pydeveloptools.forms import PYQT_QMARKDOWN_ui # UIC: pyuic6 -o forms/PYQT_QMARKDOWN_ui.py forms/PYQT_QMARKDOWN.ui
-import markdown2
 
 class QMARKDOWN(QDialog):
     def __init__(self, MD_TEXT: str = str(), Window_Title: str="MarkDown Text", icon: QIcon = None) -> None:

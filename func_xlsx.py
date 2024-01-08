@@ -7,13 +7,12 @@ TASK:
     - Añadir la funcion de trabajar con letras y enteros:
         ejm: [ COL = xls.utils.get_column_letter(COLUMN) ]
     - Añadir libreria xlsxwriter para uso de hojas EXCEL ya creadas
-    ** No me termina de gustar es usar save en los metodos
-
 
 WARNINGS:
-    - ...
+    - Al quitar SAVE de los metodos, vigilar crasheos (2024-01-08)
+
 '''
-__update__ = '2023.12.19'
+__update__ = '2024.01.08'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -153,12 +152,6 @@ class XLSREPORT:
         '''
         self.ROW = self.ROW + int(NUMBER)
 
-    def ROW_GET(self) -> int:
-        '''
-        Get current row
-        '''
-        return self.ROW
-
     def ROW_WIDTH(self, ROW: int, WIDTH: float=10) -> None:
         '''
         Set height of a row
@@ -214,15 +207,15 @@ class XLSREPORT:
         self.WS.cell(ROW, COLUMN).font = FONTS.TITTLE.value
         self.ROW_WIDTH(ROW, 40)
 
-    def WR_HEADER(self, ROW: int, COLUMN: int, VALUE = "", vertical_alignment: str = ALIGN_V.CENTER.value, wrap: bool = False):
+    def WR_HEADER(self, ROW: int, COLUMN: int, VALUE = "", vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
         '''
         Edit selected cell in Header format
         '''
         self.WS.cell(ROW, COLUMN).value = VALUE
-        self.WS.cell(ROW, COLUMN).alignment = Alignment(horizontal='left', vertical=vertical_alignment, wrap_text=wrap)
+        self.WS.cell(ROW, COLUMN).alignment = Alignment(horizontal='left', vertical=vertical_alignment, wrap_text=wrap_text)
         self.WS.cell(ROW, COLUMN).font = FONTS.HEADER.value
 
-    def WR_HEADERS(self, ROW: int, HEADERS: list = list, vertical_alignment: str = "center", wrap_text: bool = False):
+    def WR_HEADERS(self, ROW: int, HEADERS: list = list, vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
         '''
         Write and edit format of Headers List
         '''
@@ -230,7 +223,7 @@ class XLSREPORT:
             self.WR_HEADER(ROW=ROW, COLUMN=HEADERS.index(head)+1, VALUE=head, vertical_alignment=vertical_alignment, wrap_text=wrap_text)
         self.ROW_WIDTH(ROW, 35)
 
-    def LOW_BORDER(self, ROW=1, col_ini=1, col_fin=300, save=False):
+    def LOW_BORDER(self, ROW=1, col_ini=1, col_fin=300):
         '''
         INCOMPLETE, DEBUG:
         Hay que saber bien el diseño y todas las funciones de borders
@@ -244,8 +237,8 @@ class XLSREPORT:
             # border_style = "double"
             )
         thin = Border(left = border0, right = border0, bottom = borderLow, top = border0)
-        for col in range(col_ini, col_fin): self.WS.cell(row=ROW, column=col).border = thin
-        if save == True: self.SAVE()
+        for col in range(col_ini, col_fin): 
+            self.WS.cell(row=ROW, column=col).border = thin
 
     ''' INCOMPLETES '''
     
