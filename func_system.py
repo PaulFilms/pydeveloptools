@@ -12,7 +12,7 @@ WARNINGS:
     - The License functions have many errors to compile using mypyc
     - The <pyperclip.copy> function is very simple, it is better to remove it from this module, or add --ignore-missing-imports option with mypyc compyle
 '''
-__version__ = '2024.01.03' # + '_Compiled'
+__version__ = '2024.01.11' # + '_Compiled'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -156,12 +156,16 @@ def PATH_VALIDATE(path: str) -> str:
     return valid_path
 
 class PATH_BASENAME(Enum):
+    '''
+    '''
     PATH = auto()
     BASENAME = auto()
     EXTENSION = auto()
     EXTENSION_ONLY = auto()
     @classmethod
     def GET(cls, path: str, option: enum):
+        '''
+        '''
         BASENAME: str = os.path.basename(path)
         SPLIT: List[str] = BASENAME.split(".")
         if option == cls.PATH:
