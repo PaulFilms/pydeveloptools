@@ -6,9 +6,13 @@ __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
 ''' SYSTEM LIBRARIES '''
+pass
+
+''' PIP/IMPORTED LIBRARIES '''
 import pyodbc
 
 ''' CUSTOM LIBRARIES '''
+pass
 
 
 ''' MAIN

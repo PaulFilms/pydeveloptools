@@ -15,9 +15,12 @@ __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 ''' SYSTEM LIBRARIES '''
 import pandas as pd
 from math import log10
+from enum import Enum
 from dataclasses import dataclass
 from typing import List, Tuple, Union
-from enum import Enum
+
+''' EXTERNAL LIBRARIES '''
+pass
 
 ''' CUSTOM LIBRARIES '''
 pass

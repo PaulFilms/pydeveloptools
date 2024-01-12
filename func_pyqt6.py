@@ -24,13 +24,13 @@ __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
 import os
+import pandas as pd
 from dataclasses import dataclass
 from enum import Enum
 from typing import List, Tuple
-import pandas as pd
-import markdown2
 
-''' PYQT6 LIBRARIES '''
+''' PIP/IMPORTED LIBRARIES '''
+import markdown2
 from PyQt6 import QtWidgets, QtGui, QtCore
 from PyQt6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt, QUrl
 from PyQt6.QtGui import QColor, QFont, QDesktopServices, QIcon

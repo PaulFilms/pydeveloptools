@@ -12,6 +12,8 @@ import os
 from datetime import datetime
 from enum import Enum
 from dataclasses import dataclass
+
+''' EXTERNAL LIBRARIES '''
 import pandas as pd
 # import numpy as np
 from numpy import nan
@@ -246,6 +248,8 @@ def pandas_reindex(dataFrame=pd.core.frame.DataFrame, row_index=int, order="up" 
 ------------------------------------------ '''
 
 def sql_to_dataframe(headers: list, sql_list):
+    '''
+    '''
     dictionary = {}
     for field in headers:
         dictionary[field] = []
@@ -259,6 +263,8 @@ def sql_to_dataframe(headers: list, sql_list):
     return dataframe
 
 def dataframe_to_dict(dataframe=pd.core.frame.DataFrame):
+    '''
+    '''
     dictionary = dataframe.to_dict()
     return dictionary
 

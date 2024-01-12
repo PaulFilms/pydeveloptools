@@ -16,20 +16,22 @@ __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 ''' SYSTEM LIBRARIES '''
 from dataclasses import dataclass
 
-''' CUSTOM MAIN LIBRARIES '''
-
-
-''' 
-REPORTLAB FUNCTIONS
--------------------------------------------------------- 
-'''
-
+''' PIP/IMPORTED LIBRARIES '''
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib import pagesizes
 from reportlab.lib import colors
 from reportlab.lib.utils import ImageReader
+
+''' CUSTOM MAIN LIBRARIES '''
+pass
+
+
+''' 
+REPORTLAB FUNCTIONS
+-------------------------------------------------------- 
+'''
 
 @dataclass
 class fontTypes(str):
