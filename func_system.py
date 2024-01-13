@@ -4,15 +4,18 @@ Toolkit with simplified functions and methods for development with Python
 - Internet
 - Datetime
 
+
 TASK:
     mypyc --ignore-missing-imports func_system.py
     ...
 
+    
 WARNINGS:
     - The License functions have many errors to compile using mypyc
     - The <pyperclip.copy> function is very simple, it is better to remove it from this module, or add --ignore-missing-imports option with mypyc compyle
 '''
-__version__ = '2024.01.11' # + '_Compiled'
+
+__version__ = '2024.01.13' # + '_Compiled'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -23,6 +26,7 @@ from datetime import datetime
 # import urllib.request # INTERNET CONNECTION
 from socket import gethostbyname # INTERNET CONNECTION
 # from dataclasses import dataclass, fields, MISSING
+from glob import glob
 import enum
 from enum import Enum, auto
 from typing import List
@@ -146,7 +150,7 @@ def PATH_VALIDATE(path: str) -> str:
     Check and remove invalid characters
     '''
     ## ASCII
-    invalids_int: List[int] = [32, 34, 39, 42, 47, 58, 59, 60, 62, 63, 92, 94, 96, 124]
+    invalids_int: List[int] = [10, 32, 34, 39, 42, 47, 58, 59, 60, 62, 63, 92, 94, 96, 124]
     invalids: List[str] = [chr(c) for c in invalids_int]
     # 
     valid_path: str = path
@@ -179,6 +183,13 @@ class PATH_BASENAME(Enum):
             else:
                 return None
 
+def PATH_FIND(path: str) -> List[str]:
+    '''
+    Get a list of files with especified name
+
+    - path: str = "<your_path>/*.exe"
+    '''
+    return glob(path)
 
 ## DATE FUNCTIONS
 

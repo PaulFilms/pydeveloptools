@@ -160,4 +160,5 @@ cython_debug/
 #.idea/
 
 # personal
+database/notion.txt
 database/seatable.txt
