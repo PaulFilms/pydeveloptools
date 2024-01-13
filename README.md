@@ -2,7 +2,7 @@
 Toolkit for developing scripts and simple applications with Python
 
 
-`Tools included`
+## Tools included
 - Calc .xlsx Files
 - Report .PDF Files
 - Databases (SQLite, MS Access, SQL Language, Seatable (Web db))
@@ -11,12 +11,13 @@ Toolkit for developing scripts and simple applications with Python
 - License Functions
 - PyQt6 Framework (UI Development)
 
-`TASK:`
+## TASK:
 - Add Supabase (Web) in database functions
+- Add Notion API functions
 - Creating Cython functions
 - Add Rich Text in .xlsx Reports
 
-`WARNINGS:`
+## WARNINGS:
 - ...
 
 LAST UPDATE (2023.12.23)
