@@ -13,7 +13,7 @@ mypyc:
     Al distribuir a otras maquinas no funciona el archivo .pyd
 '''
 
-__version__ = '2023.12.20'
+__version__ = '2024.01.14'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 
@@ -110,6 +110,8 @@ def CREATE(path: str, token: str, user_name: str, app_name: str, time_limit: dat
 def GET_LIC(path: str) -> str:
     '''
     Get .lic license file from selected path
+
+    BUG: Es mejor utilizar la funcion GLOB
     '''
     for file in os.listdir(path):
         if SYS.PATH_BASENAME.GET(file, SYS.PATH_BASENAME.EXTENSION) == "lic":
