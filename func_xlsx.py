@@ -225,8 +225,9 @@ class XLSREPORT:
 
     def LOW_BORDER(self, ROW=1, col_ini=1, col_fin=300):
         '''
-        INCOMPLETE, DEBUG:
+        BUG: INCOMPLETE
         Hay que saber bien el diseño y todas las funciones de borders
+
         https://openpyxl.readthedocs.io/en/stable/styles.html?highlight=border_style
         '''
         # Style = "thick" (Grueso)
@@ -308,7 +309,7 @@ def DF_REPORT(DATAFRAME: pd.DataFrame, fileName: str, fontName: str = 'Calibri')
     report = XLSREPORT(fileName, fontName)
     ## HEADERS
     HEADERS: list = DATAFRAME.columns.values.tolist()
-    report.WR_HEADERS(1, HEADERS, VERTICAL="top")
+    report.WR_HEADERS(1, HEADERS, vertical_alignment="top")
     report.COL_FILTERS()
     report.LOW_BORDER(report.ROW, col_fin=len(HEADERS)+1)
     report.ROW_INC()

@@ -19,7 +19,7 @@ WARNINGS:
 
 '''
 
-__update__ = '2024.01.08'
+__update__ = '2024.01.18'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -1386,103 +1386,6 @@ class QMARKDOWN(QDialog):
         self.ui.tx_preview.setReadOnly(True)
         html_text = markdown2.markdown(MD_TEXT)
         self.ui.tx_preview.setHtml(html_text)
-
-
-class LICENSE(QMainWindow):
-    '''
-    INCOMPLETE:
-        Añadir info y datos
-        Editar logo
-    '''
-
-    def __init__(self, TEXT: str="", windowTitle: str="INFO", icon: QIcon = None) -> None:
-        super(LICENSE, self).__init__()
-        self.setupUi(self)
-        self.btn_run.clicked.connect(self.close)
-        # 
-        self.setWindowTitle(windowTitle)
-        if icon:
-            self.setWindowIcon(icon)
-        LICENSE_TEXT = (
-            "ESTE SOFTWARE ES UNA VERSION EN FASE DE PRUEBA.",
-            "ES NECESARIO ACTUALIZARLO EVITANDO LA DISTRIBUCIÓN DE VERSIONES INCOMPLETAS.",
-            "POR FAVOR, CONTACTA CON:",
-            "PABLO GONZÁLEZ PILA / pablogonzalezpila@gmail.COM",
-            )
-        for line in LICENSE_TEXT: self.tx_info.appendPlainText(line)
-        self.tx_info.appendPlainText("\n")
-        self.tx_info.appendPlainText(TEXT)
-        self.tx_info.appendPlainText("\n")
-    
-    def setupUi(self, MainWindow):
-        ## UI File
-        # uiFile = r'PYQT_QLICENSE_new.ui'
-        # self.ui = uic.loadUi(os.path.join(uiPath, uiFile), self) # Load the .ui file
-        
-        ## PY File
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(600, 200)
-        font = QtGui.QFont()
-        font.setFamily("Roboto")
-        MainWindow.setFont(font)
-        # MainWindow.setWindowTitle("INFO")
-        # icon = QtGui.QIcon()
-        # icon.addPixmap(QtGui.QPixmap("../NMB_v3.0/app.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # MainWindow.setWindowIcon(icon)
-        MainWindow.setToolTip("")
-        MainWindow.setStatusTip("")
-        MainWindow.setWhatsThis("")
-        MainWindow.setAccessibleName("")
-        MainWindow.setAccessibleDescription("")
-        # MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedKingdom))
-        MainWindow.setWindowFilePath("")
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setToolTip("")
-        self.centralwidget.setStatusTip("")
-        self.centralwidget.setWhatsThis("")
-        self.centralwidget.setAccessibleName("")
-        self.centralwidget.setAccessibleDescription("")
-        self.centralwidget.setObjectName("centralwidget")
-        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout.setContentsMargins(10, 10, 10, 10)
-        self.gridLayout.setSpacing(10)
-        self.gridLayout.setObjectName("gridLayout")
-        self.tx_info = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.tx_info.setEnabled(True)
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(8)
-        self.tx_info.setFont(font)
-        self.tx_info.setToolTip("")
-        self.tx_info.setStatusTip("")
-        self.tx_info.setWhatsThis("")
-        self.tx_info.setAccessibleName("")
-        self.tx_info.setAccessibleDescription("")
-        self.tx_info.setDocumentTitle("")
-        self.tx_info.setReadOnly(True)
-        # self.tx_info.setPlainText("")
-        self.tx_info.setPlaceholderText("")
-        self.tx_info.setObjectName("tx_info")
-        self.gridLayout.addWidget(self.tx_info, 0, 0, 1, 1)
-        self.btn_run = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_run.setMinimumSize(QtCore.QSize(0, 50))
-        self.btn_run.setMaximumSize(QtCore.QSize(16777215, 50))
-        font = QtGui.QFont()
-        # font.setFamily("Consolas")
-        font.setFamily("Roboto Black")
-        font.setPointSize(15)
-        self.btn_run.setFont(font)
-        self.btn_run.setToolTip("")
-        self.btn_run.setStatusTip("")
-        self.btn_run.setWhatsThis("")
-        self.btn_run.setAccessibleName("")
-        self.btn_run.setAccessibleDescription("")
-        # self.btn_run.setStyleSheet("color: rgb(255, 255, 255);")
-        self.btn_run.setObjectName("btn_run")
-        self.btn_run.setText("OK")
-        self.gridLayout.addWidget(self.btn_run, 1, 0, 1, 1)
-        MainWindow.setCentralWidget(self.centralwidget)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
 ''' TEST

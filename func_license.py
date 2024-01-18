@@ -19,6 +19,7 @@ __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
 import os
+from glob import glob
 from datetime import datetime, timedelta
 from typing import List # Tuple, Union
 import hashlib 
@@ -117,11 +118,15 @@ def GET_LIC(path: str) -> str:
         if SYS.PATH_BASENAME.GET(file, SYS.PATH_BASENAME.EXTENSION) == "lic":
             return os.path.join(path, file)
 
-def CHECK(path_file: str, token: str, app_name: str) -> bool:
+def CHECK(path_app: str, token: str, app_name: str) -> bool:
     '''
     '''
     ## READ TEXT
     try:
+        lic_list: list = glob(os.path.join(path_app, "*.lic"))
+        if len(lic_list) != 1:
+            return None
+        path_file: str = lic_list[0]
         with open(path_file, 'r') as f:
             TEXTO = f.read()
     except:
@@ -167,7 +172,7 @@ def CHECK(path_file: str, token: str, app_name: str) -> bool:
     
     if check == False: 
         return False
-       
+    
     ## TIME MACHINE
     TIME_MOD_FLT = os.path.getctime(path_file)
     TIME_MOD = datetime.fromtimestamp(TIME_MOD_FLT)
@@ -175,7 +180,7 @@ def CHECK(path_file: str, token: str, app_name: str) -> bool:
         return False
     
     check = False
-
+    
     ## TIME LIMIT
     TIME_NOW = datetime.now()
     for day in range(365*10):
