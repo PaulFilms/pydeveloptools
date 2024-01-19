@@ -808,7 +808,8 @@ class QLIST_FORM(QDialog):
         self.ui.setupUi(self)
 
         ''' WIDGETS '''
-        if icon: self.setWindowIcon(icon)
+        if icon: 
+            self.setWindowIcon(icon)
         self.setWindowTitle(Window_Title)
         for item in LIST:
             self.ui.lst_items.addItem(item)
