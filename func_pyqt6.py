@@ -1366,10 +1366,17 @@ class QACQUISITIONS(QDialog):
     def GET_VALUES(self) -> None:
         '''
         '''
-        DF = pd.DataFrame(columns=self.TYPES)
+        # DF = pd.DataFrame(columns=self.TYPES)
+        # for row in range(self.ui.tbl_values.rowCount()):
+        #     DF.loc[len(DF)] = [CELL_RD(self.ui.tbl_values, row, 0), float(CELL_RD(self.ui.tbl_values, row, 1))]
+        # print()
+        # self.data = DF.to_dict('list')
+        self.data = dict()
+        self.data['TYPE'] = list()
+        self.data['VALUE'] = list()
         for row in range(self.ui.tbl_values.rowCount()):
-            DF.loc[len(DF)] = [CELL_RD(self.ui.tbl_values, row, 0), float(CELL_RD(self.ui.tbl_values, row, 1))]
-        self.data = DF.to_dict('list')
+            self.data['TYPE'].append(CELL_RD(self.ui.tbl_values, row, 0))
+            self.data['VALUE'].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
 
 from pydeveloptools.forms import PYQT_QMARKDOWN_ui # UIC: pyuic6 -o forms/PYQT_QMARKDOWN_ui.py forms/PYQT_QMARKDOWN.ui
 
