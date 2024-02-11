@@ -1,4 +1,5 @@
 '''
+UNDER TEST
 '''
 
 from setuptools import setup, Extension

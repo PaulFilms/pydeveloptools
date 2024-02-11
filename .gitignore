@@ -121,6 +121,7 @@ celerybeat.pid
 
 # Environments
 .env
+*.env
 .venv
 env/
 venv/
@@ -159,6 +160,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# personal
+# personal hay que pasarlos a archivos .env
 database/notion.txt
 database/seatable.txt
+database/turso.txt

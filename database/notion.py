@@ -1,7 +1,7 @@
 '''
 Functions for Using Notion API
 
-BUG: INCOMPLETE
+BUG: UNDER TEST
 
 More info: 
 [pypi.org](https://pypi.org/project/notion-client/) / pip install notion-client
