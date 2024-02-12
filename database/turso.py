@@ -7,13 +7,11 @@ More info:
 - https://docs.turso.tech/quickstart
 
 pip install libsql-experimental
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 WARNINGS:
-    - [Using MacOS] Problems with RUST:
-        thread '<unnamed>' panicked at /Users/runner/.cargo/git/checkouts/libsql-311658d335deb3b1/b015002/libsql/src/hrana/hyper.rs:88:9:
-        there is no reactor running, must be called from the context of a Tokio 1.x runtime
-        note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-        pyo3_runtime.PanicException: there is no reactor running, must be called from the context of a Tokio 1.x runtime
+    - RUST: Its necesary to install rust <https://www.rust-lang.org/tools/install>
+    
 '''
 __update__ = '2024.02.11'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'

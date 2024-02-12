@@ -4,15 +4,23 @@ Functions for Using Databases with SeaTable DB
 More info: 
 - https://seatable.io/es/
 - https://seatable.github.io/seatable-scripts/python/
+
+TASK:
+    - Use dataclass
+
+WARNINGS:
+    - ...
 '''
 
-__update__ = '2023.12.12'
+__update__ = '2024.02.12'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
 ''' SYSTEM LIBRARIES '''
-import pandas as pd
 from seatable_api import Base, context
+import pandas as pd
+from dataclasses import dataclass
+import asyncio
 
 ''' CUSTOM LIBRARIES '''
 from pydeveloptools.func_system import GET_FIRM, DATE_GET_TODAY, INTERNET_CONNECTION_CHECK
@@ -28,23 +36,15 @@ class SEATABLE_DB():
         self.base = Base(api_token, server_url)
         self.base.auth()
     
-    def SQL_DF(self, SQL_STR: str):
+    def SQL_DF(self, SQL_STR: str) -> pd.DataFrame:
         '''
         return a pandas DataFrame of a SQL string
         '''
-        self.base.query(SQL_STR)
         SQL = self.base.query(SQL_STR)
-        d = {}
-        for row in SQL:
-            # print(row)
-            for field in row:
-                value = row[field]
-                if d.get(field) == None: d[field] = [value]
-                else: d[field].append(value)
-        d = pd.DataFrame(d)
-        return d
+        df = pd.DataFrame(SQL)
+        return df
     
-    def SQL_UPDATE(self, TABLE=str, DATA=dict, WHERE=list) -> None:
+    def SQL_UPDATE(self, TABLE: str, DATA: dict, WHERE: list) -> None:
         '''
         VALUES (dict) = {"Field1": Value1, "Field2 ...} \n
         WHERE (list) = List of <class '.sql_filter'> objects \n
@@ -86,13 +86,13 @@ class SEATABLE_DB():
             DATA_LST.append(id_dic)
         self.base.batch_update_rows(TABLE, rows_data=DATA_LST)
 
-    def TABLE_INFO(self, TABLE=str):
+    def TABLE_INFO(self, TABLE: str) -> dict:
         '''
         Get a dictionary with all info about table columns
         dict = {field: 'type', 'editable', 'description'}
         '''
         SQL = self.base.list_columns(TABLE)
-        fields = {}
+        fields = dict()
         for row in SQL:
             field = row['name']
             fields[field] = {}
@@ -101,12 +101,12 @@ class SEATABLE_DB():
             fields[field]['description'] = row['description']
         return fields
 
-    def TABLE_HEADERS(self, TABLE=str):
+    def TABLE_HEADERS(self, TABLE: str) -> list:
         '''
         Get a list with all fields
         '''
         SQL = self.base.list_columns(TABLE)
-        headers = []
+        headers = list()
         for row in SQL:
             field = row['name']
             headers.append(field)
