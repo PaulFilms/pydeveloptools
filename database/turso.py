@@ -1,6 +1,7 @@
 '''
-Functions for Using Databases with TURSO DB
 ¡¡ UNDER TEST!!
+
+Functions for Using Databases with TURSO DB
 
 More info:
 - https://turso.tech
@@ -9,8 +10,11 @@ More info:
 pip install libsql-experimental
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+TASK:
+- ...
+
 WARNINGS:
-    - RUST: Its necesary to install rust <https://www.rust-lang.org/tools/install>
+- RUST: Its necesary to install rust <https://www.rust-lang.org/tools/install>
     
 '''
 __update__ = '2024.02.11'
