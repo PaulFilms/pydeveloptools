@@ -26,7 +26,7 @@ __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 import os
 from dataclasses import dataclass
 from enum import Enum
-# import pandas as pd
+import pandas as pd
 from dotenv import load_dotenv
 from notion_client import Client
 
@@ -95,14 +95,36 @@ class RESULT_FIELDS(Enum):
     public_url = "public_url"
 
 class TYPES(Enum):
-    date = ...
-    files = ...
-    multi_select = ...
-    rich_text = ...
-    title = ...
+    '''
+    '''
+    checkbox = "checkbox"
+    date = "date"
+    files = "files"
+    multi_select = "multi_select" # TAGS / LABELS
+    number = 'number'
+    rich_text = "rich_text"
+    title = "title"
+    @classmethod
+    def GET_DATA(cls, NOTION_DATA):
+        '''
+        '''
+        match NOTION_DATA["type"]:
+            case cls.checkbox.value:
+                return bool(NOTION_DATA['checkbox'])
+            case cls.number.value:
+                return float(NOTION_DATA['number'])
+            case cls.rich_text.value | cls.title.value:
+                text_data = str()
+                for e in NOTION_DATA[NOTION_DATA["type"]]:
+                    text_data += e['plain_text']
+                return text_data
+            case _:
+                return None
+
 
 def DB_QUERY(database_id: str):
     '''
+    Get data from Notion DataBase
     '''
     query_dict: dict = notion.databases.query(database_id)
 
@@ -122,19 +144,21 @@ def DB_QUERY(database_id: str):
     # print(df.columns)
     # print(df)
 
+    data_list: list = list()
     for row in query_dict[QUERY_FIELDS.results.value]:
         row_data: dict = row[RESULT_FIELDS.properties.value]
+        fields_dict = dict()
         for field in row_data:
             key: str = field
             data = row_data[field]
+            print()
             print(key)
             print(data)
-            # match data["type"]:
-            #     case "title":
-            #         value = data["type"][""]
-            #         print(data["type"][])
-        print()
-
+            fields_dict[key] = TYPES.GET_DATA(data)
+        data_list.append(fields_dict)
+    DF: pd.DataFrame = pd.DataFrame(data_list)
+    print()
+    print(DF)
     return None
 
 DB_QUERY(database_id)
