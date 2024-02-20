@@ -120,6 +120,11 @@ def GET_LIC(path: str) -> str:
 
 def CHECK(path_app: str, token: str, app_name: str) -> bool:
     '''
+    path (str): _
+    token (str): _
+    user_name (str): _
+    app_name (str): _
+    time_limit (datetime): _
     '''
     ## READ TEXT
     try:

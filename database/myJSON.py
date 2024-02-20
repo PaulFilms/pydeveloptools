@@ -4,7 +4,7 @@ Functions for using collections in json format
 DEBUG:
     - Son funciones muy sencillas hay que intentar usar las funciones nativas
 '''
-__update__ = '2023.11.03'
+__update__ = '2024.02.20'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
@@ -33,24 +33,19 @@ def json_save(dictionary: dict, filePath: str) -> None:
     with open(file, 'w') as f:
         json.dump(dictionary, f)
 
-def dict_to_json(dictionary=dict):
+def dict_to_json(pyDict: dict) -> str:
     '''
     La función "loads" decodifica una información JSON a Diccionario de Python
     '''
-    if type(dictionary) != dict:
-        print("CLASS TYPE ERROR / dict_to_json")
-        return {}
-    d = json.dumps(dictionary)
-    # d = json.loads(d)
+    d: str = json.dumps(pyDict)
     return d
 
-def json_to_dict(JSON):
+def json_to_dict(JSON: str) -> dict:
     '''
     INCOMPLETE:
         No funciona
     '''
-    DICT = {}
-    DICT = json.load(JSON)
+    DICT: dict = json.load(JSON)
     return DICT
 
 def json_to_datframe():
