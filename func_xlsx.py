@@ -133,7 +133,7 @@ class XLSREPORT:
         self.WB.save(self.filePath)
 
     def CLOSE(self) -> None:
-        self.WB.close
+        self.WB.close()
 
     def SHEET_NEW(self, sheet_name: str) -> None:
         '''
