@@ -27,7 +27,7 @@ import os
 from dataclasses import dataclass
 from enum import Enum
 import pandas as pd
-from dotenv import load_dotenv
+from dotenv import load_dotenv # *.env ENVIRON VARIABLES
 from notion_client import Client
 
 
