@@ -7,6 +7,7 @@ TASK:
     - Añadir la funcion de trabajar con letras y enteros:
         ejm: [ COL = xls.utils.get_column_letter(COLUMN) ]
     - Añadir libreria xlsxwriter para uso de hojas EXCEL ya creadas
+    - Replantear las fuentes siguiendo el esquema de MARKDOWN (ejm: H1, H2, H3...)
 
 WARNINGS:
     - Al quitar SAVE de los metodos, vigilar crasheos (2024-01-08)
@@ -117,7 +118,7 @@ class XLSREPORT:
             self.WB = xls.Workbook(self.filePath)
             self.WB.create_sheet(self.WS_NAME)
             self.WB.save(self.filePath)
-            self.WB.close
+            self.WB.close()
             self.WB = xls.load_workbook(self.filePath)
         # print(self.WB.properties)
         
@@ -152,7 +153,7 @@ class XLSREPORT:
         '''
         self.ROW = self.ROW + int(NUMBER)
 
-    def ROW_WIDTH(self, ROW: int, WIDTH: float=10) -> None:
+    def ROW_WIDTH(self, ROW: int, WIDTH: float = 10) -> None:
         '''
         Set height of a row
         '''
@@ -196,7 +197,7 @@ class XLSREPORT:
             FONT = font_name
         else:
             FONT = self.FONT
-        self.WS.cell(ROW, COLUMN).font = Font(name=FONT, size=size, bold=bold)
+        self.WS.cell(ROW, COLUMN).font = Font(name=FONT, size=size, bold = bold)
     
     def WR_TITLE(self, ROW: int, COLUMN: int, VALUE = ""):
         '''
