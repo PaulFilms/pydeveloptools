@@ -33,7 +33,7 @@ from typing import List
 # from importlib import import_module
 
 ''' PIP/IMPORTED LIBRARIES '''
-import pyperclip # type: ignore[import-untyped]
+# import pyperclip # type: ignore[import-untyped]
 
 
 ''' FUNCTIONS
@@ -66,11 +66,11 @@ def OS_GET_DECIMAL() -> str:
     '''
     return str(locale.localeconv()['decimal_point'])
 
-def COPY2CLIPBOARD(TEXT: str) -> None:
-    '''
-    Add selected data to clipboard
-    '''
-    pyperclip.copy(TEXT)
+# def COPY2CLIPBOARD(TEXT: str) -> None:
+#     '''
+#     Add selected data to clipboard
+#     '''
+#     pyperclip.copy(TEXT)
 
 def INTERNET_CONNECTION_CHECK(URL: str = r'www.seatable.io') -> bool:
     '''
