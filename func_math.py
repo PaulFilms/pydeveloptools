@@ -164,7 +164,7 @@ class UNC_TYP_B:
             and VALUE2 >= R2_MIN and VALUE2 <= R2_MAX:
             df_filter = DATAFRAME[
                     (VALUE1 > DATAFRAME["RANGE1_MIN"]) & 
-                    (VALUE1 <=  DATAFRAME["RANGE1_MAX"]) &
+                    (VALUE1 <= DATAFRAME["RANGE1_MAX"]) &
                     (VALUE2 > DATAFRAME["RANGE2_MIN"]) & 
                     (VALUE2 <=  DATAFRAME["RANGE2_MAX"])
                     ]
@@ -218,7 +218,7 @@ class UNITS(Enum):
         base = value * cls[unit].value.factor
         return base
 
-class CONVERTER():
+class CONVERTER:
     '''
     Converter tookit class with a set of functions
     '''
