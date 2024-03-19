@@ -602,7 +602,6 @@ def TBL_POP_PANDAS_DF(TABLE: QTableWidget, DATAFRAME: pd.DataFrame, HIDE_COLUMNS
     VARIABLES:
         - HIDE_COLUMNS: list **Hide the list of columns by int (column index) or str (calumn name)
         - PROTECTED_COLUMNS: list **Config the list of columns selected by int (column index) or str (calumn name)
-        - HEAD OPRDER: bool **Turn on the "Sort fields by ascending order" function
     
     BUG: 
         - Some times show: QAbstractItemView::closeEditor called with an editor that does not belong to this view
