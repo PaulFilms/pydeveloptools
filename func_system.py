@@ -13,7 +13,8 @@ TASK:
 WARNINGS:
     - The License functions have many errors to compile using mypyc
     - The <pyperclip.copy> function is very simple, it is better to remove it from this module, or add --ignore-missing-imports option with mypyc compyle
-'''
+
+________________________________________________________________________________________________ '''
 
 __version__ = '2024.01.13' # + '_Compiled'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
@@ -37,8 +38,7 @@ from typing import List
 
 
 ''' FUNCTIONS
---------------------------------------------------------
-'''
+________________________________________________________________________________________________ '''
 
 ## OPERATING SYSTEM
 
@@ -173,7 +173,6 @@ class PATH_BASENAME(Enum):
         BASENAME: str = os.path.basename(path)
         SPLIT: List[str] = BASENAME.split(".")
         if option == cls.PATH:
-            print("PATH")
             return path.replace(BASENAME, '')
         if option == cls.BASENAME:
             return BASENAME
@@ -253,8 +252,7 @@ BOOLEANS: tuple = ("TRUE", True, 1, "1", "On", "ON")
 
 
 ''' TEST
---------------------------------------------------------
-'''
+________________________________________________________________________________________________ '''
 
 # from inspect import getmembers, isfunction, isclass # OBJECTS CHECK
 

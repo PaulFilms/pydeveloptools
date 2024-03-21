@@ -1,26 +1,28 @@
 '''
-# Toolkit with simplified functions and methods for create .xlsx Reports
+Toolkit with simplified functions and methods for create .xlsx Reports
 
 
-TASK:
+`TASK:`
     - Ver actualizaciones de openpyxl para RichText
     - Añadir la funcion de trabajar con letras y enteros:
         ejm: [ COL = xls.utils.get_column_letter(COLUMN) ]
     - Añadir libreria xlsxwriter para uso de hojas EXCEL ya creadas
     - Replantear las fuentes siguiendo el esquema de MARKDOWN (ejm: H1, H2, H3...)
 
-WARNINGS:
+`WARNINGS:`
     - Al quitar SAVE de los metodos, vigilar crasheos (2024-01-08)
 
-'''
+________________________________________________________________________________________________ '''
+
 __update__ = '2024.01.08'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
 import os
 from enum import Enum
-import pandas as pd
 
+''' IMPORTED LIBRARIES '''
+import pandas as pd
 import openpyxl as xls
 from openpyxl.drawing.image import Image
 from openpyxl.styles import Alignment, Font
@@ -30,11 +32,11 @@ from openpyxl.worksheet import pagebreak
 from openpyxl.utils import get_column_letter
 
 ''' CUSTOM MAIN LIBRARIES '''
-import pydeveloptools.func_system as SYS
+from . import system as SYS
 
-''' 
-OPENPYXL VARIABLES AND FUNCTIONS
--------------------------------------------------------- '''
+
+''' OPENPYXL VARIABLES AND FUNCTIONS
+________________________________________________________________________________________________ '''
 
 def CELL_STR(ROW: int, COLUMN: int) -> str:
     '''
@@ -82,9 +84,8 @@ class FONTS(Enum):
     HEADER = Font(name='Calibri', size=10, bold=True)
     MAIN = Font(name='Calibri', size=10, bold=False)
 
-''' 
-OPENPYXL REPORT
--------------------------------------------------------- '''
+''' OPENPYXL REPORT
+________________________________________________________________________________________________ '''
 
 class XLSREPORT:
     '''
@@ -325,5 +326,5 @@ def DF_REPORT(DATAFRAME: pd.DataFrame, fileName: str, fontName: str = 'Calibri')
     report.SAVE()
 
 
-''' 
--------------------------------------------------------- '''
+''' UNDER TEST
+________________________________________________________________________________________________ '''

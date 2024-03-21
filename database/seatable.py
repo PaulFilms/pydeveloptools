@@ -10,7 +10,8 @@ TASK:
 
 WARNINGS:
     - ...
-'''
+
+________________________________________________________________________________________________ '''
 
 __update__ = '2024.02.12'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
@@ -27,7 +28,7 @@ from pydeveloptools.func_system import GET_FIRM, DATE_GET_TODAY, INTERNET_CONNEC
 
 
 ''' MAIN
------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 class SEATABLE_DB():
     def __init__(self, token: str) -> None:
@@ -128,6 +129,8 @@ class LICENSE():
                 self.license_opens = df.loc[0]['OPENS']
                 self.license_date = df.loc[0]['DATE_LIMIT']
 
-''' TEST
------------------------------------------- '''
 
+''' TEST
+________________________________________________________________________________________________ '''
+
+...

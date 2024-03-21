@@ -17,7 +17,7 @@ TASK:
 WARNINGS:
     - ...
 
-'''
+________________________________________________________________________________________________ '''
 
 __update__ = '2024.01.18'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
@@ -30,22 +30,20 @@ from enum import Enum
 from typing import List, Tuple
 
 ''' PIP/IMPORTED LIBRARIES '''
-import markdown2
 from PyQt6 import QtWidgets, QtGui, QtCore
 from PyQt6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt, QUrl
 from PyQt6.QtGui import QColor, QFont, QDesktopServices, QIcon
 from PyQt6.QtWidgets import QMainWindow, QDialog, QMessageBox, QInputDialog, QFileDialog
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QHeaderView, QTableWidget, QTableWidgetItem
 from PyQt6.QtWidgets import QPushButton, QComboBox, QLineEdit, QTextEdit, QCheckBox, QDoubleSpinBox, QSpinBox, QDateEdit, QTimeEdit
-
+import markdown2
 
 ''' CUSTOM MAIN LIBRARIES '''
 pass
 
 
 ''' FUNCTIONS
---------------------------------------------------------
-'''
+________________________________________________________________________________________________ '''
 
 def TIME_SLEEP(SEG: float=1):
     '''
@@ -123,8 +121,7 @@ def PATH_OPEN(path: str = os.getcwd()):
 
 
 ''' WIDGETS
---------------------------------------------------------
-'''
+________________________________________________________________________________________________ '''
 
 def WIDGET_WR(WIDGET, VALUE: None) -> None:
     '''
@@ -702,8 +699,7 @@ def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: List[int] | List[str] | 
 
 
 ''' INFOBOXES
---------------------------------------------------------
-'''
+________________________________________________________________________________________________ '''
 
 def INFOBOX(TITLE: str = "INFO", TEXT: str = "", icon: QIcon = None):
     '''
@@ -759,7 +755,7 @@ def INPUTBOX(TITLE: str = "", TEXT: str = None, icon: QIcon = None) -> str:
 
 
 ''' PyQt FORMS
--------------------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 class MYFONTS(Enum):
     FONT_LABEL = QFont("Roboto Black", pointSize=6, weight=8)
@@ -1380,6 +1376,9 @@ class QACQUISITIONS(QDialog):
 from pydeveloptools.forms import PYQT_QMARKDOWN_ui # UIC: pyuic6 -o forms/PYQT_QMARKDOWN_ui.py forms/PYQT_QMARKDOWN.ui
 
 class QMARKDOWN(QDialog):
+    '''
+    Markdown format Text Form
+    '''
     def __init__(self, MD_TEXT: str = str(), Window_Title: str="MarkDown Text", icon: QIcon = None) -> None:
         QDialog.__init__(self)
         
@@ -1396,5 +1395,4 @@ class QMARKDOWN(QDialog):
 
 
 ''' TEST
---------------------------------------------------------
-'''
+________________________________________________________________________________________________ '''

@@ -3,7 +3,9 @@ Functions for using databases in SQL language, dataframes with pandas, and some 
 
 `ATTENTION:`
     - SQL_INSERT is not available because the string needs to be adapted to the DB format (ACCESS, SQLITE, ...)
-'''
+
+________________________________________________________________________________________________ '''
+
 __update__ = '2023.10.16'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
@@ -13,7 +15,7 @@ from datetime import datetime
 from enum import Enum
 from dataclasses import dataclass
 
-''' EXTERNAL LIBRARIES '''
+''' IMPORTED LIBRARIES '''
 import pandas as pd
 # import numpy as np
 from numpy import nan
@@ -22,7 +24,7 @@ from numpy import nan
 
 
 ''' SQL
------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 class OPERATORS(Enum):
     EQUAL = "="
@@ -211,7 +213,7 @@ def SQL_UPDATE(TABLE: str, SET: dict, WHERE: list = []) -> str:
 
 
 ''' PANDAS
------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 def pandas_df_save(dataFrame: pd.core.frame.DataFrame, file_name: str):
     '''
@@ -245,7 +247,7 @@ def pandas_reindex(dataFrame=pd.core.frame.DataFrame, row_index=int, order="up" 
 
 
 ''' CONVERTERS
------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 def sql_to_dataframe(headers: list, sql_list):
     '''

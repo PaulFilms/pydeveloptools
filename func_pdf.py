@@ -2,13 +2,16 @@ r'''
 NOTES:
 	Creación de documentos PDF sencillos en A4 (de momento)
 	Texto enriquecido
+
 TASK:
 	- Añadir la posiblidad de usar otro tipo de tamaños de papel
 	- Añadir control de linea a todos las las funciones
 	- Añadir cuenta automática de páginas
+
 WARNINGS:
-	- Borrar funciones de Test
-'''
+	- ...
+
+________________________________________________________________________________________________ '''
 
 __update__ = '2023.09.19'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
@@ -28,10 +31,8 @@ from reportlab.lib.utils import ImageReader
 pass
 
 
-''' 
-REPORTLAB FUNCTIONS
--------------------------------------------------------- 
-'''
+''' REPORTLAB FUNCTIONS
+________________________________________________________________________________________________ '''
 
 @dataclass
 class fontTypes(str):
@@ -238,6 +239,6 @@ class PDFREPORT:
 		# print("SET_COLOR:", color_rgb)
 		pass
 
-''' TEST
--------------------------------------------------------- 
-'''
+
+''' UNDER TEST
+________________________________________________________________________________________________ '''

@@ -11,11 +11,11 @@ WARNINGS:
 mypyc:
     mypyc func_license.py
     Al distribuir a otras maquinas no funciona el archivo .pyd
-'''
 
-__version__ = '2024.01.14'
+________________________________________________________________________________________________ '''
+
+__version__ = '2024.03.21'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
-
 
 ''' SYSTEM LIBRARIES '''
 import os
@@ -31,11 +31,11 @@ from dataclasses import dataclass, asdict
 # from pydantic import BaseModel # type: ignore
 
 ''' CUSTOM MAIN LIBRARIES '''
-import pydeveloptools.func_system as SYS # type: ignore
+from . import system as SYS # type: ignore
 
 
 ''' FUNCTIONS
--------------------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 @dataclass
 class LICENSE:
@@ -208,7 +208,7 @@ def GET_LIMITS() -> dict:
 
 
 ''' TEST
--------------------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 # class LICENSE(BaseModel):
 #     USER_NAME: str = ""
