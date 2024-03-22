@@ -1,22 +1,31 @@
-r'''
-Functions for Using Databases with MS Access
 '''
+Functions for Using Databases with MS Access
+
+`TASK:`
+    - Eliminar el formato f"@{}@" y sumar TOKEN
+    - Hacer GET_LIMITS
+
+`WARNINGS:`
+    - ...
+
+________________________________________________________________________________________________ '''
+
 __update__ = '2023.10.11'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
 ''' SYSTEM LIBRARIES '''
-pass
+...
 
 ''' PIP/IMPORTED LIBRARIES '''
 import pyodbc
 
 ''' CUSTOM LIBRARIES '''
-pass
+...
 
 
 ''' MAIN
------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 class ACCESS_DB():
     '''

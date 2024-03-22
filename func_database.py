@@ -12,8 +12,8 @@ __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 ''' SYSTEM LIBRARIES '''
 import os
 from datetime import datetime
-from enum import Enum
 from dataclasses import dataclass
+from enum import Enum
 
 ''' IMPORTED LIBRARIES '''
 import pandas as pd
@@ -21,6 +21,7 @@ import pandas as pd
 from numpy import nan
 
 ''' CUSTOM MAIN LIBRARIES '''
+...
 
 
 ''' SQL
@@ -243,7 +244,6 @@ def pandas_reindex(dataFrame=pd.core.frame.DataFrame, row_index=int, order="up" 
 
     DATAFRAME = dataFrame.reindex(lst)
     return DATAFRAME
-
 
 
 ''' CONVERTERS
