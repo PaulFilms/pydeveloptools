@@ -21,3 +21,18 @@ Toolkit for developing scripts and simple applications with Python
 - ...
 
 LAST UPDATE (2023.12.23)
+
+
+## Installation Method
+
+- Last released version
+
+   ```plaintext
+   Not available
+   ```
+
+- Latest development version
+
+   ```plaintext
+   pip install git+https://github.com/PaulFilms/pydeveloptools.git@main
+   ```
