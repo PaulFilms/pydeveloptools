@@ -1,8 +1,8 @@
 '''
 Toolkit with simplified functions and methods for development with Python
-- Operating System
-- Internet
-- Datetime
+- Operating System functions
+- Internet Connection
+- Datetime formats and converters
 
 
 TASK:
@@ -66,11 +66,7 @@ def OS_GET_DECIMAL() -> str:
     '''
     return str(locale.localeconv()['decimal_point'])
 
-# def COPY2CLIPBOARD(TEXT: str) -> None:
-#     '''
-#     Add selected data to clipboard
-#     '''
-#     pyperclip.copy(TEXT)
+
 
 def INTERNET_CONNECTION_CHECK(URL: str = r'www.seatable.io') -> bool:
     '''
@@ -254,6 +250,13 @@ BOOLEANS: tuple = ("TRUE", True, 1, "1", "On", "ON")
 ''' TEST
 ________________________________________________________________________________________________ '''
 
+# def COPY2CLIPBOARD(TEXT: str) -> None:
+#     '''
+#     Add selected data to clipboard
+#     '''
+#     pyperclip.copy(TEXT)
+
+
 # from inspect import getmembers, isfunction, isclass # OBJECTS CHECK
 
 # def OBJECT_CHECK(OBJECT, objectType: str = 'function', onlyNames: bool = False) -> list:
@@ -263,7 +266,7 @@ ________________________________________________________________________________
 #     - onlyNames:
 #         - True (Return a List with al the selected objects in the library)
 #         - False (Return a List with a tuple with object name and the object)
-    
+
 #     INCOMPLETE:
 #     - Cuando el objeto es creado desde importlib no se pasa path
 #     - No he comprobado si puedes pasar un path, directamente un import, etc.
