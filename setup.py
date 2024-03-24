@@ -14,7 +14,7 @@ __update__ = '2023.12.02'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 from setuptools import setup, Extension
-from Cython.Build import cythonize
+# from Cython.Build import cythonize
 
 ext_modules = [
     Extension(
@@ -28,6 +28,6 @@ ext_modules = [
 
 setup(
     name='pydeveloptools',
-    ext_modules=cythonize(ext_modules),
+    # ext_modules=cythonize(ext_modules),
 )
 
