@@ -10,11 +10,11 @@ Toolkit with simplified functions and methods for create .xlsx Reports
     - Replantear las fuentes siguiendo el esquema de MARKDOWN (ejm: H1, H2, H3...)
 
 `WARNINGS:`
-    - Al quitar SAVE de los metodos, vigilar crasheos (2024-01-08)
+    - ...
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.01.08'
+__update__ = '2024.03.25'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -134,7 +134,8 @@ class XLSREPORT:
     def SAVE(self) -> None:
         self.WB.save(self.filePath)
 
-    def CLOSE(self) -> None:
+    def close(self) -> None:
+        self.SAVE()
         self.WB.close()
 
     def SHEET_NEW(self, sheet_name: str) -> None:

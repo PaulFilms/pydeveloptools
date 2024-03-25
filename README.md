@@ -16,6 +16,7 @@ Toolkit for developing scripts and simple applications with Python
 - Add Notion API functions
 - Creating Cython functions
 - Add Rich Text in .xlsx Reports
+- Put out all .ui files and create scipts to upgrade all forms
 
 ## WARNINGS:
 - ...
