@@ -31,7 +31,7 @@ from dataclasses import dataclass, asdict
 # from pydantic import BaseModel # type: ignore
 
 ''' CUSTOM MAIN LIBRARIES '''
-import func_system as SYS # type: ignore
+import .func_system as SYS # type: ignore
 
 
 ''' FUNCTIONS
