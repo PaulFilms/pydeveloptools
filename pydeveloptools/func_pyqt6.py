@@ -39,7 +39,7 @@ from PyQt6.QtWidgets import QPushButton, QComboBox, QLineEdit, QTextEdit, QCheck
 import markdown2
 
 ''' CUSTOM MAIN LIBRARIES '''
-pass
+...
 
 
 ''' FUNCTIONS

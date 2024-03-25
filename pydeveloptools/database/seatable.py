@@ -1,7 +1,8 @@
 '''
 Functions for Using Databases with SeaTable DB
 
-More info: 
+`More info:`
+- pip install seatable-api
 - https://seatable.io/es/
 - https://seatable.github.io/seatable-scripts/python/
 
@@ -13,7 +14,7 @@ WARNINGS:
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.02.12'
+__update__ = '2024.03.25'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 

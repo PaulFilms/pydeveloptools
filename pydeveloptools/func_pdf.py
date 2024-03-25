@@ -28,7 +28,7 @@ from reportlab.lib import colors
 from reportlab.lib.utils import ImageReader
 
 ''' CUSTOM MAIN LIBRARIES '''
-pass
+...
 
 
 ''' REPORTLAB FUNCTIONS

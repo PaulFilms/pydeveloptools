@@ -1,10 +1,14 @@
 '''
-Functions for Using Databases with SQLite Format \n
+Functions for Using Databases with SQLite Format
 
-`TASK:` \n
-`WARNINGS:` \n
-'''
-__update__ = '2023.11.06'
+`TASK:`
+    - ...
+
+`WARNINGS:`
+    - ...
+________________________________________________________________________________________________ '''
+
+__update__ = '2023.03.25'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
@@ -15,8 +19,9 @@ import json
 ''' CUSTOM LIBRARIES '''
 from pydeveloptools.func_database import SQL_SELECT, FILTER, OPERATORS
 
+
 ''' MAIN
------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 class SQLITE_DB():
     '''
@@ -277,7 +282,7 @@ class SQLITE_DB():
 
 
 ''' JSON FUNCTIONS
------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 def JSON_UPDATE(TABLE: str, DB_FIELD: str, JSON_FIELD: str, WHERE: list, VALUE) -> str:
     '''
@@ -341,7 +346,7 @@ def JSON_WHERE(TABLE: str, DB_FIELD: str, ID, JSON_FIELD: str, VALUE: bool | str
 
 
 ''' TEST
------------------------------------------- '''
+________________________________________________________________________________________________ '''
 
 # sql = JSON_SELECT("CALIBRATIONS", "DB", "TECHNICIAN", [FILTER("Id", "1111")])
 # print(sql)

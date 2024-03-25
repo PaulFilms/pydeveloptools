@@ -32,7 +32,7 @@ from openpyxl.worksheet import pagebreak
 from openpyxl.utils import get_column_letter
 
 ''' CUSTOM MAIN LIBRARIES '''
-import .func_system as SYS
+from . import system as SYS
 
 
 ''' OPENPYXL VARIABLES AND FUNCTIONS
