@@ -754,9 +754,7 @@ class MYFONTS(Enum):
     FONT_WIDGET = QFont("Consolas", pointSize=12)
     FONT_TABLE = QFont("Consolas", pointSize=10)
 
-from pydeveloptools.forms import *
-
-# from pydeveloptools.forms import PYSIDE_QLIST
+from pydeveloptools.forms import PYSIDE_QLIST
 
 class QLIST(QDialog):
     '''
@@ -784,7 +782,7 @@ class QLIST(QDialog):
         self.value = self.ui.lst.currentItem().text()
         self.close()
 
-# from pydeveloptools.forms import PYSIDE_QLIST_FORM
+from pydeveloptools.forms import PYSIDE_QLIST_FORM
 
 class QLIST_FORM(QDialog):
     '''
@@ -858,7 +856,7 @@ class QLIST_FORM(QDialog):
         self.ui.lst_items.setCurrentRow(currentRow+1)
         self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
 
-# from pydeveloptools.forms import PYSIDE_QTABLE_FORM
+from pydeveloptools.forms import PYSIDE_QTABLE_FORM
 
 class QTABLE_FORM(QDialog):
     '''
@@ -1275,7 +1273,7 @@ class QTEXT_FORM(QDialog):
             self.data = None
             return
 
-# from pydeveloptools.forms import PYSIDE_QACQUISITIONS
+from pydeveloptools.forms import PYSIDE_QACQUISITIONS
 
 class QACQUISITIONS(QDialog):
     '''
@@ -1368,7 +1366,7 @@ class QACQUISITIONS(QDialog):
             self.data['TYPE'].append(CELL_RD(self.ui.tbl_values, row, 0))
             self.data['VALUE'].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
 
-# from pydeveloptools.forms import PYSIDE_QMARKDOWN
+from pydeveloptools.forms import PYSIDE_QMARKDOWN
 
 class QMARKDOWN(QDialog):
     '''
