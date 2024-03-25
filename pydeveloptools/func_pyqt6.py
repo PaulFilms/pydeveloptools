@@ -762,8 +762,8 @@ class MYFONTS(Enum):
     FONT_WIDGET = QFont("Consolas", pointSize=12)
     FONT_TABLE = QFont("Consolas", pointSize=10)
 
-from pydeveloptools.forms import PYQT_QLIST_ui # UIC: pyuic6 -o forms/PYQT_QLIST_ui.py forms/PYQT_QLIST.ui
-
+from pydeveloptools.forms import PYQT_QLIST
+# UIC: pyuic6 -o forms/PYQT_QLIST_ui.py forms/PYQT_QLIST.ui
 class QLIST(QDialog):
     '''
     QList Widget Dialog
@@ -772,7 +772,7 @@ class QLIST(QDialog):
         QDialog.__init__(self)
 
         ''' INIT '''
-        self.ui = PYQT_QLIST_ui.Ui_Dialog()
+        self.ui = PYQT_QLIST.Ui_Dialog()
         self.ui.setupUi(self)
 
         ''' WIDGETS '''
@@ -789,8 +789,8 @@ class QLIST(QDialog):
         self.value = self.ui.lst.currentItem().text()
         self.close()
 
-from pydeveloptools.forms import PYQT_QLIST_FORM_ui # UIC: pyuic6 -o forms/PYQT_QLIST_FORM_ui.py forms/PYQT_QLIST_FORM.ui
-
+from pydeveloptools.forms import PYQT_QLIST_FORM
+# UIC: pyuic6 -o forms/PYQT_QLIST_FORM_ui.py forms/PYQT_QLIST_FORM.ui
 class QLIST_FORM(QDialog):
     '''
     List Selection Form
@@ -799,7 +799,7 @@ class QLIST_FORM(QDialog):
         QDialog.__init__(self, parent)
         
         ''' INIT '''
-        self.ui = PYQT_QLIST_FORM_ui.Ui_Dialog()
+        self.ui = PYQT_QLIST_FORM.Ui_Dialog()
         self.ui.setupUi(self)
 
         ''' WIDGETS '''
@@ -863,8 +863,8 @@ class QLIST_FORM(QDialog):
         self.ui.lst_items.setCurrentRow(currentRow+1)
         self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
 
-from pydeveloptools.forms import PYQT_QTABLE_FORM # UIC: pyuic6 -o forms/PYQT_QTABLE_FORM.py forms/PYQT_QTABLE_FORM.ui
-
+from pydeveloptools.forms import PYQT_QTABLE_FORM 
+# UIC: pyuic6 -o forms/PYQT_QTABLE_FORM.py forms/PYQT_QTABLE_FORM.ui
 class QTABLE_FORM(QDialog):
     '''
     Table Form (1 Field: 1 Value)
@@ -1280,8 +1280,8 @@ class QTEXT_FORM(QDialog):
             self.data = None
             return
 
-from pydeveloptools.forms import PYQT_QACQUISITIONS_ui # UIC: pyuic6 -o forms/PYQT_QACQUISITIONS_ui.py forms/PYQT_QACQUISITIONS.ui
-
+from pydeveloptools.forms import PYQT_QACQUISITIONS
+# UIC: pyuic6 -o forms/PYQT_QACQUISITIONS_ui.py forms/PYQT_QACQUISITIONS.ui
 class QACQUISITIONS(QDialog):
     '''
     QAcquisitions Form
@@ -1293,7 +1293,7 @@ class QACQUISITIONS(QDialog):
         QDialog.__init__(self)
 
         ''' INIT '''
-        self.ui = PYQT_QACQUISITIONS_ui.Ui_Dialog()
+        self.ui = PYQT_QACQUISITIONS.Ui_Dialog()
         self.ui.setupUi(self)
 
         ''' WIDGETS '''
@@ -1373,8 +1373,8 @@ class QACQUISITIONS(QDialog):
             self.data['TYPE'].append(CELL_RD(self.ui.tbl_values, row, 0))
             self.data['VALUE'].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
 
-from pydeveloptools.forms import PYQT_QMARKDOWN_ui # UIC: pyuic6 -o forms/PYQT_QMARKDOWN_ui.py forms/PYQT_QMARKDOWN.ui
-
+from pydeveloptools.forms import PYQT_QMARKDOWN
+# UIC: pyuic6 -o forms/PYQT_QMARKDOWN_ui.py forms/PYQT_QMARKDOWN.ui
 class QMARKDOWN(QDialog):
     '''
     Markdown format Text Form
@@ -1383,7 +1383,7 @@ class QMARKDOWN(QDialog):
         QDialog.__init__(self)
         
         ''' INIT '''
-        self.ui = PYQT_QMARKDOWN_ui.Ui_Dialog()
+        self.ui = PYQT_QMARKDOWN.Ui_Dialog()
         self.ui.setupUi(self)
 
         ''' WIDGETS '''

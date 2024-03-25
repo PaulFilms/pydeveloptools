@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'PYQT_QLIST.ui'
+## Form generated from reading UI file 'QLIST.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##

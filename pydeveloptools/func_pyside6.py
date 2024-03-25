@@ -754,9 +754,9 @@ class MYFONTS(Enum):
     FONT_WIDGET = QFont("Consolas", pointSize=12)
     FONT_TABLE = QFont("Consolas", pointSize=10)
 
+from pydeveloptools.forms import *
 
-from pydeveloptools.forms import PYSIDE_QLIST
-# pyside6-uic -o forms/PSIDE_QLIST.py forms/PYQT_QLIST.ui
+# from pydeveloptools.forms import PYSIDE_QLIST
 
 class QLIST(QDialog):
     '''
@@ -784,8 +784,7 @@ class QLIST(QDialog):
         self.value = self.ui.lst.currentItem().text()
         self.close()
 
-from pydeveloptools.forms import PYSIDE_QLIST_FORM
-# UIC: pyuic6 -o forms/PYSIDE_QLIST_FORM.py forms/PYQT_QLIST_FORM.ui
+# from pydeveloptools.forms import PYSIDE_QLIST_FORM
 
 class QLIST_FORM(QDialog):
     '''
@@ -859,535 +858,535 @@ class QLIST_FORM(QDialog):
         self.ui.lst_items.setCurrentRow(currentRow+1)
         self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
 
-# from pydeveloptools.forms import PYQT_QTABLE_FORM # UIC: pyuic6 -o forms/PYQT_QTABLE_FORM.py forms/PYQT_QTABLE_FORM.ui
+# from pydeveloptools.forms import PYSIDE_QTABLE_FORM
 
-# class QTABLE_FORM(QDialog):
-#     '''
-#     Table Form (1 Field: 1 Value)
+class QTABLE_FORM(QDialog):
+    '''
+    Table Form (1 Field: 1 Value)
 
-#     CONFIG: list [class configValue]
-#     '''
-#     @dataclass
-#     class configValue():
-#         '''
-#         Value object for use in data configuration
-#         '''
-#         fieldName: str = ""
-#         value: str | int | float | bool = ""
-#         mandatory: bool = False
-#         info: str = ""
+    CONFIG: list [class configValue]
+    '''
+    @dataclass
+    class configValue():
+        '''
+        Value object for use in data configuration
+        '''
+        fieldName: str = ""
+        value: str | int | float | bool = ""
+        mandatory: bool = False
+        info: str = ""
 
-#     def __init__(self, CONFIG: list | tuple, Window_Title: str="Table Form", fontFamily: str="Arial Rounded MT Bold", comboBoxEditables: bool=False, icon: QIcon = None) -> None:
-#         QtWidgets.QDialog.__init__(self)
+    def __init__(self, CONFIG: list | tuple, Window_Title: str="Table Form", fontFamily: str="Arial Rounded MT Bold", comboBoxEditables: bool=False, icon: QIcon = None) -> None:
+        QtWidgets.QDialog.__init__(self)
 
-#         ## GUI
-#         ## 
-#         self.ui = PYQT_QTABLE_FORM.Ui_Dialog()
-#         self.ui.setupUi(self)
+        ## GUI
+        ## 
+        self.ui = PYSIDE_QTABLE_FORM.Ui_Dialog()
+        self.ui.setupUi(self)
 
-#         ## WIDGETS
-#         self.setWindowTitle = Window_Title
-#         if icon: self.setWindowIcon(icon)
-#         self.ui.tbl_form.verticalHeader().setVisible(True)
-#         self.ui.tbl_form.setColumnCount(3)
-#         H_HEADERS: tuple = ("DATA", "", "INFO")
-#         self.ui.tbl_form.setHorizontalHeaderLabels(H_HEADERS)
+        ## WIDGETS
+        self.setWindowTitle = Window_Title
+        if icon: self.setWindowIcon(icon)
+        self.ui.tbl_form.verticalHeader().setVisible(True)
+        self.ui.tbl_form.setColumnCount(3)
+        H_HEADERS: tuple = ("DATA", "", "INFO")
+        self.ui.tbl_form.setHorizontalHeaderLabels(H_HEADERS)
 
-#         ## VARIABLES
-#         self.data: dict = None
-#         self.__CONFIG = CONFIG
-#         self.fontFamily = fontFamily
-#         self.comboBoxEditable = comboBoxEditables
+        ## VARIABLES
+        self.data: dict = None
+        self.__CONFIG = CONFIG
+        self.fontFamily = fontFamily
+        self.comboBoxEditable = comboBoxEditables
         
-#         self.CONNECTIONS()
-#         self.SETUP_DATA()
+        self.CONNECTIONS()
+        self.SETUP_DATA()
 
-#     def CONNECTIONS(self):
-#         self.ui.btn_intro.clicked.connect(self.DATA_INTRO)
+    def CONNECTIONS(self):
+        self.ui.btn_intro.clicked.connect(self.DATA_INTRO)
 
-#     def SETUP_DATA(self):
-#         TABLE = self.ui.tbl_form
-#         ## SET CONFIG
-#         TABLE.setRowCount(len(self.__CONFIG))
-#         row = 0
-#         self.HEADERS = []
-#         for field in self.__CONFIG:
-#             row = self.__CONFIG.index(field)
-#             ## NAME
-#             self.HEADERS.append(field.fieldName)
-#             ## VALUE
-#             TYPE = type(field.value)
-#             if TYPE == bool: CELL_CHECKBOX(TABLE, row, 0, field.value)
-#             if TYPE == str: CELL_WR(TABLE, row, 0, field.value)
-#             if TYPE == list: CELL_COMBOBOX(TABLE, row, 0, field.value, self.comboBoxEditable)
-#             if TYPE == tuple: CELL_COMBOBOX(TABLE, row, 0, field.value, self.comboBoxEditable)
-#             if TYPE == int: CELL_SPINBOX(TABLE, row, 0, field.value)
-#             if TYPE == float: CELL_WR(TABLE, row, 0, field.value)
-#             ## MANDATORY
-#             if field.mandatory: CELL_WR(TABLE, row, 1, "*")
-#             CELL_READONLY(TABLE, row, 1)
-#             ## INFO
-#             CELL_WR(TABLE, row, 2, field.info)
-#             CELL_READONLY(TABLE, row, 2)
-#         ## SET TABLE
-#         TABLE.setVerticalHeaderLabels(self.HEADERS)
-#         TABLE.resizeColumnsToContents()
-#         TABLE.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeMode.Fixed)
-#         TABLE.setColumnWidth(0, 230)
+    def SETUP_DATA(self):
+        TABLE = self.ui.tbl_form
+        ## SET CONFIG
+        TABLE.setRowCount(len(self.__CONFIG))
+        row = 0
+        self.HEADERS = []
+        for field in self.__CONFIG:
+            row = self.__CONFIG.index(field)
+            ## NAME
+            self.HEADERS.append(field.fieldName)
+            ## VALUE
+            TYPE = type(field.value)
+            if TYPE == bool: CELL_CHECKBOX(TABLE, row, 0, field.value)
+            if TYPE == str: CELL_WR(TABLE, row, 0, field.value)
+            if TYPE == list: CELL_COMBOBOX(TABLE, row, 0, field.value, self.comboBoxEditable)
+            if TYPE == tuple: CELL_COMBOBOX(TABLE, row, 0, field.value, self.comboBoxEditable)
+            if TYPE == int: CELL_SPINBOX(TABLE, row, 0, field.value)
+            if TYPE == float: CELL_WR(TABLE, row, 0, field.value)
+            ## MANDATORY
+            if field.mandatory: CELL_WR(TABLE, row, 1, "*")
+            CELL_READONLY(TABLE, row, 1)
+            ## INFO
+            CELL_WR(TABLE, row, 2, field.info)
+            CELL_READONLY(TABLE, row, 2)
+        ## SET TABLE
+        TABLE.setVerticalHeaderLabels(self.HEADERS)
+        TABLE.resizeColumnsToContents()
+        TABLE.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeMode.Fixed)
+        TABLE.setColumnWidth(0, 230)
 
-#     def DATA_INTRO(self):
-#         TABLE = self.ui.tbl_form
-#         self.data = {}
-#         summary = ""
-#         for field in self.HEADERS:
-#             row = self.HEADERS.index(field)
-#             value = CELL_RD(TABLE, row, 0)
-#             summary += f"{field}: "
-#             if value == "" or value == None:
-#                 if CELL_RD(TABLE, row, 1) == "*": 
-#                     self.data = None
-#                     INFOBOX("ATTENTION", "PLEASE, FILL ALL THE MANDATORY (*) FIELDS")
-#                     return
-#                 self.data[field] = None
-#             else:
-#                 self.data[field] = value
-#                 summary += f"{value}"
-#             summary += "\n"
-#         if YESNOBOX("DO YOU WANT SAVE THIS DATA?", summary) == True:
-#             self.close()
-#         else:
-#             self.data = None
-#             return
+    def DATA_INTRO(self):
+        TABLE = self.ui.tbl_form
+        self.data = {}
+        summary = ""
+        for field in self.HEADERS:
+            row = self.HEADERS.index(field)
+            value = CELL_RD(TABLE, row, 0)
+            summary += f"{field}: "
+            if value == "" or value == None:
+                if CELL_RD(TABLE, row, 1) == "*": 
+                    self.data = None
+                    INFOBOX("ATTENTION", "PLEASE, FILL ALL THE MANDATORY (*) FIELDS")
+                    return
+                self.data[field] = None
+            else:
+                self.data[field] = value
+                summary += f"{value}"
+            summary += "\n"
+        if YESNOBOX("DO YOU WANT SAVE THIS DATA?", summary) == True:
+            self.close()
+        else:
+            self.data = None
+            return
 
-# class QDICT_FORM(QDialog):
-#     '''
-#     Table Form (1 Field: Value1, Value2...)
+class QDICT_FORM(QDialog):
+    '''
+    Table Form (1 Field: Value1, Value2...)
 
-#     CONFIG (dict) = { "<Field1_Name>": Field1_Value (None/str/int/float/list), "<Field2_Name>": ... } \n
-#     DATA (dict/datFrame) = { 
-#         "<Field1_Name>" (dict): {"0": Field1_Value0, "1": Field1_Value1, ...}
-#         "<Field2_Name>" (dict): ...
-#         }  \n 
+    CONFIG (dict) = { "<Field1_Name>": Field1_Value (None/str/int/float/list), "<Field2_Name>": ... } \n
+    DATA (dict/datFrame) = { 
+        "<Field1_Name>" (dict): {"0": Field1_Value0, "1": Field1_Value1, ...}
+        "<Field2_Name>" (dict): ...
+        }  \n 
 
-#     INCOMPLETE / DEBUG:
-#         - Valores repetidos
-#         - Hay que crear un class para definir bien el CONFIG como en QTABLE_FORM
-#         - Quitar la función dataframe_to_txt
-#     '''
-#     data = None
-#     def __init__(self, CONFIG: dict, DATA={}, Window_Title="Table Form", fontFamily="Arial Rounded MT Bold"):
-#         QtWidgets.QDialog.__init__(self)
+    INCOMPLETE / DEBUG:
+        - Valores repetidos
+        - Hay que crear un class para definir bien el CONFIG como en QTABLE_FORM
+        - Quitar la función dataframe_to_txt
+    '''
+    data = None
+    def __init__(self, CONFIG: dict, DATA={}, Window_Title="Table Form", fontFamily="Arial Rounded MT Bold"):
+        QtWidgets.QDialog.__init__(self)
 
-#         ''' INIT '''
-#         self.Window_Title = Window_Title
-#         self.fontFamily = fontFamily
-#         self.CONFIG = CONFIG
-#         self.DATA = DATA
+        ''' INIT '''
+        self.Window_Title = Window_Title
+        self.fontFamily = fontFamily
+        self.CONFIG = CONFIG
+        self.DATA = DATA
 
-#         ''' INIT '''
-#         self.SETUP_UI()
-#         self.CREATE_CONNECTIONS()
-#         self.SETUP_DATA()
+        ''' INIT '''
+        self.SETUP_UI()
+        self.CREATE_CONNECTIONS()
+        self.SETUP_DATA()
         
-#     def SETUP_UI(self):
-#         self.setObjectName("Dialog")
-#         self.resize(500, 400)
-#         self.setMinimumSize(QtCore.QSize(350, 350))
-#         font = QtGui.QFont()
-#         font.setFamily(self.fontFamily)
-#         self.setFont(font)
-#         self.setWindowTitle(self.Window_Title)
-#         self.setToolTip("")
-#         self.setStatusTip("")
-#         self.setWhatsThis("")
-#         self.setAccessibleName("")
-#         self.setAccessibleDescription("")
-#         # self.setLocale(QtCore.QLocale(QtCore.QLocale.Language.English, QtCore.QLocale.Country.UnitedKingdom))
-#         self.setWindowFilePath("")
-#         self.gridLayout = QtWidgets.QGridLayout(self)
-#         self.gridLayout.setObjectName("gridLayout")
-#         self.btn_row_add = QtWidgets.QPushButton(self)
-#         self.btn_row_add.setEnabled(True)
-#         self.btn_row_add.setMinimumSize(QtCore.QSize(0, 35))
-#         self.btn_row_add.setMaximumSize(QtCore.QSize(16777215, 35))
-#         font = QtGui.QFont()
-#         font.setFamily(self.fontFamily)
-#         font.setPointSize(11)
-#         font.setBold(True)
-#         font.setItalic(False)
-#         font.setWeight(75)
-#         self.btn_row_add.setFont(font)
-#         self.btn_row_add.setToolTip("")
-#         self.btn_row_add.setStatusTip("")
-#         self.btn_row_add.setWhatsThis("")
-#         self.btn_row_add.setAccessibleName("")
-#         self.btn_row_add.setAccessibleDescription("")
-#         self.btn_row_add.setText("ADD ROW")
-#         self.btn_row_add.setShortcut("")
-#         self.btn_row_add.setObjectName("btn_row_add")
-#         self.gridLayout.addWidget(self.btn_row_add, 0, 0, 1, 1)
-#         self.btn_row_del = QtWidgets.QPushButton(self)
-#         self.btn_row_del.setEnabled(True)
-#         self.btn_row_del.setMinimumSize(QtCore.QSize(0, 35))
-#         self.btn_row_del.setMaximumSize(QtCore.QSize(16777215, 35))
-#         font = QtGui.QFont()
-#         font.setFamily(self.fontFamily)
-#         font.setPointSize(11)
-#         font.setBold(True)
-#         font.setItalic(False)
-#         font.setWeight(75)
-#         self.btn_row_del.setFont(font)
-#         self.btn_row_del.setToolTip("")
-#         self.btn_row_del.setStatusTip("")
-#         self.btn_row_del.setWhatsThis("")
-#         self.btn_row_del.setAccessibleName("")
-#         self.btn_row_del.setAccessibleDescription("")
-#         self.btn_row_del.setText("DEL ROW")
-#         self.btn_row_del.setShortcut("")
-#         self.btn_row_del.setObjectName("btn_row_del")
-#         self.gridLayout.addWidget(self.btn_row_del, 0, 1, 1, 1)
-#         self.tbl_main = QtWidgets.QTableWidget(self)
-#         self.tbl_main.setEnabled(True)
-#         font = QtGui.QFont()
-#         font.setFamily(self.fontFamily)
-#         font.setPointSize(10)
-#         self.tbl_main.setFont(font)
-#         self.tbl_main.setToolTip("")
-#         self.tbl_main.setStatusTip("")
-#         self.tbl_main.setWhatsThis("")
-#         self.tbl_main.setAccessibleName("")
-#         self.tbl_main.setAccessibleDescription("")
-#         self.tbl_main.setStyleSheet("background-color: rgb(228, 228, 228);")
-#         self.tbl_main.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.SizeAdjustPolicy.AdjustIgnored)
-#         self.tbl_main.setDragEnabled(False)
-#         self.tbl_main.setDragDropOverwriteMode(False)
-#         self.tbl_main.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.NoDragDrop)
-#         self.tbl_main.setAlternatingRowColors(True)
-#         self.tbl_main.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
-#         self.tbl_main.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectItems)
-#         self.tbl_main.setObjectName("tbl_main")
-#         self.tbl_main.setColumnCount(0)
-#         self.tbl_main.setRowCount(0)
-#         self.tbl_main.horizontalHeader().setDefaultSectionSize(160)
-#         self.tbl_main.horizontalHeader().setMinimumSectionSize(25)
-#         self.tbl_main.verticalHeader().setVisible(False)
-#         self.tbl_main.verticalHeader().setDefaultSectionSize(35)
-#         self.tbl_main.verticalHeader().setMinimumSectionSize(35)
-#         self.gridLayout.addWidget(self.tbl_main, 1, 0, 1, 2)
-#         self.btn_save = QtWidgets.QPushButton(self)
-#         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Ignored, QtWidgets.QSizePolicy.Policy.Preferred)
-#         sizePolicy.setHorizontalStretch(0)
-#         sizePolicy.setVerticalStretch(0)
-#         sizePolicy.setHeightForWidth(self.btn_save.sizePolicy().hasHeightForWidth())
-#         self.btn_save.setSizePolicy(sizePolicy)
-#         self.btn_save.setMinimumSize(QtCore.QSize(0, 60))
-#         self.btn_save.setMaximumSize(QtCore.QSize(16777215, 60))
-#         font = QtGui.QFont()
-#         font.setPointSize(14)
-#         font.setBold(True)
-#         font.setWeight(75)
-#         self.btn_save.setFont(font)
-#         self.btn_save.setToolTip("")
-#         self.btn_save.setStatusTip("")
-#         self.btn_save.setWhatsThis("")
-#         self.btn_save.setAccessibleName("")
-#         self.btn_save.setAccessibleDescription("")
-#         # self.btn_save.setLocale(QtCore.QLocale(QtCore.QLocale.Language.English, QtCore.QLocale.Country.UnitedKingdom))
-#         self.btn_save.setText("SAVE DATA")
-#         self.btn_save.setShortcut("")
-#         self.btn_save.setObjectName("btn_save")
-#         self.gridLayout.addWidget(self.btn_save, 2, 0, 1, 2)
-#         ''' WIDGETS '''
-#         # self.HEADERS = list(self.FIELDS.keys())
-#         # self.tbl_main.setColumnCount(len(self.HEADERS))
-#         # self.tbl_main.setHorizontalHeaderLabels(self.HEADERS)
-#         pass
+    def SETUP_UI(self):
+        self.setObjectName("Dialog")
+        self.resize(500, 400)
+        self.setMinimumSize(QtCore.QSize(350, 350))
+        font = QtGui.QFont()
+        font.setFamily(self.fontFamily)
+        self.setFont(font)
+        self.setWindowTitle(self.Window_Title)
+        self.setToolTip("")
+        self.setStatusTip("")
+        self.setWhatsThis("")
+        self.setAccessibleName("")
+        self.setAccessibleDescription("")
+        # self.setLocale(QtCore.QLocale(QtCore.QLocale.Language.English, QtCore.QLocale.Country.UnitedKingdom))
+        self.setWindowFilePath("")
+        self.gridLayout = QtWidgets.QGridLayout(self)
+        self.gridLayout.setObjectName("gridLayout")
+        self.btn_row_add = QtWidgets.QPushButton(self)
+        self.btn_row_add.setEnabled(True)
+        self.btn_row_add.setMinimumSize(QtCore.QSize(0, 35))
+        self.btn_row_add.setMaximumSize(QtCore.QSize(16777215, 35))
+        font = QtGui.QFont()
+        font.setFamily(self.fontFamily)
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.btn_row_add.setFont(font)
+        self.btn_row_add.setToolTip("")
+        self.btn_row_add.setStatusTip("")
+        self.btn_row_add.setWhatsThis("")
+        self.btn_row_add.setAccessibleName("")
+        self.btn_row_add.setAccessibleDescription("")
+        self.btn_row_add.setText("ADD ROW")
+        self.btn_row_add.setShortcut("")
+        self.btn_row_add.setObjectName("btn_row_add")
+        self.gridLayout.addWidget(self.btn_row_add, 0, 0, 1, 1)
+        self.btn_row_del = QtWidgets.QPushButton(self)
+        self.btn_row_del.setEnabled(True)
+        self.btn_row_del.setMinimumSize(QtCore.QSize(0, 35))
+        self.btn_row_del.setMaximumSize(QtCore.QSize(16777215, 35))
+        font = QtGui.QFont()
+        font.setFamily(self.fontFamily)
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.btn_row_del.setFont(font)
+        self.btn_row_del.setToolTip("")
+        self.btn_row_del.setStatusTip("")
+        self.btn_row_del.setWhatsThis("")
+        self.btn_row_del.setAccessibleName("")
+        self.btn_row_del.setAccessibleDescription("")
+        self.btn_row_del.setText("DEL ROW")
+        self.btn_row_del.setShortcut("")
+        self.btn_row_del.setObjectName("btn_row_del")
+        self.gridLayout.addWidget(self.btn_row_del, 0, 1, 1, 1)
+        self.tbl_main = QtWidgets.QTableWidget(self)
+        self.tbl_main.setEnabled(True)
+        font = QtGui.QFont()
+        font.setFamily(self.fontFamily)
+        font.setPointSize(10)
+        self.tbl_main.setFont(font)
+        self.tbl_main.setToolTip("")
+        self.tbl_main.setStatusTip("")
+        self.tbl_main.setWhatsThis("")
+        self.tbl_main.setAccessibleName("")
+        self.tbl_main.setAccessibleDescription("")
+        self.tbl_main.setStyleSheet("background-color: rgb(228, 228, 228);")
+        self.tbl_main.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.SizeAdjustPolicy.AdjustIgnored)
+        self.tbl_main.setDragEnabled(False)
+        self.tbl_main.setDragDropOverwriteMode(False)
+        self.tbl_main.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.NoDragDrop)
+        self.tbl_main.setAlternatingRowColors(True)
+        self.tbl_main.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
+        self.tbl_main.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectItems)
+        self.tbl_main.setObjectName("tbl_main")
+        self.tbl_main.setColumnCount(0)
+        self.tbl_main.setRowCount(0)
+        self.tbl_main.horizontalHeader().setDefaultSectionSize(160)
+        self.tbl_main.horizontalHeader().setMinimumSectionSize(25)
+        self.tbl_main.verticalHeader().setVisible(False)
+        self.tbl_main.verticalHeader().setDefaultSectionSize(35)
+        self.tbl_main.verticalHeader().setMinimumSectionSize(35)
+        self.gridLayout.addWidget(self.tbl_main, 1, 0, 1, 2)
+        self.btn_save = QtWidgets.QPushButton(self)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Ignored, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_save.sizePolicy().hasHeightForWidth())
+        self.btn_save.setSizePolicy(sizePolicy)
+        self.btn_save.setMinimumSize(QtCore.QSize(0, 60))
+        self.btn_save.setMaximumSize(QtCore.QSize(16777215, 60))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.btn_save.setFont(font)
+        self.btn_save.setToolTip("")
+        self.btn_save.setStatusTip("")
+        self.btn_save.setWhatsThis("")
+        self.btn_save.setAccessibleName("")
+        self.btn_save.setAccessibleDescription("")
+        # self.btn_save.setLocale(QtCore.QLocale(QtCore.QLocale.Language.English, QtCore.QLocale.Country.UnitedKingdom))
+        self.btn_save.setText("SAVE DATA")
+        self.btn_save.setShortcut("")
+        self.btn_save.setObjectName("btn_save")
+        self.gridLayout.addWidget(self.btn_save, 2, 0, 1, 2)
+        ''' WIDGETS '''
+        # self.HEADERS = list(self.FIELDS.keys())
+        # self.tbl_main.setColumnCount(len(self.HEADERS))
+        # self.tbl_main.setHorizontalHeaderLabels(self.HEADERS)
+        pass
 
-#     def CREATE_CONNECTIONS(self):
-#         self.btn_row_add.clicked.connect(self.ROW_ADD)
-#         self.btn_row_del.clicked.connect(self.ROW_DEL)
-#         self.btn_save.clicked.connect(self.DATA_INTRO)
+    def CREATE_CONNECTIONS(self):
+        self.btn_row_add.clicked.connect(self.ROW_ADD)
+        self.btn_row_del.clicked.connect(self.ROW_DEL)
+        self.btn_save.clicked.connect(self.DATA_INTRO)
 
-#     def SETUP_DATA(self):
-#         TABLE = self.tbl_main
-#         self.HEADERS = []
-#         for field in self.CONFIG.keys(): self.HEADERS.append(field)
-#         self.HEADERS.append("INFO")
-#         TABLE.setColumnCount(len(self.HEADERS))
-#         TABLE.setHorizontalHeaderLabels(self.HEADERS)
-#         df = pd.DataFrame(self.DATA)
-#         for row in df.index:
-#             self.ROW_ADD()
-#             for field in self.HEADERS:
-#                 col = self.HEADERS.index(field)
-#                 value = df.loc[row][field]
-#                 CELL = TABLE.cellWidget(int(row), col)
-#                 if CELL == None:
-#                     CELL_WR(TABLE, int(row), col, value)
-#                 else:
-#                     WIDGET_WR(CELL, value)
+    def SETUP_DATA(self):
+        TABLE = self.tbl_main
+        self.HEADERS = []
+        for field in self.CONFIG.keys(): self.HEADERS.append(field)
+        self.HEADERS.append("INFO")
+        TABLE.setColumnCount(len(self.HEADERS))
+        TABLE.setHorizontalHeaderLabels(self.HEADERS)
+        df = pd.DataFrame(self.DATA)
+        for row in df.index:
+            self.ROW_ADD()
+            for field in self.HEADERS:
+                col = self.HEADERS.index(field)
+                value = df.loc[row][field]
+                CELL = TABLE.cellWidget(int(row), col)
+                if CELL == None:
+                    CELL_WR(TABLE, int(row), col, value)
+                else:
+                    WIDGET_WR(CELL, value)
 
-#     def ROW_ADD(self):
-#         TABLE = self.tbl_main
-#         row = TABLE.rowCount()
-#         TABLE.insertRow(row)
-#         col = 0
-#         for field in self.CONFIG:
-#             value = self.CONFIG[field]
-#             typ = type(value)
-#             if typ == list: CELL_COMBOBOX(TABLE, row, col, value)
-#             if typ == str: CELL_WR(TABLE, row, col, value)
-#             if typ == int: CELL_SPINBOX(TABLE, row, col, value)
-#             if typ == float: CELL_WR(TABLE, row, col, value)
-#             if typ == bool: CELL_CHECKBOX(TABLE, row, col, value)
-#             col += 1
+    def ROW_ADD(self):
+        TABLE = self.tbl_main
+        row = TABLE.rowCount()
+        TABLE.insertRow(row)
+        col = 0
+        for field in self.CONFIG:
+            value = self.CONFIG[field]
+            typ = type(value)
+            if typ == list: CELL_COMBOBOX(TABLE, row, col, value)
+            if typ == str: CELL_WR(TABLE, row, col, value)
+            if typ == int: CELL_SPINBOX(TABLE, row, col, value)
+            if typ == float: CELL_WR(TABLE, row, col, value)
+            if typ == bool: CELL_CHECKBOX(TABLE, row, col, value)
+            col += 1
 
-#     def ROW_DEL(self):
-#         TABLE = self.tbl_main
-#         row = TABLE.currentRow()
-#         if row < 0:
-#             INFOBOX("ATTENTION", "SELECT A VALID ROW")
-#         else:
-#             TABLE.removeRow(row)
-#         pass
+    def ROW_DEL(self):
+        TABLE = self.tbl_main
+        row = TABLE.currentRow()
+        if row < 0:
+            INFOBOX("ATTENTION", "SELECT A VALID ROW")
+        else:
+            TABLE.removeRow(row)
+        pass
 
-#     def dataframe_to_txt(self, DATAFRAME=pd.DataFrame) -> str:
-#         '''
-#         '''
-#         columns = {}
-#         for col in DATAFRAME.columns:
-#             columns[col] = 0
-#             for row in DATAFRAME.index:
-#                 value = len(str(DATAFRAME.loc[row][col]))
-#                 if columns[col] < value: columns[col] = value
-#         ## Texto
-#         tx = ""
-#         for row in DATAFRAME.index:
-#             lst = []
-#             for col in DATAFRAME.columns:
-#                 value = DATAFRAME.loc[row][col]
-#                 largo = columns[col]+1
-#                 texto = f'{value: <{largo}}'
-#                 texto = str(value)
-#                 lst.append(texto)
-#             tx += ", ".join(lst) # chr(9) + "| "
-#             tx += chr(10) # "\n"
-#         return tx
+    def dataframe_to_txt(self, DATAFRAME=pd.DataFrame) -> str:
+        '''
+        '''
+        columns = {}
+        for col in DATAFRAME.columns:
+            columns[col] = 0
+            for row in DATAFRAME.index:
+                value = len(str(DATAFRAME.loc[row][col]))
+                if columns[col] < value: columns[col] = value
+        ## Texto
+        tx = ""
+        for row in DATAFRAME.index:
+            lst = []
+            for col in DATAFRAME.columns:
+                value = DATAFRAME.loc[row][col]
+                largo = columns[col]+1
+                texto = f'{value: <{largo}}'
+                texto = str(value)
+                lst.append(texto)
+            tx += ", ".join(lst) # chr(9) + "| "
+            tx += chr(10) # "\n"
+        return tx
 
-#     def DATA_INTRO(self):
-#         TABLE = self.tbl_main
-#         self.data = {}
-#         summary = ""
-#         for field in self.HEADERS: self.data[field] = []
-#         for row in range(TABLE.rowCount()):
-#             for field in self.HEADERS: 
-#                 col = self.HEADERS.index(field)
-#                 value = CELL_RD(TABLE, row, col)
-#                 self.data[field].append(value)
-#         df = pd.DataFrame(self.data)
-#         self.data = df.to_json()
-#         # summary = df.to_string()
-#         summary = self.dataframe_to_txt(df)
-#         if YESNOBOX("DO YOU WANT SAVE THIS DATA?", summary) == True:
-#             self.close()
-#         else:
-#             self.data = None
-#             return
+    def DATA_INTRO(self):
+        TABLE = self.tbl_main
+        self.data = {}
+        summary = ""
+        for field in self.HEADERS: self.data[field] = []
+        for row in range(TABLE.rowCount()):
+            for field in self.HEADERS: 
+                col = self.HEADERS.index(field)
+                value = CELL_RD(TABLE, row, col)
+                self.data[field].append(value)
+        df = pd.DataFrame(self.data)
+        self.data = df.to_json()
+        # summary = df.to_string()
+        summary = self.dataframe_to_txt(df)
+        if YESNOBOX("DO YOU WANT SAVE THIS DATA?", summary) == True:
+            self.close()
+        else:
+            self.data = None
+            return
 
-# class QTEXT_FORM(QDialog):
-#     '''
-#     Plain Text Form
+class QTEXT_FORM(QDialog):
+    '''
+    Plain Text Form
 
-#     INCOMPLETE / DEBUG:
-#         - Hay que crear un class para definir bien el CONFIG como en QTABLE_FORM
-#     '''
-#     data = None
-#     def __init__(self, TEXT: str = "", Window_Title="Plain Text Form", fontFamily="Consolas"):
-#         QtWidgets.QDialog.__init__(self)
-#         self.Window_Title = Window_Title
-#         self.fontFamily = fontFamily
-#         self.TEXT = TEXT
+    INCOMPLETE / DEBUG:
+        - Hay que crear un class para definir bien el CONFIG como en QTABLE_FORM
+    '''
+    data = None
+    def __init__(self, TEXT: str = "", Window_Title="Plain Text Form", fontFamily="Consolas"):
+        QtWidgets.QDialog.__init__(self)
+        self.Window_Title = Window_Title
+        self.fontFamily = fontFamily
+        self.TEXT = TEXT
 
-#         ''' INIT '''
-#         self.setupUi()
-#         self.tx_dialog.setText(self.TEXT)
-#         self.btn_exit.clicked.connect(self.exitdialog)
+        ''' INIT '''
+        self.setupUi()
+        self.tx_dialog.setText(self.TEXT)
+        self.btn_exit.clicked.connect(self.exitdialog)
 
-#     def setupUi(self):
-#         font = QtGui.QFont()
-#         font.setPointSize(10)
-#         font.setFamily(self.fontFamily)
-#         self.setFont(font)
-#         self.setObjectName("Dialog")
-#         self.resize(600, 160)
-#         self.setWindowTitle(self.Window_Title)
-#         self.setToolTip("")
-#         self.setStatusTip("")
-#         self.setWhatsThis("")
-#         self.setAccessibleName("")
-#         self.setAccessibleDescription("")
-#         self.setWindowFilePath("")
-#         # 
-#         self.tx_dialog = QtWidgets.QTextEdit(self)
-#         font = QtGui.QFont()
-#         font.setPointSize(10)
-#         font.setFamily(self.fontFamily)
-#         self.tx_dialog.setFont(font)
-#         self.tx_dialog.setToolTip("")
-#         self.tx_dialog.setStatusTip("")
-#         self.tx_dialog.setWhatsThis("")
-#         self.tx_dialog.setAccessibleName("")
-#         self.tx_dialog.setAccessibleDescription("")
-#         # self.tx_dialog.setStyleSheet("background-color: rgb(228, 228, 228);")
-#         self.tx_dialog.setDocumentTitle("")
-#         self.tx_dialog.setAcceptRichText(False)
-#         self.tx_dialog.setPlaceholderText("")
-#         self.tx_dialog.setObjectName("tx_dialog")
-#         # 
-#         self.btn_exit = QtWidgets.QPushButton(self)
-#         self.btn_exit.setMinimumSize(QtCore.QSize(0, 40))
-#         self.btn_exit.setMaximumSize(QtCore.QSize(16777215, 40))
-#         font = QtGui.QFont()
-#         font.setPointSize(12)
-#         font.setFamily(self.fontFamily)
-#         font.setBold(True)
-#         font.setWeight(75)
-#         self.btn_exit.setFont(font)
-#         self.btn_exit.setToolTip("")
-#         self.btn_exit.setStatusTip("")
-#         self.btn_exit.setWhatsThis("")
-#         self.btn_exit.setAccessibleName("")
-#         self.btn_exit.setAccessibleDescription("")
-#         self.btn_exit.setText("SAVE")
-#         self.btn_exit.setShortcut("")
-#         self.btn_exit.setObjectName("btn_exit")
-#         # 
-#         self.verticalLayout = QtWidgets.QVBoxLayout(self)
-#         self.verticalLayout.setObjectName("verticalLayout")
-#         self.verticalLayout.addWidget(self.tx_dialog)
-#         self.verticalLayout.addWidget(self.btn_exit)
-#         QtCore.QMetaObject.connectSlotsByName(self)
+    def setupUi(self):
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setFamily(self.fontFamily)
+        self.setFont(font)
+        self.setObjectName("Dialog")
+        self.resize(600, 160)
+        self.setWindowTitle(self.Window_Title)
+        self.setToolTip("")
+        self.setStatusTip("")
+        self.setWhatsThis("")
+        self.setAccessibleName("")
+        self.setAccessibleDescription("")
+        self.setWindowFilePath("")
+        # 
+        self.tx_dialog = QtWidgets.QTextEdit(self)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setFamily(self.fontFamily)
+        self.tx_dialog.setFont(font)
+        self.tx_dialog.setToolTip("")
+        self.tx_dialog.setStatusTip("")
+        self.tx_dialog.setWhatsThis("")
+        self.tx_dialog.setAccessibleName("")
+        self.tx_dialog.setAccessibleDescription("")
+        # self.tx_dialog.setStyleSheet("background-color: rgb(228, 228, 228);")
+        self.tx_dialog.setDocumentTitle("")
+        self.tx_dialog.setAcceptRichText(False)
+        self.tx_dialog.setPlaceholderText("")
+        self.tx_dialog.setObjectName("tx_dialog")
+        # 
+        self.btn_exit = QtWidgets.QPushButton(self)
+        self.btn_exit.setMinimumSize(QtCore.QSize(0, 40))
+        self.btn_exit.setMaximumSize(QtCore.QSize(16777215, 40))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setFamily(self.fontFamily)
+        font.setBold(True)
+        font.setWeight(75)
+        self.btn_exit.setFont(font)
+        self.btn_exit.setToolTip("")
+        self.btn_exit.setStatusTip("")
+        self.btn_exit.setWhatsThis("")
+        self.btn_exit.setAccessibleName("")
+        self.btn_exit.setAccessibleDescription("")
+        self.btn_exit.setText("SAVE")
+        self.btn_exit.setShortcut("")
+        self.btn_exit.setObjectName("btn_exit")
+        # 
+        self.verticalLayout = QtWidgets.QVBoxLayout(self)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.verticalLayout.addWidget(self.tx_dialog)
+        self.verticalLayout.addWidget(self.btn_exit)
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-#     def exitdialog(self):
-#         self.data = self.tx_dialog.toPlainText()
-#         if YESNOBOX("DO YOU WANT SAVE THIS DATA?", self.data) == True:
-#             self.close()
-#         else:
-#             self.data = None
-#             return
+    def exitdialog(self):
+        self.data = self.tx_dialog.toPlainText()
+        if YESNOBOX("DO YOU WANT SAVE THIS DATA?", self.data) == True:
+            self.close()
+        else:
+            self.data = None
+            return
 
-# from pydeveloptools.forms import PYQT_QACQUISITIONS_ui # UIC: pyuic6 -o forms/PYQT_QACQUISITIONS_ui.py forms/PYQT_QACQUISITIONS.ui
+# from pydeveloptools.forms import PYSIDE_QACQUISITIONS
 
-# class QACQUISITIONS(QDialog):
-#     '''
-#     QAcquisitions Form
+class QACQUISITIONS(QDialog):
+    '''
+    QAcquisitions Form
 
-#     BUG: Incomplete
-#     - Add LEFT/RIGHT functions
-#     '''
-#     def __init__(self, MEAS_INFO: str, Window_Title: str="List", icon: QIcon = None):
-#         QDialog.__init__(self)
+    BUG: Incomplete
+    - Add LEFT/RIGHT functions
+    '''
+    def __init__(self, MEAS_INFO: str, Window_Title: str="List", icon: QIcon = None):
+        QDialog.__init__(self)
 
-#         ''' INIT '''
-#         self.ui = PYQT_QACQUISITIONS_ui.Ui_Dialog()
-#         self.ui.setupUi(self)
+        ''' INIT '''
+        self.ui = PYSIDE_QACQUISITIONS.Ui_Dialog()
+        self.ui.setupUi(self)
 
-#         ''' WIDGETS '''
-#         if icon: self.setWindowIcon(icon)
-#         self.setWindowTitle(Window_Title)
-#         self.ui.tx_cal_devinfo.setText(MEAS_INFO)
-#         self.TYPES: tuple = ("MEASURE", "INDICATION")
-#         self.ui.cb_type.addItems(self.TYPES)
-#         self.ui.cb_type.setCurrentIndex(0)
-#         for item in ["G","M","k","","m","µ","n"]:
-#             self.ui.cb_units.addItem(item)
-#         self.ui.cb_units.setCurrentIndex(3)
-#         self.data: dict = None
+        ''' WIDGETS '''
+        if icon: self.setWindowIcon(icon)
+        self.setWindowTitle(Window_Title)
+        self.ui.tx_cal_devinfo.setText(MEAS_INFO)
+        self.TYPES: tuple = ("MEASURE", "INDICATION")
+        self.ui.cb_type.addItems(self.TYPES)
+        self.ui.cb_type.setCurrentIndex(0)
+        for item in ["G","M","k","","m","µ","n"]:
+            self.ui.cb_units.addItem(item)
+        self.ui.cb_units.setCurrentIndex(3)
+        self.data: dict = None
 
-#         ''' CONNECTIONS '''
-#         self.ui.btn_addvalue.clicked.connect(self.VALUE_ADD)
-#         self.ui.btn_delete.clicked.connect(self.VALUE_DEL)
-#         self.ui.btn_exit.clicked.connect(self.EXIT)
+        ''' CONNECTIONS '''
+        self.ui.btn_addvalue.clicked.connect(self.VALUE_ADD)
+        self.ui.btn_delete.clicked.connect(self.VALUE_DEL)
+        self.ui.btn_exit.clicked.connect(self.EXIT)
     
-#     def VALUE_ADD(self) -> None:
-#         '''
-#         '''
-#         value: float = float()
-#         try:
-#             value = float(self.ui.tx_value.text())
-#         except:
-#             value = 0
-#         unit: str = self.ui.cb_units.currentText()
-#         match unit:
-#             case "G":
-#                 value = value * 1e9
-#             case "M":
-#                 value = value * 1e6
-#             case "k":
-#                 value = value * 1e3
-#             case "":
-#                 value = value * 1
-#             case "m":
-#                 value = value * 1e-3
-#             case "µ":
-#                 value = value * 1e-6
-#             case "n":
-#                 value = value * 1e-9
-#         row = self.ui.tbl_values.rowCount()
-#         self.ui.tbl_values.insertRow(row)
-#         CELL_WR(self.ui.tbl_values, row, 0, self.ui.cb_type.currentText())
-#         CELL_WR(self.ui.tbl_values, row, 1, value)
-#         self.GET_VALUES()
+    def VALUE_ADD(self) -> None:
+        '''
+        '''
+        value: float = float()
+        try:
+            value = float(self.ui.tx_value.text())
+        except:
+            value = 0
+        unit: str = self.ui.cb_units.currentText()
+        match unit:
+            case "G":
+                value = value * 1e9
+            case "M":
+                value = value * 1e6
+            case "k":
+                value = value * 1e3
+            case "":
+                value = value * 1
+            case "m":
+                value = value * 1e-3
+            case "µ":
+                value = value * 1e-6
+            case "n":
+                value = value * 1e-9
+        row = self.ui.tbl_values.rowCount()
+        self.ui.tbl_values.insertRow(row)
+        CELL_WR(self.ui.tbl_values, row, 0, self.ui.cb_type.currentText())
+        CELL_WR(self.ui.tbl_values, row, 1, value)
+        self.GET_VALUES()
 
-#     def VALUE_DEL(self) -> None:
-#         '''
-#         '''
-#         row = self.ui.tbl_values.currentRow()
-#         if row < 0:
-#             return
-#         self.ui.tbl_values.removeRow(row)
-#         self.GET_VALUES()
+    def VALUE_DEL(self) -> None:
+        '''
+        '''
+        row = self.ui.tbl_values.currentRow()
+        if row < 0:
+            return
+        self.ui.tbl_values.removeRow(row)
+        self.GET_VALUES()
     
-#     def EXIT(self) -> None:
-#         '''
-#         '''
-#         self.GET_VALUES()
-#         self.close()
+    def EXIT(self) -> None:
+        '''
+        '''
+        self.GET_VALUES()
+        self.close()
     
-#     def GET_VALUES(self) -> None:
-#         '''
-#         '''
-#         # DF = pd.DataFrame(columns=self.TYPES)
-#         # for row in range(self.ui.tbl_values.rowCount()):
-#         #     DF.loc[len(DF)] = [CELL_RD(self.ui.tbl_values, row, 0), float(CELL_RD(self.ui.tbl_values, row, 1))]
-#         # print()
-#         # self.data = DF.to_dict('list')
-#         self.data = dict()
-#         self.data['TYPE'] = list()
-#         self.data['VALUE'] = list()
-#         for row in range(self.ui.tbl_values.rowCount()):
-#             self.data['TYPE'].append(CELL_RD(self.ui.tbl_values, row, 0))
-#             self.data['VALUE'].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
+    def GET_VALUES(self) -> None:
+        '''
+        '''
+        # DF = pd.DataFrame(columns=self.TYPES)
+        # for row in range(self.ui.tbl_values.rowCount()):
+        #     DF.loc[len(DF)] = [CELL_RD(self.ui.tbl_values, row, 0), float(CELL_RD(self.ui.tbl_values, row, 1))]
+        # print()
+        # self.data = DF.to_dict('list')
+        self.data = dict()
+        self.data['TYPE'] = list()
+        self.data['VALUE'] = list()
+        for row in range(self.ui.tbl_values.rowCount()):
+            self.data['TYPE'].append(CELL_RD(self.ui.tbl_values, row, 0))
+            self.data['VALUE'].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
 
-# from pydeveloptools.forms import PYQT_QMARKDOWN_ui # UIC: pyuic6 -o forms/PYQT_QMARKDOWN_ui.py forms/PYQT_QMARKDOWN.ui
+# from pydeveloptools.forms import PYSIDE_QMARKDOWN
 
-# class QMARKDOWN(QDialog):
-#     '''
-#     Markdown format Text Form
-#     '''
-#     def __init__(self, MD_TEXT: str = str(), Window_Title: str="MarkDown Text", icon: QIcon = None) -> None:
-#         QDialog.__init__(self)
+class QMARKDOWN(QDialog):
+    '''
+    Markdown format Text Form
+    '''
+    def __init__(self, MD_TEXT: str = str(), Window_Title: str="MarkDown Text", icon: QIcon = None) -> None:
+        QDialog.__init__(self)
         
-#         ''' INIT '''
-#         self.ui = PYQT_QMARKDOWN_ui.Ui_Dialog()
-#         self.ui.setupUi(self)
+        ''' INIT '''
+        self.ui = PYSIDE_QMARKDOWN.Ui_Dialog()
+        self.ui.setupUi(self)
 
-#         ''' WIDGETS '''
-#         if icon: self.setWindowIcon(icon)
-#         self.setWindowTitle(Window_Title)
-#         self.ui.tx_preview.setReadOnly(True)
-#         html_text = markdown2.markdown(MD_TEXT)
-#         self.ui.tx_preview.setHtml(html_text)
+        ''' WIDGETS '''
+        if icon: self.setWindowIcon(icon)
+        self.setWindowTitle(Window_Title)
+        self.ui.tx_preview.setReadOnly(True)
+        html_text = markdown2.markdown(MD_TEXT)
+        self.ui.tx_preview.setHtml(html_text)
 
 
 ''' TEST

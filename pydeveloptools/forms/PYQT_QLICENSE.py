@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'forms/PYQT_QLICENSE.ui'
+# Form implementation generated from reading ui file 'Forms_UI/QLICENSE.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #

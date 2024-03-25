@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'forms/PYQT_QLIST_FORM.ui'
+# Form implementation generated from reading ui file 'Forms_UI/QLIST_FORM.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -53,6 +53,7 @@ class Ui_Dialog(object):
         self.lst_items.setWhatsThis("")
         self.lst_items.setAccessibleName("")
         self.lst_items.setAccessibleDescription("")
+        self.lst_items.setLocale(QtCore.QLocale(QtCore.QLocale.Language.English, QtCore.QLocale.Country.UnitedKingdom))
         self.lst_items.setAlternatingRowColors(True)
         self.lst_items.setProperty("isWrapping", False)
         self.lst_items.setViewMode(QtWidgets.QListView.ViewMode.ListMode)
@@ -68,7 +69,6 @@ class Ui_Dialog(object):
         font.setFamily("Roboto Black")
         font.setPointSize(14)
         font.setBold(False)
-        font.setWeight(50)
         self.btn_del.setFont(font)
         self.btn_del.setToolTip("")
         self.btn_del.setStatusTip("")
@@ -86,7 +86,6 @@ class Ui_Dialog(object):
         font.setFamily("Roboto Black")
         font.setPointSize(14)
         font.setBold(False)
-        font.setWeight(50)
         self.btn_add.setFont(font)
         self.btn_add.setToolTip("")
         self.btn_add.setStatusTip("")
@@ -104,7 +103,6 @@ class Ui_Dialog(object):
         font.setFamily("Roboto Black")
         font.setPointSize(10)
         font.setBold(False)
-        font.setWeight(50)
         self.btn_up.setFont(font)
         self.btn_up.setToolTip("")
         self.btn_up.setStatusTip("")
@@ -122,7 +120,6 @@ class Ui_Dialog(object):
         font.setFamily("Roboto Black")
         font.setPointSize(10)
         font.setBold(False)
-        font.setWeight(50)
         self.btn_down.setFont(font)
         self.btn_down.setToolTip("")
         self.btn_down.setStatusTip("")
