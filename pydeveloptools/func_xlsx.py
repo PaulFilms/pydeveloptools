@@ -8,6 +8,8 @@ Toolkit with simplified functions and methods for create .xlsx Reports
         ejm: [ COL = xls.utils.get_column_letter(COLUMN) ]
     - Añadir libreria xlsxwriter para uso de hojas EXCEL ya creadas
     - Replantear las fuentes siguiendo el esquema de MARKDOWN (ejm: H1, H2, H3...)
+    - BUG(s)
+    - wb.create_named_range('_xlnm.Print_Area', ws, 'A1:U56',scope=0) ** Para rangos definidos por nombre
 
 `WARNINGS:`
     - ...
@@ -221,6 +223,7 @@ class XLSREPORT:
     def WR_HEADERS(self, ROW: int, HEADERS: list = list, vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
         '''
         Write and edit format of Headers List
+        BUG: Hay que definir la columna donde empieza la cabecera
         '''
         for head in HEADERS:
             self.WR_HEADER(ROW=ROW, COLUMN=HEADERS.index(head)+1, VALUE=head, vertical_alignment=vertical_alignment, wrap_text=wrap_text)
@@ -258,22 +261,22 @@ class XLSREPORT:
     #         end_row = ROW_FIN, 
     #         end_column = COL_FIN)
     
-    def PRNT_AREA(self, COL_FIN: int, save: bool = False):
+    def PRNT_AREA(self, COL_FIN: int):
         '''
         Ajusta la zona de impresion
         INCOMPLETE
         '''
         # self.WS = self.WB[SHEET]
         # self.WS.page_setup.orientation = self.WS.ORIENTATION_LANDSCAPE
-        self.WS.page_setup.fitToPage = True
+        # self.WS.page_setup.fitToPage = True
         self.WS.page_setup.fitToPage = 1
         self.WS.page_setup.fitToHeight = False
         COL_STR = COLUMN_STR(COL_FIN)
         self.WS.print_area = "A:" + COL_STR
-        if save == True: self.SAVE()
 
-    def SHEET_HEAD(self, ROW_FIN: int, save: bool = False):
+    def SHEET_HEAD(self, ROW_FIN: int):
         '''
+        Define la cabecera superior
         '''
         self.WS.print_title_rows = "1:" + str(ROW_FIN)
         self.WS.page_margins.top = 0.4
@@ -281,9 +284,8 @@ class XLSREPORT:
         # self.WS.page_margins.header = 0.7
         self.WS.page_margins.header = 0.4
         self.WS.page_margins.footer = 0.4
-        if save == True: self.SAVE()
 
-    def PAGE_BREAK(self, ROW: int = 1, save: bool = False):
+    def PAGE_BREAK(self, ROW: int = 1):
         '''
         Insert a page break in selected row
         '''
@@ -291,7 +293,6 @@ class XLSREPORT:
         break_list = self.WS.row_breaks
         break_list.append(page_break)
         self.WS.row_breaks = break_list
-        if save == True: self.SAVE()
 
     def IMAGE_INSERT(self, ROW: int = 1, COLUMN: int = 1, HEIGHT=None, WIDTH=None):
         '''
