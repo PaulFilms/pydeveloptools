@@ -10,7 +10,7 @@ cmd:
     python setip.py build_ext --inplace
 '''
 
-__update__ = '2023.03.25b02'
+__update__ = '2023.03.26b1'
 __author__ = 'PABLO PILA'
 __author_email__ = "pablogonzalezpila@gmail.com"
 

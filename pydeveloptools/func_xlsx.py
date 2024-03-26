@@ -14,7 +14,7 @@ Toolkit with simplified functions and methods for create .xlsx Reports
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.03.25'
+__update__ = '2024.03.26'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -246,13 +246,17 @@ class XLSREPORT:
 
     ''' INCOMPLETES '''
     
-    # def MERGE(self, ROW_INI, COL_INI, ROW_FIN, COL_FIN, save=False):
+    def WARP(self, ROW: int, COLUMN: int):
+        '''
+        '''
+        self.WS.cell(ROW, COLUMN).alignment = Alignment(wrap_text=True)
+
+    # def MERGE(self, ROW_INI, COL_INI, ROW_FIN, COL_FIN):
     #     self.WS.merge_cells(
     #         start_row = ROW_INI, 
     #         start_column = COL_INI, 
     #         end_row = ROW_FIN, 
     #         end_column = COL_FIN)
-    #     if save == True: self.SAVE()
     
     def PRNT_AREA(self, COL_FIN: int, save: bool = False):
         '''
