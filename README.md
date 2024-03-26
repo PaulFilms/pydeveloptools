@@ -9,14 +9,14 @@ Toolkit for developing scripts and simple applications with Python
 - Math functions (Metroology & Calibration)
 - System functions (OS)
 - License Functions
-- PyQt6 Framework (UI Development)
+- PySide6 and PyQt6 Framework (UI Development)
 
 ## TASK:
 - Add Supabase (Web) in database functions
 - Add Notion API functions
 - Creating Cython functions
 - Add Rich Text in .xlsx Reports
-- Put out all .ui files and create scipts to upgrade all forms
+- Add Flet and Reflex frameworks
 
 ## WARNINGS:
 - ...
