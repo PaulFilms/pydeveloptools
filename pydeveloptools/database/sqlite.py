@@ -280,6 +280,11 @@ class SQLITE_DB():
             print("SQL UPDATE ERROR / SQL_UPDATE")
             print(SQL)
 
+    def BLOB(self, TABLE: str, Id: str):
+        '''
+        Get BLOB data
+        BUG INCOMPLETE
+        '''
 
 ''' JSON FUNCTIONS
 ________________________________________________________________________________________________ '''
