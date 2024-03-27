@@ -16,7 +16,7 @@ Toolkit with simplified functions and methods for create .xlsx Reports
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.03.26'
+__update__ = '2024.03.27'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
