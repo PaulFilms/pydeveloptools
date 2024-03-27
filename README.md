@@ -1,5 +1,5 @@
 # pydeveloptools
-Toolkit for developing scripts and simple applications with Python
+Toolkit for developing simple applications and scripts with Python
 
 
 ## Tools included
