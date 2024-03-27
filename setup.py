@@ -1,33 +1,34 @@
 '''
 '''
 
-__update__ = '2023.03.27b1'
+__update__ = '2023.03.27b2'
 __author__ = 'PABLO PILA'
-__author_email__ = "pablogonzalezpila@gmail.com"
 
 from setuptools import setup, find_packages, Extension
 
 setup(
     name = "pydeveloptools",
-    packages = find_packages(), # con find_pachages no conseguir hacerlo funcionar
-    # packages=["pydeveloptools"],
-    include_package_data=True, # muy importante para que se incluyan archivos sin extension .py
-    package_data={'pydeveloptools': ['database/*.py', 'forms/*']}, 
     version = __update__,
+    url = "https://github.com/PaulFilms/pydeveloptools",
     author = __author__,
-    author_email = __author_email__,
-    url = "https://github.com/PaulFilms/pydeveloptools.git",
+    author_email = "pablogonzalezpila@gmail.com",
+    # description="",
     long_description = "README.md",
     # license = "www.unlicense.org",
+    packages = find_packages(where='src'), # con find_pachages no conseguir hacerlo funcionar
+    # packages=["pydeveloptools"],
+    package_dir={'': 'src'},
+    include_package_data=True, # muy importante para que se incluyan archivos sin extension .py
+    package_data={'pydeveloptools': ['database/*.py', 'forms/*']}, 
+    # test_suite='tests',
     classifiers = [
-        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.12',
         "Intended Audience :: Developers",
         "Intended Audience :: System Administrators",
-        "Operating System :: OS Independent",
+        # "Operating System :: OS Independent",
         "Topic :: Software Development",
-        ],
+    ],
 )
-
 
 ''' CONFIG DE CPYTHON
 
