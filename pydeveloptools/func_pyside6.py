@@ -681,7 +681,7 @@ def TBL_GET_PANDAS_DF(TABLE: QTableWidget) -> pd.DataFrame:
     DATAFRAME = pd.DataFrame(DATAFRAME)
     return DATAFRAME
 
-def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: List[int] | List[str] | Tuple[int] | Tuple[str] = []):
+def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: List[int] | List[str] | Tuple[int] | Tuple[str]):
     '''
     Set the field selected in COLUMNS list as fixed column width
     '''
