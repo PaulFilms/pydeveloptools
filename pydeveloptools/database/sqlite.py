@@ -8,7 +8,7 @@ Functions for Using Databases with SQLite Format
     - ...
 ________________________________________________________________________________________________ '''
 
-__update__ = '2023.03.25'
+__update__ = '2024.03.30'
 __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 
 
@@ -75,7 +75,7 @@ class SQLITE_DB():
         '''
         List with info data about selected Table
 
-        INCOMPLETE / DEBUG:
+        BUG:
             Hay que crear una lista con elementos de python:
             FIELD_ID, TYPE
         '''
@@ -100,11 +100,11 @@ class SQLITE_DB():
             LIST.append(row[1])
         return LIST
 
-    def SQL_SELECT_JSON(self, TABLE: str, FIELD: str, ID: int) -> dict:
+    def SQL_SELECT_JSON(self, TABLE: str, FIELD: str, ID: str | int) -> dict:
         '''
         Get a Dictionary Type of an JSON BLOB Field
         '''
-        VALUE: dict = {}
+        VALUE: dict = None
         TYPE_ID = type(ID)
 
         ## CHECK TABLE
@@ -124,9 +124,9 @@ class SQLITE_DB():
         
         ## QUERY JSON
         if TYPE_ID == str:
-            SQL = f'SELECT {TABLE}.{FIELD} FROM {TABLE} WHERE {TABLE}.Id={chr(39)}{ID}{chr(39)};'
+            SQL = f"SELECT {TABLE}.{FIELD} FROM {TABLE} WHERE {TABLE}.Id={chr(39)}{ID}{chr(39)};"
         elif TYPE_ID == int or TYPE_ID == float:
-            SQL = f'SELECT {TABLE}.{FIELD} FROM {TABLE} WHERE {TABLE}.Id={ID};'
+            SQL = f"SELECT {TABLE}.{FIELD} FROM {TABLE} WHERE {TABLE}.Id={ID};"
         VALUE = self.SQL_EXEC(SQL)[0][0]
         
         if VALUE != None and VALUE != "":
