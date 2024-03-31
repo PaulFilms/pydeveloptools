@@ -17,6 +17,7 @@ Toolkit for developing simple applications and scripts with Python
 - Creating Cython functions
 - Add Rich Text in .xlsx Reports
 - Add Flet and Reflex frameworks
+- Change typing like (str | float ...) to Typing module Union[str | float]
 
 ## WARNINGS:
 - ...

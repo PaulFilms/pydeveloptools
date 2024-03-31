@@ -16,7 +16,7 @@ Toolkit with simplified functions and methods for create .xlsx Reports
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.03.27'
+__update__ = '2024.03.31'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -220,13 +220,13 @@ class XLSREPORT:
         self.WS.cell(ROW, COLUMN).alignment = Alignment(horizontal='left', vertical=vertical_alignment, wrap_text=wrap_text)
         self.WS.cell(ROW, COLUMN).font = FONTS.HEADER.value
 
-    def WR_HEADERS(self, ROW: int, HEADERS: list = list, vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
+    def WR_HEADERS(self, ROW: int, COLUMN: int, HEADERS: list = list, vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
         '''
         Write and edit format of Headers List
         BUG: Hay que definir la columna donde empieza la cabecera
         '''
         for head in HEADERS:
-            self.WR_HEADER(ROW=ROW, COLUMN=HEADERS.index(head)+1, VALUE=head, vertical_alignment=vertical_alignment, wrap_text=wrap_text)
+            self.WR_HEADER(ROW=ROW, COLUMN=COLUMN+HEADERS.index(head), VALUE=head, vertical_alignment=vertical_alignment, wrap_text=wrap_text)
         self.ROW_WIDTH(ROW, 35)
 
     def LOW_BORDER(self, ROW=1, col_ini=1, col_fin=300):

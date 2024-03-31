@@ -1,0 +1,9 @@
+include HISTORY.rst
+include LICENSE
+include README.md
+
+recursive-include forms *
+recursive-include database *
+recursive-exclude * __pycache__
+recursive-exclude * Forms_UI
+recursive-exclude * test
