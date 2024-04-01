@@ -1,13 +1,11 @@
 '''
 Toolkit with simplified functions and methods for development with PySide6
-INCOMPLETE
-
 
 TASK:
     - ...
 
 WARNINGS:
-    - All functions are copied of PyQt6 Library, be carefull
+    - All functions are copied of PyQt6 Library, ¡¡ be carefull !!
 
 ________________________________________________________________________________________________ '''
 
@@ -23,7 +21,7 @@ from typing import List, Tuple
 
 ''' PIP/IMPORTED LIBRARIES '''
 from PySide6 import QtWidgets, QtGui, QtCore
-from PySide6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt, QUrl
+from PySide6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt, QUrl, Signal
 from PySide6.QtGui import QColor, QFont, QDesktopServices, QIcon
 from PySide6.QtWidgets import QMainWindow, QDialog, QMessageBox, QInputDialog, QFileDialog
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QHeaderView, QTableWidget, QTableWidgetItem
@@ -1280,9 +1278,10 @@ class QACQUISITIONS(QDialog):
     QAcquisitions Form
 
     BUG: Incomplete
+    - Rename all widgets
     - Add LEFT/RIGHT functions
-    '''
-    def __init__(self, MEAS_INFO: str, Window_Title: str="List", icon: QIcon = None):
+    '''    
+    def __init__(self, Window_Title: str="List", icon: QIcon = None):
         QDialog.__init__(self)
 
         ''' INIT '''
@@ -1292,7 +1291,7 @@ class QACQUISITIONS(QDialog):
         ''' WIDGETS '''
         if icon: self.setWindowIcon(icon)
         self.setWindowTitle(Window_Title)
-        self.ui.tx_cal_devinfo.setText(MEAS_INFO)
+        # self.ui.tx_info.setText(MEAS_INFO)
         self.TYPES: tuple = ("MEASURE", "INDICATION")
         self.ui.cb_type.addItems(self.TYPES)
         self.ui.cb_type.setCurrentIndex(0)

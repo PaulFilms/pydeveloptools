@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'QTABLE_DICT.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.2
+## Created by: Qt User Interface Compiler version 6.6.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -149,7 +149,7 @@ class Ui_Dialog(object):
 
         self.btn_save = QPushButton(Dialog)
         self.btn_save.setObjectName(u"btn_save")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+        sizePolicy = QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btn_save.sizePolicy().hasHeightForWidth())

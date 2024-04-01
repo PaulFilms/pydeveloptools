@@ -2,7 +2,7 @@
 Functions for Using Databases with SQLite Format
 
 `TASK:`
-    - ...
+    - Implementar fetchone() para las consultas de un solo dato
 
 `WARNINGS:`
     - ...
