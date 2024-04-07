@@ -1,5 +1,0 @@
-pyside6-uic -o forms/PSIDE_QLIST.py forms/PYQT_QLIST.ui
-pyuic6 -o forms/PYSIDE_QLIST_FORM.py forms/PYQT_QLIST_FORM.ui
-pyuic6 -o forms/PYQT_QTABLE_FORM.py forms/PYQT_QTABLE_FORM.ui
-pyuic6 -o forms/PYQT_QACQUISITIONS_ui.py forms/PYQT_QACQUISITIONS.ui
-pyuic6 -o forms/PYQT_QMARKDOWN_ui.py forms/PYQT_QMARKDOWN.ui

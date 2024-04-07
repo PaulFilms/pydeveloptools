@@ -27,7 +27,7 @@ import os
 import pandas as pd
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 ''' PIP/IMPORTED LIBRARIES '''
 from PyQt6 import QtWidgets, QtGui, QtCore
@@ -762,11 +762,14 @@ class MYFONTS(Enum):
     FONT_WIDGET = QFont("Consolas", pointSize=12)
     FONT_TABLE = QFont("Consolas", pointSize=10)
 
+
 from pydeveloptools.forms import PYQT_QLIST
-# UIC: pyuic6 -o forms/PYQT_QLIST_ui.py forms/PYQT_QLIST.ui
+
 class QLIST(QDialog):
     '''
     QList Widget Dialog
+    
+    Select an avalilable <str> data from the list
     '''
     def __init__(self, LIST: list | tuple, Window_Title: str="List", icon: QIcon = None):
         QDialog.__init__(self)
@@ -774,19 +777,21 @@ class QLIST(QDialog):
         ''' INIT '''
         self.ui = PYQT_QLIST.Ui_Dialog()
         self.ui.setupUi(self)
+        self.data: str = None
 
         ''' WIDGETS '''
-        if icon: self.setWindowIcon(icon)
+        if icon: 
+            self.setWindowIcon(icon)
         self.setWindowTitle(Window_Title)
         for item in LIST:
             self.ui.lst.addItem(item)
-        self.value: str = None
+        
 
         ''' CONNECTIONS '''
         self.ui.lst.doubleClicked.connect(self.DATA_SELECT)
     
     def DATA_SELECT(self) -> None:
-        self.value = self.ui.lst.currentItem().text()
+        self.data = self.ui.lst.currentItem().text()
         self.close()
 
 from pydeveloptools.forms import PYQT_QLIST_FORM

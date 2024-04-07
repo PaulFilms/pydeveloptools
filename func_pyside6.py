@@ -9,7 +9,7 @@ WARNINGS:
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.03.25'
+__update__ = '2024.04.07'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -17,7 +17,7 @@ import os
 import pandas as pd
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Tuple
+from typing import List, Tuple, Dict, Union
 
 ''' PIP/IMPORTED LIBRARIES '''
 from PySide6 import QtWidgets, QtGui, QtCore
@@ -88,7 +88,7 @@ def DATE_QDATE_CONVERTER(DATE: QDate) -> str:
     DAY = f'{DATE.day():02d}'
     DATE = f"{YEAR}-{MONTH}-{DAY}"
     return DATE
-    
+
 def TIME_STR_CONVERTER(TIME: str = "00:00") -> QTime:
     '''
     Convert string format time to QTime
@@ -753,12 +753,17 @@ class MYFONTS(Enum):
     FONT_TABLE = QFont("Consolas", pointSize=10)
 
 from pydeveloptools.forms import PYSIDE_QLIST
+from pydeveloptools.forms import PYSIDE_QLIST_FORM
+from pydeveloptools.forms import PYSIDE_QTABLE_FORM
 
 class QLIST(QDialog):
     '''
     QList Widget Dialog
+    
+    Get an avalilable <str> data from the list
+
+    `Returns:` str
     '''
-    # 
     def __init__(self, LIST: list | tuple, Window_Title: str="List", icon: QIcon = None):
         QDialog.__init__(self)
 
@@ -771,35 +776,39 @@ class QLIST(QDialog):
         self.setWindowTitle(Window_Title)
         for item in LIST:
             self.ui.lst.addItem(item)
-        self.value: str = None
+        self.data: str = None
 
         ''' CONNECTIONS '''
         self.ui.lst.doubleClicked.connect(self.DATA_SELECT)
     
     def DATA_SELECT(self) -> None:
-        self.value = self.ui.lst.currentItem().text()
+        self.data = self.ui.lst.currentItem().text()
         self.close()
-
-from pydeveloptools.forms import PYSIDE_QLIST_FORM
 
 class QLIST_FORM(QDialog):
     '''
     List Selection Form
+
+    Get a List of <str> Values
+
+    `Returns:` List[str]
     '''
-    def __init__(self, LIST: list | tuple = [], parent=None, Window_Title: str = "LIST EDIT 1", icon: QIcon = None):
+    def __init__(self, LIST: Union[list, tuple] = None, Window_Title: str = "LIST EDIT", icon: QIcon = None, parent=None):
         QDialog.__init__(self, parent)
         
         ''' INIT '''
         self.ui = PYSIDE_QLIST_FORM.Ui_Dialog()
         self.ui.setupUi(self)
+        self.data: List[str] = None
 
         ''' WIDGETS '''
-        if icon: 
-            self.setWindowIcon(icon)
+        if icon:
+            self.icon: QIcon = icon
+            self.setWindowIcon(self.icon)
         self.setWindowTitle(Window_Title)
-        for item in LIST:
-            self.ui.lst_items.addItem(item)
-        self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
+        if LIST:
+            self.ui.lst_items.addItems([item for item in LIST])
+        self.GET_ITEMS()
         
         ''' CONNECTIONS '''
         self.ui.btn_add.clicked.connect(self.ITEM_ADD)
@@ -808,92 +817,77 @@ class QLIST_FORM(QDialog):
         self.ui.btn_down.clicked.connect(self.ITEM_DOWN)
         
     def ITEM_ADD(self) -> None:
-        '''
-        '''
-        ITEM = self.ui.tx_newitem.text()
+        ITEM: str = self.ui.tx_newitem.text()
         if ITEM and ITEM != "":
             self.ui.lst_items.addItem(ITEM)
-            self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
             self.ui.tx_newitem.clear()
+            self.GET_ITEMS()
     
     def ITEM_DEL(self) -> None:
-        '''
-        '''
-        currentRow = self.ui.lst_items.currentRow()
-        if currentRow < 0:
+        if self.ui.lst_items.currentRow() < 0:
             return
-        # 
-        if not YESNOBOX("ATTENTION", "DO YOU WANT TO DELETE THIS FIELD ?"):
+        if not YESNOBOX("ATTENTION", "DO YOU WANT TO DELETE THIS FIELD ?", icon=self.icon):
             return
-        # 
-        currentIndex = self.ui.lst_items.currentIndex()
-        '''
-        if currentIndex.isValid():
-            # Caso afirmativo
-            pass
-        '''
-        self.ui.lst_items.takeItem(currentIndex.row())
-        # 
-        self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
+        self.ui.lst_items.takeItem(self.ui.lst_items.currentIndex().row())
+        self.GET_ITEMS()
     
-    def ITEM_UP(self):
-        '''
-        '''
-        currentRow = self.ui.lst_items.currentRow()
+    def ITEM_UP(self) -> None:
+        currentRow: int = self.ui.lst_items.currentRow()
         currentItem = self.ui.lst_items.takeItem(currentRow)
         self.ui.lst_items.insertItem(currentRow - 1, currentItem)
         self.ui.lst_items.setCurrentRow(currentRow-1)
-        self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
+        self.GET_ITEMS()
         
-    def ITEM_DOWN(self):
-        '''
-        '''
+    def ITEM_DOWN(self) -> None:
         currentRow = self.ui.lst_items.currentRow()
         currentItem = self.ui.lst_items.takeItem(currentRow)
         self.ui.lst_items.insertItem(currentRow + 1, currentItem)
         self.ui.lst_items.setCurrentRow(currentRow+1)
-        self.value = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
-
-from pydeveloptools.forms import PYSIDE_QTABLE_FORM
+        self.GET_ITEMS()
+    
+    def GET_ITEMS(self) -> None:
+        self.data = [self.ui.lst_items.item(x).text() for x in range(self.ui.lst_items.count())]
 
 class QTABLE_FORM(QDialog):
     '''
-    Table Form (1 Field: 1 Value)
+    QTable Form (1 Field: 1 Value)
 
-    CONFIG: list [class configValue]
+    Get a dictionary with the data of selected fields in CONFIG
+
+    `CONFIG:` List[ configValue]
+
+    `Returns:` Dict[str, Union[str, int, float, bool]]
     '''
     @dataclass
     class configValue():
         '''
         Value object for use in data configuration
         '''
-        fieldName: str = ""
-        value: str | int | float | bool = ""
+        fieldName: str
+        value: Union[bool, str, int, float]
         mandatory: bool = False
-        info: str = ""
+        info: str = str()
 
-    def __init__(self, CONFIG: list | tuple, Window_Title: str="Table Form", fontFamily: str="Arial Rounded MT Bold", comboBoxEditables: bool=False, icon: QIcon = None) -> None:
+    def __init__(self, CONFIG: Union[List[configValue], Tuple[configValue]], comboBoxEditables: bool=False, Window_Title: str="TABLE FORM", icon: QIcon = None) -> None:
         QtWidgets.QDialog.__init__(self)
+        self.__CONFIG = CONFIG
+        self.comboBoxEditable = comboBoxEditables
+        self.icon = icon
+        self.data: Dict[str, Union[bool, str, int, float]] = None
 
         ## GUI
-        ## 
         self.ui = PYSIDE_QTABLE_FORM.Ui_Dialog()
         self.ui.setupUi(self)
-
+        
         ## WIDGETS
         self.setWindowTitle = Window_Title
-        if icon: self.setWindowIcon(icon)
+        if self.icon: self.setWindowIcon(self.icon)
         self.ui.tbl_form.verticalHeader().setVisible(True)
         self.ui.tbl_form.setColumnCount(3)
         H_HEADERS: tuple = ("DATA", "", "INFO")
         self.ui.tbl_form.setHorizontalHeaderLabels(H_HEADERS)
 
-        ## VARIABLES
-        self.data: dict = None
-        self.__CONFIG = CONFIG
-        self.fontFamily = fontFamily
-        self.comboBoxEditable = comboBoxEditables
-        
+        ## 
         self.CONNECTIONS()
         self.SETUP_DATA()
 
@@ -911,13 +905,26 @@ class QTABLE_FORM(QDialog):
             ## NAME
             self.HEADERS.append(field.fieldName)
             ## VALUE
-            TYPE = type(field.value)
-            if TYPE == bool: CELL_CHECKBOX(TABLE, row, 0, field.value)
-            if TYPE == str: CELL_WR(TABLE, row, 0, field.value)
-            if TYPE == list: CELL_COMBOBOX(TABLE, row, 0, field.value, self.comboBoxEditable)
-            if TYPE == tuple: CELL_COMBOBOX(TABLE, row, 0, field.value, self.comboBoxEditable)
-            if TYPE == int: CELL_SPINBOX(TABLE, row, 0, field.value)
-            if TYPE == float: CELL_WR(TABLE, row, 0, field.value)
+            match field.value:
+                case field.value if isinstance(field.value, bool):
+                    CELL_CHECKBOX(TABLE, row, 0, field.value)
+                case field.value if isinstance(field.value, str):
+                    CELL_WR(TABLE, row, 0, field.value)
+                case field.value if isinstance(field.value, int):
+                    CELL_SPINBOX(TABLE, row, 0, field.value)
+                case field.value if isinstance(field.value, float):
+                    # BUG **Hay que ousar un doublespinbox ajustando la resolucion al valor indicado 
+                    CELL_WR(TABLE, row, 0, field.value)
+                case field.value if isinstance(field.value, list) or isinstance(field.value, tuple):
+                    CELL_COMBOBOX(TABLE, row, 0, field.value, self.comboBoxEditable)
+            # TYPE = type(field.value)
+            # if type(field.value) == bool: 
+            #     CELL_CHECKBOX(TABLE, row, 0, field.value)
+            # if TYPE == str: CELL_WR(TABLE, row, 0, field.value)
+            # if TYPE == list: CELL_COMBOBOX(TABLE, row, 0, field.value, self.comboBoxEditable)
+            # if TYPE == tuple: CELL_COMBOBOX(TABLE, row, 0, field.value, self.comboBoxEditable)
+            # if TYPE == int: CELL_SPINBOX(TABLE, row, 0, field.value)
+            # if TYPE == float: CELL_WR(TABLE, row, 0, field.value)
             ## MANDATORY
             if field.mandatory: CELL_WR(TABLE, row, 1, "*")
             CELL_READONLY(TABLE, row, 1)
@@ -941,7 +948,7 @@ class QTABLE_FORM(QDialog):
             if value == "" or value == None:
                 if CELL_RD(TABLE, row, 1) == "*": 
                     self.data = None
-                    INFOBOX("ATTENTION", "PLEASE, FILL ALL THE MANDATORY (*) FIELDS")
+                    INFOBOX("ATTENTION", "PLEASE, FILL ALL THE MANDATORY (*) FIELDS", icon=self.icon)
                     return
                 self.data[field] = None
             else:
@@ -954,6 +961,206 @@ class QTABLE_FORM(QDialog):
             self.data = None
             return
 
+from pydeveloptools.forms import PYSIDE_QACQUISITIONS
+
+class QACQUISITIONS(QDialog):
+    '''
+    QAcquisitions Form
+
+    BUG: Incomplete
+    - Rename all widgets
+    - Add LEFT/RIGHT functions
+    '''    
+    def __init__(self, Window_Title: str="List", icon: QIcon = None):
+        QDialog.__init__(self)
+
+        ''' INIT '''
+        self.ui = PYSIDE_QACQUISITIONS.Ui_Dialog()
+        self.ui.setupUi(self)
+
+        ''' WIDGETS '''
+        if icon: self.setWindowIcon(icon)
+        self.setWindowTitle(Window_Title)
+        # self.ui.tx_info.setText(MEAS_INFO)
+        self.TYPES: tuple = ("MEASURE", "INDICATION")
+        self.ui.cb_type.addItems(self.TYPES)
+        self.ui.cb_type.setCurrentIndex(0)
+        for item in ["G","M","k","","m","µ","n"]:
+            self.ui.cb_units.addItem(item)
+        self.ui.cb_units.setCurrentIndex(3)
+        self.data: dict = None
+
+        ''' CONNECTIONS '''
+        self.ui.btn_addvalue.clicked.connect(self.VALUE_ADD)
+        self.ui.btn_delete.clicked.connect(self.VALUE_DEL)
+        self.ui.btn_exit.clicked.connect(self.EXIT)
+    
+    def VALUE_ADD(self) -> None:
+        '''
+        '''
+        value: float = float()
+        try:
+            value = float(self.ui.tx_value.text())
+        except:
+            value = 0
+        unit: str = self.ui.cb_units.currentText()
+        match unit:
+            case "G":
+                value = value * 1e9
+            case "M":
+                value = value * 1e6
+            case "k":
+                value = value * 1e3
+            case "":
+                value = value * 1
+            case "m":
+                value = value * 1e-3
+            case "µ":
+                value = value * 1e-6
+            case "n":
+                value = value * 1e-9
+        row = self.ui.tbl_values.rowCount()
+        self.ui.tbl_values.insertRow(row)
+        CELL_WR(self.ui.tbl_values, row, 0, self.ui.cb_type.currentText())
+        CELL_WR(self.ui.tbl_values, row, 1, value)
+        self.GET_VALUES()
+
+    def VALUE_DEL(self) -> None:
+        '''
+        '''
+        row = self.ui.tbl_values.currentRow()
+        if row < 0:
+            return
+        self.ui.tbl_values.removeRow(row)
+        self.GET_VALUES()
+    
+    def EXIT(self) -> None:
+        '''
+        '''
+        self.GET_VALUES()
+        self.close()
+    
+    def GET_VALUES(self) -> None:
+        '''
+        '''
+        # DF = pd.DataFrame(columns=self.TYPES)
+        # for row in range(self.ui.tbl_values.rowCount()):
+        #     DF.loc[len(DF)] = [CELL_RD(self.ui.tbl_values, row, 0), float(CELL_RD(self.ui.tbl_values, row, 1))]
+        # print()
+        # self.data = DF.to_dict('list')
+        self.data = dict()
+        self.data['TYPE'] = list()
+        self.data['VALUE'] = list()
+        for row in range(self.ui.tbl_values.rowCount()):
+            self.data['TYPE'].append(CELL_RD(self.ui.tbl_values, row, 0))
+            self.data['VALUE'].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
+
+from pydeveloptools.forms import PYSIDE_QMARKDOWN
+
+class QMARKDOWN(QDialog):
+    '''
+    Markdown format Text Form
+    '''
+    def __init__(self, MD_TEXT: str = str(), Window_Title: str="MarkDown Text", icon: QIcon = None) -> None:
+        QDialog.__init__(self)
+        
+        ''' INIT '''
+        self.ui = PYSIDE_QMARKDOWN.Ui_Dialog()
+        self.ui.setupUi(self)
+
+        ''' WIDGETS '''
+        if icon: self.setWindowIcon(icon)
+        self.setWindowTitle(Window_Title)
+        self.ui.tx_preview.setReadOnly(True)
+        html_text = markdown2.markdown(MD_TEXT)
+        self.ui.tx_preview.setHtml(html_text)
+
+
+''' TEST
+________________________________________________________________________________________________ '''
+
+class QTEXT_FORM(QDialog):
+    '''
+    Plain Text Form
+
+    INCOMPLETE / DEBUG:
+        - Hay que crear un class para definir bien el CONFIG como en QTABLE_FORM
+    '''
+    data = None
+    def __init__(self, TEXT: str = "", Window_Title="Plain Text Form", fontFamily="Consolas"):
+        QtWidgets.QDialog.__init__(self)
+        self.Window_Title = Window_Title
+        self.fontFamily = fontFamily
+        self.TEXT = TEXT
+
+        ''' INIT '''
+        self.setupUi()
+        self.tx_dialog.setText(self.TEXT)
+        self.btn_exit.clicked.connect(self.exitdialog)
+
+    def setupUi(self):
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setFamily(self.fontFamily)
+        self.setFont(font)
+        self.setObjectName("Dialog")
+        self.resize(600, 160)
+        self.setWindowTitle(self.Window_Title)
+        self.setToolTip("")
+        self.setStatusTip("")
+        self.setWhatsThis("")
+        self.setAccessibleName("")
+        self.setAccessibleDescription("")
+        self.setWindowFilePath("")
+        # 
+        self.tx_dialog = QtWidgets.QTextEdit(self)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setFamily(self.fontFamily)
+        self.tx_dialog.setFont(font)
+        self.tx_dialog.setToolTip("")
+        self.tx_dialog.setStatusTip("")
+        self.tx_dialog.setWhatsThis("")
+        self.tx_dialog.setAccessibleName("")
+        self.tx_dialog.setAccessibleDescription("")
+        # self.tx_dialog.setStyleSheet("background-color: rgb(228, 228, 228);")
+        self.tx_dialog.setDocumentTitle("")
+        self.tx_dialog.setAcceptRichText(False)
+        self.tx_dialog.setPlaceholderText("")
+        self.tx_dialog.setObjectName("tx_dialog")
+        # 
+        self.btn_exit = QtWidgets.QPushButton(self)
+        self.btn_exit.setMinimumSize(QtCore.QSize(0, 40))
+        self.btn_exit.setMaximumSize(QtCore.QSize(16777215, 40))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setFamily(self.fontFamily)
+        font.setBold(True)
+        font.setWeight(75)
+        self.btn_exit.setFont(font)
+        self.btn_exit.setToolTip("")
+        self.btn_exit.setStatusTip("")
+        self.btn_exit.setWhatsThis("")
+        self.btn_exit.setAccessibleName("")
+        self.btn_exit.setAccessibleDescription("")
+        self.btn_exit.setText("SAVE")
+        self.btn_exit.setShortcut("")
+        self.btn_exit.setObjectName("btn_exit")
+        # 
+        self.verticalLayout = QtWidgets.QVBoxLayout(self)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.verticalLayout.addWidget(self.tx_dialog)
+        self.verticalLayout.addWidget(self.btn_exit)
+        QtCore.QMetaObject.connectSlotsByName(self)
+
+    def exitdialog(self):
+        self.data = self.tx_dialog.toPlainText()
+        if YESNOBOX("DO YOU WANT SAVE THIS DATA?", self.data) == True:
+            self.close()
+        else:
+            self.data = None
+            return
+        
 class QDICT_FORM(QDialog):
     '''
     Table Form (1 Field: Value1, Value2...)
@@ -1188,203 +1395,3 @@ class QDICT_FORM(QDialog):
         else:
             self.data = None
             return
-
-class QTEXT_FORM(QDialog):
-    '''
-    Plain Text Form
-
-    INCOMPLETE / DEBUG:
-        - Hay que crear un class para definir bien el CONFIG como en QTABLE_FORM
-    '''
-    data = None
-    def __init__(self, TEXT: str = "", Window_Title="Plain Text Form", fontFamily="Consolas"):
-        QtWidgets.QDialog.__init__(self)
-        self.Window_Title = Window_Title
-        self.fontFamily = fontFamily
-        self.TEXT = TEXT
-
-        ''' INIT '''
-        self.setupUi()
-        self.tx_dialog.setText(self.TEXT)
-        self.btn_exit.clicked.connect(self.exitdialog)
-
-    def setupUi(self):
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        font.setFamily(self.fontFamily)
-        self.setFont(font)
-        self.setObjectName("Dialog")
-        self.resize(600, 160)
-        self.setWindowTitle(self.Window_Title)
-        self.setToolTip("")
-        self.setStatusTip("")
-        self.setWhatsThis("")
-        self.setAccessibleName("")
-        self.setAccessibleDescription("")
-        self.setWindowFilePath("")
-        # 
-        self.tx_dialog = QtWidgets.QTextEdit(self)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        font.setFamily(self.fontFamily)
-        self.tx_dialog.setFont(font)
-        self.tx_dialog.setToolTip("")
-        self.tx_dialog.setStatusTip("")
-        self.tx_dialog.setWhatsThis("")
-        self.tx_dialog.setAccessibleName("")
-        self.tx_dialog.setAccessibleDescription("")
-        # self.tx_dialog.setStyleSheet("background-color: rgb(228, 228, 228);")
-        self.tx_dialog.setDocumentTitle("")
-        self.tx_dialog.setAcceptRichText(False)
-        self.tx_dialog.setPlaceholderText("")
-        self.tx_dialog.setObjectName("tx_dialog")
-        # 
-        self.btn_exit = QtWidgets.QPushButton(self)
-        self.btn_exit.setMinimumSize(QtCore.QSize(0, 40))
-        self.btn_exit.setMaximumSize(QtCore.QSize(16777215, 40))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setFamily(self.fontFamily)
-        font.setBold(True)
-        font.setWeight(75)
-        self.btn_exit.setFont(font)
-        self.btn_exit.setToolTip("")
-        self.btn_exit.setStatusTip("")
-        self.btn_exit.setWhatsThis("")
-        self.btn_exit.setAccessibleName("")
-        self.btn_exit.setAccessibleDescription("")
-        self.btn_exit.setText("SAVE")
-        self.btn_exit.setShortcut("")
-        self.btn_exit.setObjectName("btn_exit")
-        # 
-        self.verticalLayout = QtWidgets.QVBoxLayout(self)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.verticalLayout.addWidget(self.tx_dialog)
-        self.verticalLayout.addWidget(self.btn_exit)
-        QtCore.QMetaObject.connectSlotsByName(self)
-
-    def exitdialog(self):
-        self.data = self.tx_dialog.toPlainText()
-        if YESNOBOX("DO YOU WANT SAVE THIS DATA?", self.data) == True:
-            self.close()
-        else:
-            self.data = None
-            return
-
-from pydeveloptools.forms import PYSIDE_QACQUISITIONS
-
-class QACQUISITIONS(QDialog):
-    '''
-    QAcquisitions Form
-
-    BUG: Incomplete
-    - Rename all widgets
-    - Add LEFT/RIGHT functions
-    '''    
-    def __init__(self, Window_Title: str="List", icon: QIcon = None):
-        QDialog.__init__(self)
-
-        ''' INIT '''
-        self.ui = PYSIDE_QACQUISITIONS.Ui_Dialog()
-        self.ui.setupUi(self)
-
-        ''' WIDGETS '''
-        if icon: self.setWindowIcon(icon)
-        self.setWindowTitle(Window_Title)
-        # self.ui.tx_info.setText(MEAS_INFO)
-        self.TYPES: tuple = ("MEASURE", "INDICATION")
-        self.ui.cb_type.addItems(self.TYPES)
-        self.ui.cb_type.setCurrentIndex(0)
-        for item in ["G","M","k","","m","µ","n"]:
-            self.ui.cb_units.addItem(item)
-        self.ui.cb_units.setCurrentIndex(3)
-        self.data: dict = None
-
-        ''' CONNECTIONS '''
-        self.ui.btn_addvalue.clicked.connect(self.VALUE_ADD)
-        self.ui.btn_delete.clicked.connect(self.VALUE_DEL)
-        self.ui.btn_exit.clicked.connect(self.EXIT)
-    
-    def VALUE_ADD(self) -> None:
-        '''
-        '''
-        value: float = float()
-        try:
-            value = float(self.ui.tx_value.text())
-        except:
-            value = 0
-        unit: str = self.ui.cb_units.currentText()
-        match unit:
-            case "G":
-                value = value * 1e9
-            case "M":
-                value = value * 1e6
-            case "k":
-                value = value * 1e3
-            case "":
-                value = value * 1
-            case "m":
-                value = value * 1e-3
-            case "µ":
-                value = value * 1e-6
-            case "n":
-                value = value * 1e-9
-        row = self.ui.tbl_values.rowCount()
-        self.ui.tbl_values.insertRow(row)
-        CELL_WR(self.ui.tbl_values, row, 0, self.ui.cb_type.currentText())
-        CELL_WR(self.ui.tbl_values, row, 1, value)
-        self.GET_VALUES()
-
-    def VALUE_DEL(self) -> None:
-        '''
-        '''
-        row = self.ui.tbl_values.currentRow()
-        if row < 0:
-            return
-        self.ui.tbl_values.removeRow(row)
-        self.GET_VALUES()
-    
-    def EXIT(self) -> None:
-        '''
-        '''
-        self.GET_VALUES()
-        self.close()
-    
-    def GET_VALUES(self) -> None:
-        '''
-        '''
-        # DF = pd.DataFrame(columns=self.TYPES)
-        # for row in range(self.ui.tbl_values.rowCount()):
-        #     DF.loc[len(DF)] = [CELL_RD(self.ui.tbl_values, row, 0), float(CELL_RD(self.ui.tbl_values, row, 1))]
-        # print()
-        # self.data = DF.to_dict('list')
-        self.data = dict()
-        self.data['TYPE'] = list()
-        self.data['VALUE'] = list()
-        for row in range(self.ui.tbl_values.rowCount()):
-            self.data['TYPE'].append(CELL_RD(self.ui.tbl_values, row, 0))
-            self.data['VALUE'].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
-
-from pydeveloptools.forms import PYSIDE_QMARKDOWN
-
-class QMARKDOWN(QDialog):
-    '''
-    Markdown format Text Form
-    '''
-    def __init__(self, MD_TEXT: str = str(), Window_Title: str="MarkDown Text", icon: QIcon = None) -> None:
-        QDialog.__init__(self)
-        
-        ''' INIT '''
-        self.ui = PYSIDE_QMARKDOWN.Ui_Dialog()
-        self.ui.setupUi(self)
-
-        ''' WIDGETS '''
-        if icon: self.setWindowIcon(icon)
-        self.setWindowTitle(Window_Title)
-        self.ui.tx_preview.setReadOnly(True)
-        html_text = markdown2.markdown(MD_TEXT)
-        self.ui.tx_preview.setHtml(html_text)
-
-
-''' TEST
-________________________________________________________________________________________________ '''
