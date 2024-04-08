@@ -755,6 +755,7 @@ class MYFONTS(Enum):
 from pydeveloptools.forms import PYSIDE_QLIST
 from pydeveloptools.forms import PYSIDE_QLIST_FORM
 from pydeveloptools.forms import PYSIDE_QTABLE_FORM
+from pydeveloptools.forms import PYSIDE_QTEXT_FORM
 
 class QLIST(QDialog):
     '''
@@ -1087,79 +1088,30 @@ class QTEXT_FORM(QDialog):
         - Hay que crear un class para definir bien el CONFIG como en QTABLE_FORM
     '''
     data = None
-    def __init__(self, TEXT: str = "", Window_Title="Plain Text Form", fontFamily="Consolas"):
+    def __init__(self, TEXT: str = "", Window_Title="Plain Text Form", icon: QIcon = None, fontFamily="Consolas"):
         QtWidgets.QDialog.__init__(self)
-        self.Window_Title = Window_Title
-        self.fontFamily = fontFamily
-        self.TEXT = TEXT
 
         ''' INIT '''
-        self.setupUi()
-        self.tx_dialog.setText(self.TEXT)
-        self.btn_exit.clicked.connect(self.exitdialog)
+        self.ui = PYSIDE_QTEXT_FORM.Ui_Dialog()
+        self.ui.setupUi(self)
+        self.ui.text.setPlainText(TEXT)
+        # 
+        if icon: self.setWindowIcon(icon)
+        self.setWindowTitle(Window_Title)
+        self.fontFamily = fontFamily
 
-    def setupUi(self):
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        font.setFamily(self.fontFamily)
-        self.setFont(font)
-        self.setObjectName("Dialog")
-        self.resize(600, 160)
-        self.setWindowTitle(self.Window_Title)
-        self.setToolTip("")
-        self.setStatusTip("")
-        self.setWhatsThis("")
-        self.setAccessibleName("")
-        self.setAccessibleDescription("")
-        self.setWindowFilePath("")
-        # 
-        self.tx_dialog = QtWidgets.QTextEdit(self)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        font.setFamily(self.fontFamily)
-        self.tx_dialog.setFont(font)
-        self.tx_dialog.setToolTip("")
-        self.tx_dialog.setStatusTip("")
-        self.tx_dialog.setWhatsThis("")
-        self.tx_dialog.setAccessibleName("")
-        self.tx_dialog.setAccessibleDescription("")
-        # self.tx_dialog.setStyleSheet("background-color: rgb(228, 228, 228);")
-        self.tx_dialog.setDocumentTitle("")
-        self.tx_dialog.setAcceptRichText(False)
-        self.tx_dialog.setPlaceholderText("")
-        self.tx_dialog.setObjectName("tx_dialog")
-        # 
-        self.btn_exit = QtWidgets.QPushButton(self)
-        self.btn_exit.setMinimumSize(QtCore.QSize(0, 40))
-        self.btn_exit.setMaximumSize(QtCore.QSize(16777215, 40))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setFamily(self.fontFamily)
-        font.setBold(True)
-        font.setWeight(75)
-        self.btn_exit.setFont(font)
-        self.btn_exit.setToolTip("")
-        self.btn_exit.setStatusTip("")
-        self.btn_exit.setWhatsThis("")
-        self.btn_exit.setAccessibleName("")
-        self.btn_exit.setAccessibleDescription("")
-        self.btn_exit.setText("SAVE")
-        self.btn_exit.setShortcut("")
-        self.btn_exit.setObjectName("btn_exit")
-        # 
-        self.verticalLayout = QtWidgets.QVBoxLayout(self)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.verticalLayout.addWidget(self.tx_dialog)
-        self.verticalLayout.addWidget(self.btn_exit)
-        QtCore.QMetaObject.connectSlotsByName(self)
+        # ''' INIT '''
+        # self.setupUi()
+        # self.tx_dialog.setText(self.TEXT)
+        # self.btn_exit.clicked.connect(self.exitdialog)
 
-    def exitdialog(self):
-        self.data = self.tx_dialog.toPlainText()
-        if YESNOBOX("DO YOU WANT SAVE THIS DATA?", self.data) == True:
-            self.close()
-        else:
-            self.data = None
-            return
+    # def exitdialog(self):
+    #     self.data = self.tx_dialog.toPlainText()
+    #     if YESNOBOX("DO YOU WANT SAVE THIS DATA?", self.data) == True:
+    #         self.close()
+    #     else:
+    #         self.data = None
+    #         return
         
 class QDICT_FORM(QDialog):
     '''

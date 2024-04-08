@@ -20,6 +20,7 @@ SUBPROCESS_LIST = [
     ["pyside6-uic", "_FORMS_UI/QMARKDOWN.ui", "-o", "forms/PYSIDE_QMARKDOWN.py"],
     ["pyside6-uic", "_FORMS_UI/QTABLE_DICT.ui", "-o", "forms/PYSIDE_QTABLE_DICT.py"],
     ["pyside6-uic", "_FORMS_UI/QTABLE_FORM.ui", "-o", "forms/PYSIDE_QTABLE_FORM.py"],
+    ["pyside6-uic", "_FORMS_UI/QTEXT_FORM.ui", "-o", "forms/PYSIDE_QTEXT_FORM.py"],
 ]
 for procss in SUBPROCESS_LIST:
     subprocess.run(procss)

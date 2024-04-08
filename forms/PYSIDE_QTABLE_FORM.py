@@ -23,7 +23,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(600, 300)
+        Dialog.resize(478, 300)
         Dialog.setMinimumSize(QSize(450, 300))
         font = QFont()
         font.setFamilies([u"Roboto"])

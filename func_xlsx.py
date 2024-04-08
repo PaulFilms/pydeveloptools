@@ -220,7 +220,7 @@ class XLSREPORT:
         self.WS.cell(ROW, COLUMN).alignment = Alignment(horizontal='left', vertical=vertical_alignment, wrap_text=wrap_text)
         self.WS.cell(ROW, COLUMN).font = FONTS.HEADER.value
 
-    def WR_HEADERS(self, ROW: int, COLUMN: int, HEADERS: list = list, vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
+    def WR_HEADERS(self, ROW: int, COLUMN: int = 1, HEADERS: list = list(), vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
         '''
         Write and edit format of Headers List
         BUG: Hay que definir la columna donde empieza la cabecera
