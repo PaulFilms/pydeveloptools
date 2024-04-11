@@ -9,7 +9,7 @@ WARNINGS:
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.04.07'
+__update__ = '2024.04.11'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -446,7 +446,7 @@ def CELL_TX(TABLE: QTableWidget, ROW: int, COLUMN: int | str, TEXT: bool | str |
         ITEM = QTableWidgetItem(str(TEXT))
     TABLE.setItem(ROW, COLUMN_INDEX, ITEM)
 
-def CELL_COMBOBOX(TABLE: QTableWidget, ROW: int, COLUMN: int | str, LIST: list, EDITABLE: bool = False) -> None:
+def CELL_COMBOBOX(TABLE: QTableWidget, ROW: int, COLUMN: int | str, LIST: list | tuple, EDITABLE: bool = False) -> None:
     '''
     setCellWidget -> QComboBox
     '''
@@ -551,7 +551,8 @@ class COLORS(Enum):
 
 def CELL_COLOR(TABLE: QTableWidget, ROW: int, COLUMN: int | str, COLOR: QColor) -> None:
     '''
-    Set the backgroung Color of a cel with selected str color:
+    Set the backgroung Color of a cel with selected str color
+    BUG: Incomplete
     '''
     TABLE.setAlternatingRowColors(False)
     COLUMN_INDEX = TBL_GET_HEADER_INDEX(TABLE, COLUMN)
