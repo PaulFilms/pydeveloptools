@@ -3,12 +3,13 @@ Toolkit with simplified functions and methods for create .xlsx Reports
 
 
 `TASK:`
+    - BUG(s)
+    - si OpenPyXL no se actualiza en un tiempo, hay que plantear el uso de xlsxwriter y xlsxreader
     - Ver actualizaciones de openpyxl para RichText
     - Añadir la funcion de trabajar con letras y enteros:
         ejm: [ COL = xls.utils.get_column_letter(COLUMN) ]
     - Añadir libreria xlsxwriter para uso de hojas EXCEL ya creadas
     - Replantear las fuentes siguiendo el esquema de MARKDOWN (ejm: H1, H2, H3...)
-    - BUG(s)
     - wb.create_named_range('_xlnm.Print_Area', ws, 'A1:U56',scope=0) ** Para rangos definidos por nombre
 
 `WARNINGS:`
@@ -93,18 +94,17 @@ class XLSREPORT:
     '''
     Excel book and functions
     
-    
     BUG:
         - En el caso de WorkSheet en __init__ hay que preguntar y no usar try/except
         - Hay que depurar el tratamiento de archivos (repetidos, protegidos, etc)
     '''
-    def __init__(self, path: str, FONT: str = "Arial", WS_NAME: str = "Data") -> None:
+    def __init__(self, path: str, FONT: str = "Arial", WS_NAME: str = "Data", EXTENSION: str = "xlsx") -> None:
         ## PATH
         self.filePath = path
         self.fileName = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.BASENAME)
-        extension = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.EXTENSION)
-        if extension != "xlsx":
-            self.filePath += ".xlsx"
+        self.extension = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.EXTENSION)
+        if self.extension != EXTENSION:
+            self.filePath += f"{self.filePath}.{EXTENSION}"
 
         ## INIT
         self.ROW = 1

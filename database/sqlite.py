@@ -15,6 +15,7 @@ __author__ = 'PABLO GONZALEZ PILA <pablopila.spain@gmail.com>'
 ''' SYSTEM LIBRARIES '''
 import sqlite3
 import json
+from typing import List
 
 ''' CUSTOM LIBRARIES '''
 from pydeveloptools.func_database import SQL_SELECT, FILTER, OPERATORS
@@ -89,7 +90,7 @@ class SQLITE_DB():
                 }
         return LIST
 
-    def SQL_TABLE_HEADERS(self, TABLE: str) -> list:
+    def SQL_TABLE_HEADERS(self, TABLE: str) -> List[str]:
         '''
         List of headers
         '''

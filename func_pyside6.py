@@ -6,10 +6,11 @@ TASK:
 
 WARNINGS:
     - All functions are copied of PyQt6 Library, ¡¡ be carefull !!
+    - Only tested under Windows 11
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.04.11'
+__update__ = '2024.04.15'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -692,7 +693,7 @@ def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: List[int] | List[str] | 
 ''' INFOBOXES
 ________________________________________________________________________________________________ '''
 
-def INFOBOX(TITLE: str = "INFO", TEXT: str = "", icon: QIcon = None):
+def INFOBOX(TEXT: str, TITLE: str = "INFO", icon: QIcon = None) -> None:
     '''
     Information Window
     '''
@@ -705,17 +706,12 @@ def INFOBOX(TITLE: str = "INFO", TEXT: str = "", icon: QIcon = None):
         infobox.setWindowIcon(icon)
     infobox.exec()
 
-def YESNOBOX(TITLE: str = "", TEXT: str = "", icon: QIcon = None) -> bool:
+def YESNOBOX(TEXT: str, TITLE: str = "QUESTION", icon: QIcon = None) -> bool:
     '''
     Question Window with YES/NO Options
     '''
     yesnobox = QMessageBox()
     yesnobox.setFont(QFont('Consolas', 10))
-    # reply = yesnobox.question(QMainWindow(), str(TITLE), str(TEXT))
-    # if reply == QMessageBox.StandardButton.Yes:
-    #     return True
-    # if reply == QMessageBox.StandardButton.No:
-    #     return False
     yesnobox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
     yesnobox.setIcon(QMessageBox.Icon.Question)
     yesnobox.setWindowTitle(TITLE)
@@ -728,7 +724,7 @@ def YESNOBOX(TITLE: str = "", TEXT: str = "", icon: QIcon = None) -> bool:
     if reply == yesnobox.StandardButton.No:
         return False
 
-def INPUTBOX(TITLE: str = "", TEXT: str = None, icon: QIcon = None) -> str:
+def INPUTBOX(TEXT: str = None, TITLE: str = "INPUT", icon: QIcon = None) -> str:
     '''
     Input Window for Entering a Value
     '''
@@ -757,6 +753,8 @@ from pydeveloptools.forms import PYSIDE_QLIST
 from pydeveloptools.forms import PYSIDE_QLIST_FORM
 from pydeveloptools.forms import PYSIDE_QTABLE_FORM
 from pydeveloptools.forms import PYSIDE_QTEXT_FORM
+from pydeveloptools.forms import PYSIDE_QACQUISITIONS
+from pydeveloptools.forms import PYSIDE_QMARKDOWN
 
 class QLIST(QDialog):
     '''
@@ -963,17 +961,16 @@ class QTABLE_FORM(QDialog):
             self.data = None
             return
 
-from pydeveloptools.forms import PYSIDE_QACQUISITIONS
-
 class QACQUISITIONS(QDialog):
     '''
     QAcquisitions Form
 
     BUG: Incomplete
-    - Rename all widgets
-    - Add LEFT/RIGHT functions
+        - Rename all widgets
+        - Add LEFT/RIGHT functions
+        - Define init datas
     '''    
-    def __init__(self, Window_Title: str="List", icon: QIcon = None):
+    def __init__(self, TYPE_VALUES: List[str] | Tuple[str] = ("MEASURE", "INDICATION"), Window_Title: str="List", icon: QIcon = None):
         QDialog.__init__(self)
 
         ''' INIT '''
@@ -984,7 +981,7 @@ class QACQUISITIONS(QDialog):
         if icon: self.setWindowIcon(icon)
         self.setWindowTitle(Window_Title)
         # self.ui.tx_info.setText(MEAS_INFO)
-        self.TYPES: tuple = ("MEASURE", "INDICATION")
+        self.TYPES = TYPE_VALUES
         self.ui.cb_type.addItems(self.TYPES)
         self.ui.cb_type.setCurrentIndex(0)
         for item in ["G","M","k","","m","µ","n"]:
@@ -1042,22 +1039,22 @@ class QACQUISITIONS(QDialog):
         self.GET_VALUES()
         self.close()
     
+    def SET_VALUES(self) -> None:
+        '''
+        BUG: incomplete 
+        '''
+
+    
     def GET_VALUES(self) -> None:
         '''
+        Add current acquisition to self.data like dict
         '''
-        # DF = pd.DataFrame(columns=self.TYPES)
-        # for row in range(self.ui.tbl_values.rowCount()):
-        #     DF.loc[len(DF)] = [CELL_RD(self.ui.tbl_values, row, 0), float(CELL_RD(self.ui.tbl_values, row, 1))]
-        # print()
-        # self.data = DF.to_dict('list')
         self.data = dict()
         self.data['TYPE'] = list()
         self.data['VALUE'] = list()
         for row in range(self.ui.tbl_values.rowCount()):
             self.data['TYPE'].append(CELL_RD(self.ui.tbl_values, row, 0))
             self.data['VALUE'].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
-
-from pydeveloptools.forms import PYSIDE_QMARKDOWN
 
 class QMARKDOWN(QDialog):
     '''
@@ -1113,7 +1110,7 @@ class QTEXT_FORM(QDialog):
     #     else:
     #         self.data = None
     #         return
-        
+
 class QDICT_FORM(QDialog):
     '''
     Table Form (1 Field: Value1, Value2...)
