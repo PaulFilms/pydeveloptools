@@ -880,7 +880,7 @@ class QTABLE_FORM(QDialog):
         self.ui.setupUi(self)
         
         ## WIDGETS
-        self.setWindowTitle = Window_Title
+        self.setWindowTitle(Window_Title)
         if self.icon: self.setWindowIcon(self.icon)
         self.ui.tbl_form.verticalHeader().setVisible(True)
         self.ui.tbl_form.setColumnCount(3)
@@ -948,14 +948,14 @@ class QTABLE_FORM(QDialog):
             if value == "" or value == None:
                 if CELL_RD(TABLE, row, 1) == "*": 
                     self.data = None
-                    INFOBOX("ATTENTION", "PLEASE, FILL ALL THE MANDATORY (*) FIELDS", icon=self.icon)
+                    INFOBOX("PLEASE, FILL ALL THE MANDATORY (*) FIELDS", "ATTENTION", icon=self.icon)
                     return
                 self.data[field] = None
             else:
                 self.data[field] = value
                 summary += f"{value}"
             summary += "\n"
-        if YESNOBOX("DO YOU WANT SAVE THIS DATA?", summary) == True:
+        if YESNOBOX(f"DO YOU WANT SAVE THIS DATA?\n\n{summary}", "ATTENTION", icon=self.icon) == True:
             self.close()
         else:
             self.data = None

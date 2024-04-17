@@ -13,16 +13,18 @@ Toolkit with simplified functions and methods for create .xlsx Reports
     - wb.create_named_range('_xlnm.Print_Area', ws, 'A1:U56',scope=0) ** Para rangos definidos por nombre
 
 `WARNINGS:`
-    - ...
+    - Eliminado de las funciones el self.FONT para incluir el uso de la clase FONTS
+    - Se elimina los Try/Except al incio de la clase, en caso de error hay que tratarlo antes
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.03.31'
+__update__ = '2024.04.16'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
 import os
 from enum import Enum
+from typing import List
 
 ''' IMPORTED LIBRARIES '''
 import pandas as pd
@@ -83,7 +85,7 @@ class FONTS(Enum):
     '''
     Normalized Fonts
     '''
-    TITTLE = Font(name='Calibri', size=12, bold=True)
+    TITLE = Font(name='Calibri', size=12, bold=True)
     HEADER = Font(name='Calibri', size=10, bold=True)
     MAIN = Font(name='Calibri', size=10, bold=False)
 
@@ -92,45 +94,49 @@ ________________________________________________________________________________
 
 class XLSREPORT:
     '''
-    Excel book and functions
+    Sub-Module to make and edit .xlsx Reports
+
+    ### Args:
+        - `path` (str): Complete or relative path of report file
+        - `WS_NAME` (str): Name of current DataSheet
     
-    BUG:
+    #### BUG(s):
         - En el caso de WorkSheet en __init__ hay que preguntar y no usar try/except
         - Hay que depurar el tratamiento de archivos (repetidos, protegidos, etc)
     '''
-    def __init__(self, path: str, FONT: str = "Arial", WS_NAME: str = "Data", EXTENSION: str = "xlsx") -> None:
+    def __init__(self, path: str, worksheet_name: str = "Data") -> None:
         ## PATH
         self.filePath = path
         self.fileName = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.BASENAME)
         self.extension = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.EXTENSION)
-        if self.extension != EXTENSION:
-            self.filePath += f"{self.filePath}.{EXTENSION}"
+        if self.extension != "xlsx":
+            self.filePath = f"{self.filePath}.xlsx"
 
         ## INIT
         self.ROW = 1
-        self.FONT = FONT
         self.ALIGN = Alignment(horizontal=ALIGN_H.LEFT.value, vertical=ALIGN_V.CENTER.value)
-        self.WS_NAME = WS_NAME
+        # self.worksheet_name = worksheet_name
         
-        ## WORKBOOK
-        try:
-            ## LOAD WORKBOOK
+        ## LOAD WORKBOOK
+        if os.path.exists(self.filePath):
             self.WB = xls.load_workbook(self.filePath)
-        except:
-            ## NEW WORKBOOK
+        
+        ## NEW WORKBOOK
+        else:
             self.WB = xls.Workbook(self.filePath)
-            self.WB.create_sheet(self.WS_NAME)
+            self.WB.create_sheet(worksheet_name)
             self.WB.save(self.filePath)
             self.WB.close()
             self.WB = xls.load_workbook(self.filePath)
-        # print(self.WB.properties)
         
         ## WORKSHEET
-        try:
-            self.WS = self.WB[self.WS_NAME]
-        except:
-            self.WB.create_sheet(self.WS_NAME)
-            self.WS = self.WB[self.WS_NAME]
+        if worksheet_name in self.WB.sheetnames:
+            self.WS = self.WB[worksheet_name]
+        else:
+            self.WB.create_sheet(worksheet_name)
+            self.WS = self.WB[worksheet_name]
+        
+        ## FORMAT
         # self.WS.dimensions.ColumnDimension(self.WS, bestFit=True)        
 
     def SAVE(self) -> None:
@@ -140,14 +146,21 @@ class XLSREPORT:
         self.SAVE()
         self.WB.close()
 
+    def GET_PROPERTIES(self) -> any:
+        return self.WB.properties
+
     def SHEET_NEW(self, sheet_name: str) -> None:
         '''
         Create a new excel sheet
         '''
         self.WB.create_sheet(sheet_name)
+        self.WS = self.WB[sheet_name]
 
     def SHEET_SELECT(self, sheet_name) -> None:
         self.WS = self.WB[sheet_name]
+    
+    def SHEET_LIST(self) -> List[str]:
+        return self.WB.sheetnames 
 
     ''' FUNCTIONS '''
 
@@ -188,7 +201,7 @@ class XLSREPORT:
 
     ''' WRITE FUNCTIONS '''
 
-    def WR(self, ROW: int, COLUMN: int, VALUE = "", size: int = 10, bold: bool=False, font_name: str=None):
+    def WR(self, ROW: int, COLUMN: int, VALUE = "", size: int = 10, FONT: Font = FONTS.MAIN.value):
         '''
         Type the selected cell in specific formatting
         - `size:` Font Size (10)
@@ -197,11 +210,7 @@ class XLSREPORT:
         '''
         self.WS.cell(ROW, COLUMN).value = VALUE
         self.WS.cell(ROW, COLUMN).alignment = self.ALIGN
-        if font_name:
-            FONT = font_name
-        else:
-            FONT = self.FONT
-        self.WS.cell(ROW, COLUMN).font = Font(name=FONT, size=size, bold = bold)
+        self.WS.cell(ROW, COLUMN).font = FONT
     
     def WR_TITLE(self, ROW: int, COLUMN: int, VALUE = ""):
         '''
@@ -209,7 +218,7 @@ class XLSREPORT:
         '''
         self.WS.cell(ROW, COLUMN).value = VALUE
         self.WS.cell(ROW, COLUMN).alignment = self.ALIGN
-        self.WS.cell(ROW, COLUMN).font = FONTS.TITTLE.value
+        self.WS.cell(ROW, COLUMN).font = FONTS.TITLE.value
         self.ROW_WIDTH(ROW, 40)
 
     def WR_HEADER(self, ROW: int, COLUMN: int, VALUE = "", vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
@@ -247,7 +256,9 @@ class XLSREPORT:
         for col in range(col_ini, col_fin): 
             self.WS.cell(row=ROW, column=col).border = thin
 
-    ''' INCOMPLETES '''
+
+    ''' UNDER TEST
+    ________________________________________________________________________________________________ '''
     
     def WARP(self, ROW: int, COLUMN: int):
         '''
@@ -334,3 +345,5 @@ def DF_REPORT(DATAFRAME: pd.DataFrame, fileName: str, fontName: str = 'Calibri')
 
 ''' UNDER TEST
 ________________________________________________________________________________________________ '''
+
+...

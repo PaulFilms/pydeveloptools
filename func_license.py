@@ -2,6 +2,7 @@
 # pyLICENSER
 
 TASK:
+    - Hay que quitar este modulo de pydeveloptools para incluirlo en los proyectos con pyarmor
     - Eliminar el formato f"@{}@" y sumar TOKEN
     - Hacer GET_LIMITS
 
@@ -14,7 +15,7 @@ mypyc:
 
 ________________________________________________________________________________________________ '''
 
-__version__ = '2024.03.21'
+__version__ = '2024.04.16'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''

@@ -67,7 +67,6 @@ def OS_GET_DECIMAL() -> str:
     return str(locale.localeconv()['decimal_point'])
 
 
-
 def INTERNET_CONNECTION_CHECK(URL: str = r'www.seatable.io') -> bool:
     '''
     Check if the selected URL connection is available.
