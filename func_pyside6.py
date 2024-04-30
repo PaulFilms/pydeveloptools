@@ -10,7 +10,7 @@ WARNINGS:
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.04.15'
+__update__ = '2024.04.27'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -23,7 +23,7 @@ from typing import List, Tuple, Dict, Union
 ''' PIP/IMPORTED LIBRARIES '''
 from PySide6 import QtWidgets, QtGui, QtCore
 from PySide6.QtCore import QEventLoop, QTimer, QDate, QTime, Qt, QUrl, Signal
-from PySide6.QtGui import QColor, QFont, QDesktopServices, QIcon
+from PySide6.QtGui import QColor, QFont, QDesktopServices, QIcon, QCloseEvent
 from PySide6.QtWidgets import QMainWindow, QDialog, QMessageBox, QInputDialog, QFileDialog
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QHeaderView, QTableWidget, QTableWidgetItem
 from PySide6.QtWidgets import QPushButton, QComboBox, QLineEdit, QTextEdit, QCheckBox, QDoubleSpinBox, QSpinBox, QDateEdit, QTimeEdit
@@ -379,9 +379,11 @@ def CELL_RD(TABLE: QTableWidget, ROW: int, COLUMN: int | str):
     # CELL
     if CELL == None:
         if ITEM == None:
-            value = ""
+            value = None
         else:
             value = ITEM.text()
+            if value == str():
+                value = None
     # QLineEdit / QTextEdit
     elif type(CELL) == QLineEdit or type(CELL) == QTextEdit:
         value = ITEM.text()
@@ -693,20 +695,20 @@ def TBL_VHEADER_WIDTH_FIX(TABLE: QTableWidget, COLUMNS: List[int] | List[str] | 
 ''' INFOBOXES
 ________________________________________________________________________________________________ '''
 
-def INFOBOX(TEXT: str, TITLE: str = "INFO", icon: QIcon = None) -> None:
+def INFOBOX(info: str, winTitle: str = "INFO", icon: QIcon = None) -> None:
     '''
     Information Window
     '''
     infobox = QMessageBox()
     infobox.setIcon(QMessageBox.Icon.Information)
     infobox.setFont(QFont('Consolas', 10))
-    infobox.setWindowTitle(TITLE)
-    infobox.setText(TEXT)
+    infobox.setWindowTitle(winTitle)
+    infobox.setText(info)
     if icon:
         infobox.setWindowIcon(icon)
     infobox.exec()
 
-def YESNOBOX(TEXT: str, TITLE: str = "QUESTION", icon: QIcon = None) -> bool:
+def YESNOBOX(info: str, winTitle: str = "QUESTION", icon: QIcon = None) -> bool:
     '''
     Question Window with YES/NO Options
     '''
@@ -714,8 +716,8 @@ def YESNOBOX(TEXT: str, TITLE: str = "QUESTION", icon: QIcon = None) -> bool:
     yesnobox.setFont(QFont('Consolas', 10))
     yesnobox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
     yesnobox.setIcon(QMessageBox.Icon.Question)
-    yesnobox.setWindowTitle(TITLE)
-    yesnobox.setText(TEXT)
+    yesnobox.setWindowTitle(winTitle)
+    yesnobox.setText(info)
     if icon:
         yesnobox.setWindowIcon(icon)
     reply = yesnobox.exec()
@@ -724,14 +726,14 @@ def YESNOBOX(TEXT: str, TITLE: str = "QUESTION", icon: QIcon = None) -> bool:
     if reply == yesnobox.StandardButton.No:
         return False
 
-def INPUTBOX(TEXT: str = None, TITLE: str = "INPUT", icon: QIcon = None) -> str:
+def INPUTBOX(info: str = None, winTitle: str = "INPUT", icon: QIcon = None) -> str:
     '''
     Input Window for Entering a Value
     '''
     inputbox = QInputDialog()
-    inputbox.setWindowTitle(TITLE)
-    if TEXT:
-        inputbox.setLabelText(TEXT)
+    inputbox.setWindowTitle(winTitle)
+    if info:
+        inputbox.setLabelText(info)
     if icon:
         inputbox.setWindowIcon(icon)
     reply = inputbox.exec()
@@ -965,13 +967,16 @@ class QACQUISITIONS(QDialog):
     '''
     QAcquisitions Form
 
-    BUG: Incomplete
-        - Rename all widgets
-        - Add LEFT/RIGHT functions
-        - Define init datas
+    `Args:`
+        - VALUES: Dict[str, List] -> example: {"MEASURE": [], "INDICATION": []}
+        - info: str -> Text info about parameters of acquisitions
+
+    `Warnings:`
+        - LEFT/RIGHT functions are Not Enabled by default, its necessary to config in the MainWindow
     '''    
-    def __init__(self, TYPE_VALUES: List[str] | Tuple[str] = ("MEASURE", "INDICATION"), Window_Title: str="List", icon: QIcon = None):
+    def __init__(self, VALUES: Dict[str, List] = None, info: str = str(), Window_Title: str="List", icon: QIcon = None):
         QDialog.__init__(self)
+        self.data: Dict[str, List] = None
 
         ''' INIT '''
         self.ui = PYSIDE_QACQUISITIONS.Ui_Dialog()
@@ -980,20 +985,22 @@ class QACQUISITIONS(QDialog):
         ''' WIDGETS '''
         if icon: self.setWindowIcon(icon)
         self.setWindowTitle(Window_Title)
-        # self.ui.tx_info.setText(MEAS_INFO)
-        self.TYPES = TYPE_VALUES
-        self.ui.cb_type.addItems(self.TYPES)
-        self.ui.cb_type.setCurrentIndex(0)
-        for item in ["G","M","k","","m","µ","n"]:
-            self.ui.cb_units.addItem(item)
+        self.ui.cb_units.clear()
+        self.ui.cb_units.addItems(["G","M","k","","m","µ","n"])
         self.ui.cb_units.setCurrentIndex(3)
-        self.data: dict = None
+
+        ## DATA
+        self.SET_VALUES(info=info, values=VALUES)
+        self.GET_VALUES()
 
         ''' CONNECTIONS '''
         self.ui.btn_addvalue.clicked.connect(self.VALUE_ADD)
         self.ui.btn_delete.clicked.connect(self.VALUE_DEL)
-        self.ui.btn_exit.clicked.connect(self.EXIT)
-    
+        self.ui.btn_exit.clicked.connect(self.close)
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        self.GET_VALUES()
+
     def VALUE_ADD(self) -> None:
         '''
         '''
@@ -1039,22 +1046,38 @@ class QACQUISITIONS(QDialog):
         self.GET_VALUES()
         self.close()
     
-    def SET_VALUES(self) -> None:
-        '''
-        BUG: incomplete 
-        '''
+    def SET_VALUES(self, info: str = str(), values: Dict[str, List] = None) -> None:
+        self.ui.tx_info.setText(info)
+        ## TABLE
+        self.ui.tx_value.clear()
+        self.ui.cb_type.clear()
+        self.ui.tbl_values.setRowCount(0)
+        if values:
+            self.ui.cb_type.addItems(list(values.keys()))
+            for _type, _values in values.items():
+                for value in _values:
+                    row = self.ui.tbl_values.rowCount()
+                    self.ui.tbl_values.insertRow(row)
+                    CELL_WR(self.ui.tbl_values, row, 0, _type)
+                    CELL_WR(self.ui.tbl_values, row, 1, value)
+        else:
+            self.ui.cb_type.addItem("-")
+        self.ui.tx_value.setFocus()
+        print("SET_VALUES:")
+        print(values)
 
-    
     def GET_VALUES(self) -> None:
         '''
         Add current acquisition to self.data like dict
         '''
         self.data = dict()
-        self.data['TYPE'] = list()
-        self.data['VALUE'] = list()
+        for item in range(self.ui.cb_type.count()):
+            self.data[self.ui.cb_type.itemText(item)] = list()
         for row in range(self.ui.tbl_values.rowCount()):
-            self.data['TYPE'].append(CELL_RD(self.ui.tbl_values, row, 0))
-            self.data['VALUE'].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
+            try:
+                self.data[CELL_RD(self.ui.tbl_values, row, 0)].append(float(CELL_RD(self.ui.tbl_values, row, 1)))
+            except:
+                self.data[CELL_RD(self.ui.tbl_values, row, 0)].append(0.0)
 
 class QMARKDOWN(QDialog):
     '''

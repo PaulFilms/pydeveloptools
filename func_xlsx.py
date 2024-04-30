@@ -18,7 +18,7 @@ Toolkit with simplified functions and methods for create .xlsx Reports
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.04.16'
+__update__ = '2024.04.26'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -100,9 +100,8 @@ class XLSREPORT:
         - `path` (str): Complete or relative path of report file
         - `WS_NAME` (str): Name of current DataSheet
     
-    #### BUG(s):
-        - En el caso de WorkSheet en __init__ hay que preguntar y no usar try/except
-        - Hay que depurar el tratamiento de archivos (repetidos, protegidos, etc)
+    #### Warnings:
+        - This module it's under test yet, Glitches may occur
     '''
     def __init__(self, path: str, worksheet_name: str = "Data") -> None:
         ## PATH
@@ -117,17 +116,15 @@ class XLSREPORT:
         self.ALIGN = Alignment(horizontal=ALIGN_H.LEFT.value, vertical=ALIGN_V.CENTER.value)
         # self.worksheet_name = worksheet_name
         
-        ## LOAD WORKBOOK
-        if os.path.exists(self.filePath):
-            self.WB = xls.load_workbook(self.filePath)
-        
         ## NEW WORKBOOK
-        else:
+        if os.path.exists(self.filePath) == False:
             self.WB = xls.Workbook(self.filePath)
             self.WB.create_sheet(worksheet_name)
             self.WB.save(self.filePath)
             self.WB.close()
-            self.WB = xls.load_workbook(self.filePath)
+
+        ## LOAD WORKBOOK
+        self.WB = xls.load_workbook(self.filePath, read_only=False) ## Force load_workbook to open like WriteOnly
         
         ## WORKSHEET
         if worksheet_name in self.WB.sheetnames:
@@ -135,6 +132,7 @@ class XLSREPORT:
         else:
             self.WB.create_sheet(worksheet_name)
             self.WS = self.WB[worksheet_name]
+            self.WB.save(self.filePath)
         
         ## FORMAT
         # self.WS.dimensions.ColumnDimension(self.WS, bestFit=True)        
@@ -143,7 +141,7 @@ class XLSREPORT:
         self.WB.save(self.filePath)
 
     def close(self) -> None:
-        self.SAVE()
+        self.WB.save(self.filePath)
         self.WB.close()
 
     def GET_PROPERTIES(self) -> any:
@@ -229,13 +227,12 @@ class XLSREPORT:
         self.WS.cell(ROW, COLUMN).alignment = Alignment(horizontal='left', vertical=vertical_alignment, wrap_text=wrap_text)
         self.WS.cell(ROW, COLUMN).font = FONTS.HEADER.value
 
-    def WR_HEADERS(self, ROW: int, COLUMN: int = 1, HEADERS: list = list(), vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
+    def WR_HEADERS(self, ROW: int, COLUMN_INIT: int = 1, HEADERS: list = list(), vertical_alignment: str = ALIGN_V.CENTER.value, wrap_text: bool = False):
         '''
         Write and edit format of Headers List
-        BUG: Hay que definir la columna donde empieza la cabecera
         '''
         for head in HEADERS:
-            self.WR_HEADER(ROW=ROW, COLUMN=COLUMN+HEADERS.index(head), VALUE=head, vertical_alignment=vertical_alignment, wrap_text=wrap_text)
+            self.WR_HEADER(ROW=ROW, COLUMN=COLUMN_INIT+HEADERS.index(head), VALUE=head, vertical_alignment=vertical_alignment, wrap_text=wrap_text)
         self.ROW_WIDTH(ROW, 35)
 
     def LOW_BORDER(self, ROW=1, col_ini=1, col_fin=300):

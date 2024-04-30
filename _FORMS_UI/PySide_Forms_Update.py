@@ -2,7 +2,7 @@ import os
 import subprocess
 
 print("PySide Forms Update ----------")
-print(os.getcwd())
+print("Module Path:", os.getcwd())
 
 ## Set the PYSIDE6DEPLOY_QT_LIB environment variable
 # os.environ["PYSIDE6DEPLOY_QT_LIB"] = "PySide6"

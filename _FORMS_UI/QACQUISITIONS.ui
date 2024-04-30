@@ -466,7 +466,7 @@
       <item row="1" column="0">
        <widget class="QPushButton" name="btn_left">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="minimumSize">
          <size>
@@ -513,7 +513,7 @@
       <item row="1" column="3">
        <widget class="QPushButton" name="btn_right">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="minimumSize">
          <size>
@@ -637,6 +637,18 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tx_value</tabstop>
+  <tabstop>btn_addvalue</tabstop>
+  <tabstop>btn_right</tabstop>
+  <tabstop>btn_exit</tabstop>
+  <tabstop>cb_type</tabstop>
+  <tabstop>cb_units</tabstop>
+  <tabstop>btn_left</tabstop>
+  <tabstop>tbl_values</tabstop>
+  <tabstop>btn_delete</tabstop>
+  <tabstop>tx_info</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

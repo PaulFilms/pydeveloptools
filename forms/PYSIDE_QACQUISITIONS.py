@@ -316,7 +316,7 @@ class Ui_Dialog(object):
 
         self.btn_left = QPushButton(self.grp_list)
         self.btn_left.setObjectName(u"btn_left")
-        self.btn_left.setEnabled(True)
+        self.btn_left.setEnabled(False)
         self.btn_left.setMinimumSize(QSize(50, 40))
         self.btn_left.setMaximumSize(QSize(50, 40))
         font8 = QFont()
@@ -348,7 +348,7 @@ class Ui_Dialog(object):
 
         self.btn_right = QPushButton(self.grp_list)
         self.btn_right.setObjectName(u"btn_right")
-        self.btn_right.setEnabled(True)
+        self.btn_right.setEnabled(False)
         self.btn_right.setMinimumSize(QSize(50, 40))
         self.btn_right.setMaximumSize(QSize(50, 40))
         self.btn_right.setFont(font8)
@@ -419,6 +419,15 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addWidget(self.grp_list)
 
+        QWidget.setTabOrder(self.tx_value, self.btn_addvalue)
+        QWidget.setTabOrder(self.btn_addvalue, self.btn_right)
+        QWidget.setTabOrder(self.btn_right, self.btn_exit)
+        QWidget.setTabOrder(self.btn_exit, self.cb_type)
+        QWidget.setTabOrder(self.cb_type, self.cb_units)
+        QWidget.setTabOrder(self.cb_units, self.btn_left)
+        QWidget.setTabOrder(self.btn_left, self.tbl_values)
+        QWidget.setTabOrder(self.tbl_values, self.btn_delete)
+        QWidget.setTabOrder(self.btn_delete, self.tx_info)
 
         self.retranslateUi(Dialog)
 
