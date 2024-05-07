@@ -547,7 +547,7 @@ class COLORS(Enum):
     Standard colors
     '''
     GREEN = QColor(0, 80, 0)
-    YELLOW = QColor(255, 255, 0)
+    YELLOW = QColor(210, 190, 80)
     RED = color = QColor(100, 0, 0)
     # BLACK = QColor
     # GREY = QColor
@@ -1049,6 +1049,7 @@ class QACQUISITIONS(QDialog):
     def SET_VALUES(self, info: str = str(), values: Dict[str, List] = None) -> None:
         self.ui.tx_info.setText(info)
         ## TABLE
+        self.data = None
         self.ui.tx_value.clear()
         self.ui.cb_type.clear()
         self.ui.tbl_values.setRowCount(0)
@@ -1063,8 +1064,7 @@ class QACQUISITIONS(QDialog):
         else:
             self.ui.cb_type.addItem("-")
         self.ui.tx_value.setFocus()
-        print("SET_VALUES:")
-        print(values)
+        self.GET_VALUES()
 
     def GET_VALUES(self) -> None:
         '''

@@ -206,9 +206,14 @@ class XLSREPORT:
         - `bold:` Font Bold (False)
         - `font_name:` Font Name ("Arial")
         '''
-        self.WS.cell(ROW, COLUMN).value = VALUE
-        self.WS.cell(ROW, COLUMN).alignment = self.ALIGN
-        self.WS.cell(ROW, COLUMN).font = FONT
+        try:
+            self.WS.cell(ROW, COLUMN).value = VALUE
+            self.WS.cell(ROW, COLUMN).alignment = self.ALIGN
+            self.WS.cell(ROW, COLUMN).font = FONT
+        except Exception as e:
+            print("ERROR WR:")
+            print(e)
+            self.WS.cell(ROW, COLUMN).value = "ERROR"
     
     def WR_TITLE(self, ROW: int, COLUMN: int, VALUE = ""):
         '''

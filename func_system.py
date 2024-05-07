@@ -16,7 +16,7 @@ WARNINGS:
 
 ________________________________________________________________________________________________ '''
 
-__version__ = '2024.01.13' # + '_Compiled'
+__version__ = '2024.04.30' # + '_Compiled'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -31,10 +31,9 @@ from glob import glob
 import enum
 from enum import Enum, auto
 from typing import List
-# from importlib import import_module
 
 ''' PIP/IMPORTED LIBRARIES '''
-# import pyperclip # type: ignore[import-untyped]
+...
 
 
 ''' FUNCTIONS
@@ -237,46 +236,23 @@ def IMG_CM2PIXEL(CM: float) -> float:
 
 BOOLEANS: tuple = ("TRUE", True, 1, "1", "On", "ON")
 
-# def INT_TWODIGITS(INT: int) -> str:
-#     '''
-#     Convert Integer to two digit string
-#     1 --> 01
-#     '''
-#     ORDR = f'{INT:02d}'
-#     return ORDR
 
 
 ''' TEST
 ________________________________________________________________________________________________ '''
 
-# def COPY2CLIPBOARD(TEXT: str) -> None:
-#     '''
-#     Add selected data to clipboard
-#     '''
-#     pyperclip.copy(TEXT)
+## MACHINE INFO -------------------------------------------------
 
+# import win32api
 
-# from inspect import getmembers, isfunction, isclass # OBJECTS CHECK
+# print(win32api.GetComputerName())
+# print(win32api.GetNativeSystemInfo())
+# print(win32api.GetVolumeInformation(r"C:\\"))
 
-# def OBJECT_CHECK(OBJECT, objectType: str = 'function', onlyNames: bool = False) -> list:
-#     '''
-#     - OBJECT: Library from importlib
-#     - objectType: 'function' (for function objects) / 'class' (for class objects)
-#     - onlyNames:
-#         - True (Return a List with al the selected objects in the library)
-#         - False (Return a List with a tuple with object name and the object)
+# import subprocess
 
-#     INCOMPLETE:
-#     - Cuando el objeto es creado desde importlib no se pasa path
-#     - No he comprobado si puedes pasar un path, directamente un import, etc.
-#     '''
-#     if objectType != 'function' and objectType != 'class':
-#         print("OBJECT_CHECK ERROR / objectType not supported")
-#         return []
-#     if objectType == 'function':
-#         LIST = getmembers(OBJECT, isfunction)
-#     if objectType == 'class':
-#         LIST = getmembers(OBJECT, isclass)
-#     if onlyNames:
-#         LIST = [func[0] for func in LIST]
-#     return LIST
+# serials = subprocess.check_output('wmic diskdrive get SerialNumber').decode().split('\n')[1:]
+# serials = [s.strip() for s in serials if s.strip()]
+# print(serials)
+
+## ---------------------------------------------------------------
