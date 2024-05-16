@@ -199,7 +199,7 @@ class XLSREPORT:
 
     ''' WRITE FUNCTIONS '''
 
-    def WR(self, ROW: int, COLUMN: int, VALUE = "", size: int = 10, FONT: Font = FONTS.MAIN.value):
+    def WR(self, ROW: int, COLUMN: int, VALUE = str(), FONT: Font = FONTS.MAIN.value):
         '''
         Type the selected cell in specific formatting
         - `size:` Font Size (10)

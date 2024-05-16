@@ -334,7 +334,7 @@ def JSON_SELECT(TABLE: str, DB_FIELD: str, JSON_FIELD: str, WHERE: list) -> str:
     INCOMPLETE
     
     `EXAMPLE:`
-    ###### SELECT json_extract(<`DB_FIELD`>, '$.<`JSON_FIELD`>') AS <`JSON_FIELD`>
+    ###### SELECT json_extract(<`DB_FIELD`>, '$.<`JSON_FIELD`>') AS <`JSON_FIELD`>)
     ###### FROM <`TABLE`>
     ###### WHERE <`WHERE`>;
     '''
