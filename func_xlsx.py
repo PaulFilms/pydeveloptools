@@ -199,6 +199,12 @@ class XLSREPORT:
 
     ''' WRITE FUNCTIONS '''
 
+    def RD(self, ROW: int, COLUMN: int) -> bool | str | int | float:
+        '''
+        Returns value of selected row and column from current sheet
+        '''
+        return self.WS.cell(row=ROW, column=COLUMN).value
+
     def WR(self, ROW: int, COLUMN: int, VALUE = str(), FONT: Font = FONTS.MAIN.value):
         '''
         Type the selected cell in specific formatting
