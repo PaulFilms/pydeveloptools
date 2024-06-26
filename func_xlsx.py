@@ -18,7 +18,7 @@ Toolkit with simplified functions and methods for create .xlsx Reports
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.04.26'
+__update__ = '2024.06.26'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
@@ -35,9 +35,6 @@ from openpyxl.styles import borders
 from openpyxl.styles.borders import Border
 from openpyxl.worksheet import pagebreak
 from openpyxl.utils import get_column_letter
-
-''' CUSTOM MAIN LIBRARIES '''
-from pydeveloptools import func_system as SYS
 
 
 ''' OPENPYXL VARIABLES AND FUNCTIONS
@@ -106,10 +103,9 @@ class XLSREPORT:
     def __init__(self, path: str, worksheet_name: str = "Data") -> None:
         ## PATH
         self.filePath = path
-        self.fileName = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.BASENAME)
-        self.extension = SYS.PATH_BASENAME.GET(path, SYS.PATH_BASENAME.EXTENSION)
-        if self.extension != "xlsx":
-            self.filePath = f"{self.filePath}.xlsx"
+        extension = os.path.splitext(path)[1]
+        if extension == str() or extension == None:
+            self.filePath += ".xlsx"
 
         ## INIT
         self.ROW = 1
