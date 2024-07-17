@@ -12,15 +12,17 @@ Toolkit for developing simple applications and scripts with Python
 - PySide6 and PyQt6 Framework (UI Development)
 
 ## TASK:
-- Add Supabase (Web) in database functions
-- Add Notion API functions
 - Creating Cython functions
 - Add Rich Text in .xlsx Reports
-- Add Flet and Reflex frameworks
+- Add Flet, Reflex and Streamlit frameworks
 - Change typing like (str | float ...) to Typing module Union[str | float]
+- DATABASE Modules:
+   * Add Supabase (Web) in database functions
+   * Add Notion API functions
+   * Make the same logic to normalyze all db drivers
 
 ## WARNINGS:
-- ...
+- All unitary test are maked under Python 3.12 version
 
 ## Installation Method
 

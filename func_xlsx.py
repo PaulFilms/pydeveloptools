@@ -18,11 +18,12 @@ Toolkit with simplified functions and methods for create .xlsx Reports
 
 ________________________________________________________________________________________________ '''
 
-__update__ = '2024.06.26'
+__update__ = '2024.07.17'
 __author__ = 'PABLO GONZALEZ PILA <pablogonzalezpila@gmail.com>'
 
 ''' SYSTEM LIBRARIES '''
 import os
+import locale
 from enum import Enum
 from typing import List
 
@@ -35,25 +36,25 @@ from openpyxl.styles import borders
 from openpyxl.styles.borders import Border
 from openpyxl.worksheet import pagebreak
 from openpyxl.utils import get_column_letter
+from openpyxl.workbook.defined_name import DefinedName
+from openpyxl.utils import quote_sheetname, absolute_coordinate
 
 
 ''' OPENPYXL VARIABLES AND FUNCTIONS
 ________________________________________________________________________________________________ '''
 
-def CELL_STR(ROW: int, COLUMN: int) -> str:
+def CELL(ROW: int, COLUMN: int) -> str:
     '''
     Get the Reference String of selected Cell by numbers
     '''
-    col_str = xls.utils.get_column_letter(COLUMN)
-    cellstr = "{}{}".format(col_str, ROW)
-    return cellstr
+    col_str = get_column_letter(COLUMN)
+    return f"{col_str}{ROW}"
 
-def COLUMN_STR(COLUMN: int) -> str:
+def OS_GET_DECIMAL() -> str:
     '''
-    Get the Reference Letter of the selected Column by number
+    Get the decimal separator used by the system
     '''
-    letter = xls.utils.get_column_letter(COLUMN)
-    return letter
+    return str(locale.localeconv()['decimal_point'])
 
 class ALIGN_H(Enum):
     '''
@@ -86,6 +87,28 @@ class FONTS(Enum):
     HEADER = Font(name='Calibri', size=10, bold=True)
     MAIN = Font(name='Calibri', size=10, bold=False)
     CAPTION = Font(name='Calibri', size=8, bold=False)
+
+def DF_REPORT(DATAFRAME: pd.DataFrame, fileName: str, fontName: str = 'Calibri') -> None:
+    '''
+    Create excel report from selected Pandas DataFrame
+    '''
+    report = XLSREPORT(fileName, fontName)
+    ## HEADERS
+    HEADERS: list = DATAFRAME.columns.values.tolist()
+    report.WR_HEADERS(1, HEADERS, vertical_alignment="top")
+    report.COL_FILTERS()
+    report.LOW_BORDER(report.ROW, col_fin=len(HEADERS)+1)
+    report.ROW_INC()
+    ## DATA
+    for row in range(len(DATAFRAME.index)):
+        row_data = list(DATAFRAME.iloc[row].values)
+        for value in row_data:
+            report.WR(report.ROW, row_data.index(value)+1, value)
+        report.ROW_INC()
+    report.COL_AUTOFIT()
+    ## FIN
+    report.SAVE()
+
 
 ''' OPENPYXL REPORT
 ________________________________________________________________________________________________ '''
@@ -157,6 +180,17 @@ class XLSREPORT:
     def SHEET_LIST(self) -> List[str]:
         return self.WB.sheetnames 
 
+    def SET_RANGE_NAME(self, ROW: int, COLUMN: int, NAME: str) -> None:
+        '''
+        BUG: Under Test
+        '''
+        COLUMN_STR = get_column_letter(COLUMN)
+        cell = f"{COLUMN_STR}{ROW}"
+        ref =  f"{quote_sheetname(self.WS.title)}!{absolute_coordinate(cell)}"
+        defn = DefinedName(NAME, attr_text=ref)
+        self.WB.defined_names[NAME] = defn
+
+
     ''' FUNCTIONS '''
 
     def ROW_INC(self, NUMBER: int=1) -> None:
@@ -174,7 +208,7 @@ class XLSREPORT:
     def COL_WIDTH(self, COL: int, WIDTH: float = 20) -> None:
         '''
         '''
-        COL_LETT = COLUMN_STR(COL)
+        COL_LETT = get_column_letter(COL)
         self.WS.column_dimensions[COL_LETT].width = WIDTH
 
     def COL_AUTOFIT(self) -> None:
@@ -183,7 +217,7 @@ class XLSREPORT:
         '''
         for column_cells in self.WS.columns:
                 new_column_length = max(len(str(cell.value)) for cell in column_cells)
-                new_column_letter = (xls.utils.get_column_letter(column_cells[0].column))
+                new_column_letter = (get_column_letter(column_cells[0].column))
                 if new_column_length > 0:
                     self.WS.column_dimensions[new_column_letter].width = new_column_length*1.23
 
@@ -243,6 +277,15 @@ class XLSREPORT:
             self.WR_HEADER(ROW=ROW, COLUMN=COLUMN_INIT+HEADERS.index(head), VALUE=head, vertical_alignment=vertical_alignment, wrap_text=wrap_text)
         self.ROW_WIDTH(ROW, 35)
 
+    def WR_SCI_NUMBER(self, ROW: int, COLUMN: int, VALUE = float):
+        '''
+        Edit selected cell like sci number format (0.0E+0)
+        '''
+        self.WS.cell(ROW, COLUMN).value = VALUE
+        self.WS.cell(ROW, COLUMN).alignment = self.ALIGN
+        self.WS.cell(ROW, COLUMN).font = FONTS.MAIN.value
+        self.WS.cell(ROW, COLUMN).number_format = f'0.0E+0'
+
     def LOW_BORDER(self, ROW=1, col_ini=1, col_fin=300):
         '''
         BUG: INCOMPLETE
@@ -277,7 +320,7 @@ class XLSREPORT:
     #         end_row = ROW_FIN, 
     #         end_column = COL_FIN)
     
-    def PRNT_AREA(self, COL_FIN: int):
+    def PRNT_AREA(self, COL_FIN: int | str) -> None:
         '''
         Ajusta la zona de impresion
         INCOMPLETE
@@ -287,7 +330,10 @@ class XLSREPORT:
         # self.WS.page_setup.fitToPage = True
         self.WS.page_setup.fitToPage = 1
         self.WS.page_setup.fitToHeight = False
-        COL_STR = COLUMN_STR(COL_FIN)
+        if isinstance(COL_FIN, int):
+            COL_STR = get_column_letter(COL_FIN)
+        if isinstance(COL_FIN, str):
+            COL_STR = COL_FIN
         self.WS.print_area = "A:" + COL_STR
 
     def SHEET_HEAD(self, ROW_FIN: int):
@@ -301,7 +347,7 @@ class XLSREPORT:
         self.WS.page_margins.header = 0.4
         self.WS.page_margins.footer = 0.4
 
-    def PAGE_BREAK(self, ROW: int = 1):
+    def PAGE_BREAK(self, ROW: int = 1) -> None:
         '''
         Insert a page break in selected row
         '''
@@ -326,26 +372,7 @@ class XLSREPORT:
         self.WS.add_image(img, cell_str)
 
 
-def DF_REPORT(DATAFRAME: pd.DataFrame, fileName: str, fontName: str = 'Calibri') -> None:
-    '''
-    Create excel report from selected Pandas DataFrame
-    '''
-    report = XLSREPORT(fileName, fontName)
-    ## HEADERS
-    HEADERS: list = DATAFRAME.columns.values.tolist()
-    report.WR_HEADERS(1, HEADERS, vertical_alignment="top")
-    report.COL_FILTERS()
-    report.LOW_BORDER(report.ROW, col_fin=len(HEADERS)+1)
-    report.ROW_INC()
-    ## DATA
-    for row in range(len(DATAFRAME.index)):
-        row_data = list(DATAFRAME.iloc[row].values)
-        for value in row_data:
-            report.WR(report.ROW, row_data.index(value)+1, value)
-        report.ROW_INC()
-    report.COL_AUTOFIT()
-    ## FIN
-    report.SAVE()
+
 
 
 ''' UNDER TEST
